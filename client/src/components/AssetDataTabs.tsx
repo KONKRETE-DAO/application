@@ -14,79 +14,26 @@ import {
     Table, TableBody, TableRow, TableCell
 } from '@mui/material';
 import Link from 'next/link'
+import ImageGallery from 'react-image-gallery';
+
 
 const tabs = ['Highlights', 'Location', 'Financials', 'Gallery'];
 
-interface Props {
-    uid: string,
-    name: string,
-    coverImage: any,
-    about: string,
-    address: any,
-    apr: number,
-    hasWaitlist: boolean,
-    isLeveraged: boolean,
-    expectedIncome: number,
-    propertyType: string,
-    gallery: any,
-    assetType: string,
-    rentStartDate: Date,
-    rentPerToken: number,
-    tokenPrice: number,
-    tokensNumber: number,
-    neighborhood: string,
-    bedroomsNumber: string,
-    rentalType: string,
-    rentalStrategy: string,
-    trustIndice: number,
-    highlights: any,
-    acquisitionPrice: number,
-    refurbishment: number,
-    totalPrice: number,
-    mortgage: number,
-    rentalIncome: number,
-    netRentalIncome: number,
-    internalRateOfReturn: number
-}
-
-const AssetDataTabs = ({
-    uid,
-    name,
-    coverImage,
-    about,
-    address,
-    apr,
-    hasWaitlist,
-    isLeveraged,
-    expectedIncome,
-    propertyType,
-    gallery,
-    assetType,
-    rentStartDate,
-    rentPerToken,
-    tokenPrice,
-    tokensNumber,
-    neighborhood,
-    bedroomsNumber,
-    rentalType,
-    rentalStrategy,
-    trustIndice,
-    highlights,
-    acquisitionPrice,
-    refurbishment,
-    totalPrice,
-    mortgage,
-    rentalIncome,
-    netRentalIncome,
-    internalRateOfReturn,
-    ...props }: Props) => {
-
+const AssetDataTabs = ({ ...props }) => {
     const [active, setActive] = useState(0);
-
-    const loc = `${address.city_name}, ${address.state}`
-
+    const loc = `${props.address.city_name}, ${props.address.state}`
     const handleClick = (index: number) => () => setActive(index);
+    const nf = new Intl.NumberFormat('en-US');
 
+
+    const images = props.gallery.data.map((el: any) => {
+        return {
+            original: `http://localhost:1337${el.attributes.url}`,
+            originalWidth: '500px',
+        };
+    })
+
+    console.log(images)
     return <>
         <Stack direction='row' gap={2}>
             {
@@ -104,42 +51,42 @@ const AssetDataTabs = ({
                             <TableRow>
                                 <TableCell scope="row"></TableCell>
                                 <TableCell align="left">Expected Income</TableCell>
-                                <TableCell align="right">{expectedIncome}</TableCell>
+                                <TableCell align="right">{`${props.expectedIncome}%`}</TableCell>
                                 <TableCell></TableCell>
                                 <TableCell align="left">Property Type</TableCell>
-                                <TableCell align="right">{propertyType}</TableCell>
+                                <TableCell align="right">{props.propertyType}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell scope="row"></TableCell>
                                 <TableCell align="left">Rent start date</TableCell>
-                                <TableCell align="right">{rentStartDate.toLocaleString('en-US', { year: "numeric", month: "long", day: "numeric" })}</TableCell>
+                                <TableCell align="right">{new Date(props.rentStartDate).toLocaleString('en-US', { year: "numeric", month: "long", day: "numeric" })}</TableCell>
                                 <TableCell></TableCell>
                                 <TableCell align="left">Neighborhood</TableCell>
-                                <TableCell align="right">{neighborhood}</TableCell>
+                                <TableCell align="right">{props.neighborhood}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell scope="row"></TableCell>
                                 <TableCell align="left">Rent per Token</TableCell>
-                                <TableCell align="right">{rentPerToken}</TableCell>
+                                <TableCell align="right">{`${nf.format(props.rentPerToken as number)}$/token`}</TableCell>
                                 <TableCell></TableCell>
                                 <TableCell align="left">Bedrooms</TableCell>
-                                <TableCell align="right">{bedroomsNumber}</TableCell>
+                                <TableCell align="right">{props.bedroomsNumber}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell scope="row"></TableCell>
                                 <TableCell align="left">Token Price</TableCell>
-                                <TableCell align="right">{tokenPrice}</TableCell>
+                                <TableCell align="right">{`${nf.format(props.tokenPrice as number)} USD-C`}</TableCell>
                                 <TableCell></TableCell>
                                 <TableCell align="left">Rental Type</TableCell>
-                                <TableCell align="right">{rentalType}</TableCell>
+                                <TableCell align="right">{props.rentalType}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell scope="row"></TableCell>
                                 <TableCell align="left">Total Token</TableCell>
-                                <TableCell align="right">{tokensNumber}</TableCell>
+                                <TableCell align="right">{nf.format(props.tokensNumber as number)}</TableCell>
                                 <TableCell></TableCell>
                                 <TableCell align="left">Rental Strategy</TableCell>
-                                <TableCell align="right">{rentalStrategy}</TableCell>
+                                <TableCell align="right">{props.rentalStrategy}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -155,7 +102,7 @@ const AssetDataTabs = ({
                     <Table>
                         <TableBody>
                             {
-                                highlights.map((element: { highlight: string }) => (
+                                props.highlights.map((element: { highlight: string }) => (
                                     <TableRow>
                                         <TableCell scope="row"></TableCell>
                                         <TableCell align="left">{element.highlight}</TableCell>
@@ -179,42 +126,42 @@ const AssetDataTabs = ({
                             <TableRow>
                                 <TableCell scope="row"></TableCell>
                                 <TableCell align="left">Acquisition Price</TableCell>
-                                <TableCell align="right">{acquisitionPrice}</TableCell>
+                                <TableCell align="right">{`${nf.format(props.acquisitionPrice as number)}$`}</TableCell>
                                 <TableCell></TableCell>
                                 <TableCell align="left">Rental Income</TableCell>
-                                <TableCell align="right">{rentalIncome}</TableCell>
+                                <TableCell align="right">{`${nf.format(props.rentalIncome as number)}$`}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell scope="row"></TableCell>
                                 <TableCell align="left">Refurbishment</TableCell>
-                                <TableCell align="right">{refurbishment}</TableCell>
+                                <TableCell align="right">{`${nf.format(props.refurbishment as number)}$`}</TableCell>
                                 <TableCell></TableCell>
                                 <TableCell align="left">Net rental income</TableCell>
-                                <TableCell align="right">{netRentalIncome}</TableCell>
+                                <TableCell align="right">{`${nf.format(props.netRentalIncome as number)}$`}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell scope="row"></TableCell>
                                 <TableCell align="left">Total Price</TableCell>
-                                <TableCell align="right">{totalPrice}</TableCell>
+                                <TableCell align="right">{`${nf.format(props.totalPrice as number)}$`}</TableCell>
                                 <TableCell></TableCell>
                                 <TableCell align="left">Token Price</TableCell>
-                                <TableCell align="right">{tokenPrice}</TableCell>
+                                <TableCell align="right">{`${nf.format(props.tokenPrice as number)} USD-C`}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell scope="row"></TableCell>
                                 <TableCell align="left">Mortgage</TableCell>
-                                <TableCell align="right">{mortgage}</TableCell>
+                                <TableCell align="right">{`${nf.format(props.mortgage as number)}$`}</TableCell>
                                 <TableCell></TableCell>
                                 <TableCell align="left">Rent per Token</TableCell>
-                                <TableCell align="right">{rentPerToken}</TableCell>
+                                <TableCell align="right">{`${nf.format(props.rentPerToken as number)}$`}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell scope="row"></TableCell>
                                 <TableCell align="left">Total Token</TableCell>
-                                <TableCell align="right">{tokensNumber}</TableCell>
+                                <TableCell align="right">{nf.format(props.tokensNumber as number)}</TableCell>
                                 <TableCell></TableCell>
                                 <TableCell align="left">Internal rate of return</TableCell>
-                                <TableCell align="right">{internalRateOfReturn}</TableCell>
+                                <TableCell align="right">{`${props.internalRateOfReturn}%`}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -227,6 +174,9 @@ const AssetDataTabs = ({
                     <Typography gutterBottom variant="h5" component="div">
                         Property gallery
                     </Typography>
+                    <Container>
+                        <ImageGallery items={images} showFullscreenButton={false} showNav={false} showPlayButton={false} />
+                    </Container>
                 </CardContent>
             </Card>
         }

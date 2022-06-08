@@ -28,14 +28,15 @@ const Home: NextPage = () => {
       {
         data.data.map((element: any) => (<AssetCard
           key={element.id}
-          uid={element.id}
-          name={element.attributes.name}
-          coverImage={element.attributes.cover_image}
-          about={element.attributes.about}
-          address={element.attributes.address}
-          apr={element.attributes.apr}
-          hasWaitlist={element.attributes.has_waitlist}
-          isLeveraged={element.attributes.is_leveraged}
+          {...element}
+        // uid={element.id}
+        // name={element.attributes.name}
+        // coverImage={element.attributes.cover_image}
+        // about={element.attributes.about}
+        // address={element.attributes.address}
+        // apr={element.attributes.apr}
+        // hasWaitlist={element.attributes.has_waitlist}
+        // isLeveraged={element.attributes.is_leveraged}
         ></AssetCard>))
       }
     </div >

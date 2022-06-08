@@ -35,7 +35,7 @@ const LargeAssetCard = ({
     const loc = `${address.city_name}, ${address.state}`
 
     return <Card sx={{
-        maxWidth: 900, marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: 10
+        marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: 10
     }}>
         <CardContent sx={{ display: 'flex' }} >
             <CardContent >

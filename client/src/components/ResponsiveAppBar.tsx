@@ -1,21 +1,11 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-//import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-//import AdbIcon from '@mui/icons-material/Adb';
+import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem, Paper } from '@mui/material';
 import { useWeb3React } from '@web3-react/core'
 import { InjectedConnector } from "@web3-react/injected-connector"
+import MenuIcon from '@mui/icons-material/Menu'
+import AdbIcon from '@mui/icons-material/Adb'
 
-const pages = ['Property list', 'Dashboard', 'FAQ'];
+const pages = ['Property list', 'Dashboard', 'Resources'];
 // const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const Injected = new InjectedConnector({
@@ -45,10 +35,9 @@ const ResponsiveAppBar = () => {
     };
 
     return (
-        <AppBar position="static">
+        <AppBar position="static" color='transparent' elevation={0}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
                     <Typography
                         variant="h6"
                         noWrap
@@ -57,10 +46,8 @@ const ResponsiveAppBar = () => {
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
-                            fontFamily: 'monospace',
                             fontWeight: 700,
                             letterSpacing: '.3rem',
-                            color: 'inherit',
                             textDecoration: 'none',
                         }}
                     >
@@ -76,7 +63,7 @@ const ResponsiveAppBar = () => {
                             onClick={handleOpenNavMenu}
                             color="inherit"
                         >
-                            {/* <MenuIcon /> */}
+                            <MenuIcon />
                         </IconButton>
                         <Menu
                             id="menu-appbar"
@@ -103,7 +90,6 @@ const ResponsiveAppBar = () => {
                             ))}
                         </Menu>
                     </Box>
-                    {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
                     <Typography
                         variant="h5"
                         noWrap
@@ -113,10 +99,9 @@ const ResponsiveAppBar = () => {
                             mr: 2,
                             display: { xs: 'flex', md: 'none' },
                             flexGrow: 1,
-                            fontFamily: 'monospace',
                             fontWeight: 700,
                             letterSpacing: '.3rem',
-                            color: 'inherit',
+
                             textDecoration: 'none',
                         }}
                     >
@@ -127,25 +112,20 @@ const ResponsiveAppBar = () => {
                             <Button
                                 key={page}
                                 onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
+                                sx={{ my: 2, display: 'block' }}
                             >
                                 {page}
                             </Button>
                         ))}
                     </Box>
-                    {/* <Button onClick={() => { activate(Injected) }}>Metamask yohoho</Button> */}
-
                     <Box sx={{ flexGrow: 0 }}>
-                        {
-
-                        }
-                        <Button onClick={() => activate(Injected)} sx={{ my: 2, color: 'white', display: active ? 'none' : 'block' }}>
+                        <Button onClick={() => activate(Injected)} sx={{ my: 2, display: active ? 'none' : 'block' }}>
                             Connect Wallet
                         </Button>
-                        <Button onClick={deactivate} sx={{ my: 2, color: 'white', display: active ? 'block' : 'none' }}>Disconnect</Button>
-                    </Box>
-                </Toolbar>
-            </Container>
+                        <Button onClick={deactivate} sx={{ my: 2, display: active ? 'block' : 'none' }}>Disconnect</Button>
+                    </Box >
+                </Toolbar >
+            </Container >
         </AppBar >
     );
 };

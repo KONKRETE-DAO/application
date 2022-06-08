@@ -16,5 +16,24 @@ export const theme = createTheme({
             // 'Helvetica Neue',
             // 'sans-serif'
         ].join(','),
+        // allVariants: {
+        //     color: '#121124'
+        // },
+        body2: {
+            color: '#4D4F60'
+        }
     },
+    palette: {
+        primary: {
+            main: "#121124",
+            contrastText: "#FFFFFF"
+        },
+        background: {
+            default: "#FFFFFF",
+            paper: "#FFFFFF",
+        },
+        text: {
+            primary: "#121124",
+        }
+    }
 });

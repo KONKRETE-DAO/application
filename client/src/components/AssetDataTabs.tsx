@@ -1,20 +1,15 @@
-import { JSXElementConstructor, ReactElement, ReactFragment, ReactPortal, useState } from 'react'
+import { useState } from 'react'
 import {
-    Card, Paper, CardActions,
-    CardHeader,
+    Card,
     CardContent,
-    CardMedia,
     Stack,
-    Button,
-    Container,
     Chip,
     Box,
     Avatar,
     Typography,
-    Table, TableBody, TableRow, TableCell
+    Table, TableBody, TableRow, TableCell,
+    ImageList, ImageListItem,
 } from '@mui/material';
-import Link from 'next/link'
-import ImageGallery from 'react-image-gallery';
 
 
 const tabs = ['Highlights', 'Location', 'Financials', 'Gallery'];
@@ -25,19 +20,11 @@ const AssetDataTabs = ({ ...props }) => {
     const handleClick = (index: number) => () => setActive(index);
     const nf = new Intl.NumberFormat('en-US');
 
-
-    const images = props.gallery.data.map((el: any) => {
-        return {
-            original: `http://localhost:1337${el.attributes.url}`,
-            originalWidth: '500px',
-        };
-    })
-
-    console.log(images)
+    console.log(props.gallery.data)
     return <>
-        <Stack direction='row' gap={2}>
+        <Stack direction='row' gap={2} sx={{ mb: '30px' }}>
             {
-                tabs.map((tab, index) => <Chip label={tab} variant={index == active ? "filled" : "outlined"} color="primary" onClick={handleClick(index)} clickable />)
+                tabs.map((tab, index) => <Chip key={index} label={tab} variant={index == active ? "filled" : "outlined"} color="primary" onClick={handleClick(index)} clickable />)
             }
         </Stack>
         {active != 0 ? <></> :
@@ -80,7 +67,7 @@ const AssetDataTabs = ({ ...props }) => {
                                 <TableCell align="left">Rental Type</TableCell>
                                 <TableCell align="right">{props.rentalType}</TableCell>
                             </TableRow>
-                            <TableRow>
+                            <TableRow sx={{ 'td, th': { border: 0 } }}>
                                 <TableCell scope="row"></TableCell>
                                 <TableCell align="left">Total Token</TableCell>
                                 <TableCell align="right">{nf.format(props.tokensNumber as number)}</TableCell>
@@ -99,86 +86,115 @@ const AssetDataTabs = ({ ...props }) => {
                     <Typography gutterBottom variant="h5" component="div">
                         Property location
                     </Typography>
-                    <Table>
-                        <TableBody>
-                            {
-                                props.highlights.map((element: { highlight: string }) => (
-                                    <TableRow>
-                                        <TableCell scope="row"></TableCell>
-                                        <TableCell align="left">{element.highlight}</TableCell>
-                                    </TableRow>)
-                                )
-                            }
+                    <Box sx={{ display: 'flex', flexFlow: 'row' }}>
+                        <CardContent sx={{ flex: 1, pl: 0 }} >
+                            <Typography gutterBottom variant="h6" component="div">
+                                Trust indice in {loc}
+                            </Typography>
+                            <Avatar
+                                sx={{ bgcolor: '#435AD8', width: 200, height: 200 }}
+                            >
+                                <Typography variant="h1" color='white' sx={{ margin: 'auto' }}>
+                                    {props.trustIndice}
+                                </Typography>
+                            </Avatar>
+                        </CardContent>
+                        <Table sx={{ flex: 1, mt: '20px' }} size="small">
+                            <TableBody>
+                                {
+                                    props.highlights.map((element: { highlight: string }) => (
+                                        <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                            <TableCell scope="row"></TableCell>
+                                            <TableCell align="left">{element.highlight}</TableCell>
+                                        </TableRow>)
+                                    )
+                                }
 
-                        </TableBody>
-                    </Table>
+                            </TableBody>
+                        </Table>
+                    </Box>
+
                 </CardContent>
-            </Card>
+            </Card >
         }
-        {active != 2 ? <></> :
-            <Card sx={{ borderRadius: '10px' }}>
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                        Property financials
-                    </Typography>
-                    <Table>
-                        <TableBody>
-                            <TableRow>
-                                <TableCell scope="row"></TableCell>
-                                <TableCell align="left">Acquisition Price</TableCell>
-                                <TableCell align="right">{`${nf.format(props.acquisitionPrice as number)}$`}</TableCell>
-                                <TableCell></TableCell>
-                                <TableCell align="left">Rental Income</TableCell>
-                                <TableCell align="right">{`${nf.format(props.rentalIncome as number)}$`}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell scope="row"></TableCell>
-                                <TableCell align="left">Refurbishment</TableCell>
-                                <TableCell align="right">{`${nf.format(props.refurbishment as number)}$`}</TableCell>
-                                <TableCell></TableCell>
-                                <TableCell align="left">Net rental income</TableCell>
-                                <TableCell align="right">{`${nf.format(props.netRentalIncome as number)}$`}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell scope="row"></TableCell>
-                                <TableCell align="left">Total Price</TableCell>
-                                <TableCell align="right">{`${nf.format(props.totalPrice as number)}$`}</TableCell>
-                                <TableCell></TableCell>
-                                <TableCell align="left">Token Price</TableCell>
-                                <TableCell align="right">{`${nf.format(props.tokenPrice as number)} USD-C`}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell scope="row"></TableCell>
-                                <TableCell align="left">Mortgage</TableCell>
-                                <TableCell align="right">{`${nf.format(props.mortgage as number)}$`}</TableCell>
-                                <TableCell></TableCell>
-                                <TableCell align="left">Rent per Token</TableCell>
-                                <TableCell align="right">{`${nf.format(props.rentPerToken as number)}$`}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell scope="row"></TableCell>
-                                <TableCell align="left">Total Token</TableCell>
-                                <TableCell align="right">{nf.format(props.tokensNumber as number)}</TableCell>
-                                <TableCell></TableCell>
-                                <TableCell align="left">Internal rate of return</TableCell>
-                                <TableCell align="right">{`${props.internalRateOfReturn}%`}</TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
-                </CardContent>
-            </Card>
+        {
+            active != 2 ? <></> :
+                <Card sx={{ borderRadius: '10px' }}>
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                            Property financials
+                        </Typography>
+                        <Table>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell scope="row"></TableCell>
+                                    <TableCell align="left">Acquisition Price</TableCell>
+                                    <TableCell align="right">{`${nf.format(props.acquisitionPrice as number)}$`}</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell align="left">Rental Income</TableCell>
+                                    <TableCell align="right">{`${nf.format(props.rentalIncome as number)}$`}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell scope="row"></TableCell>
+                                    <TableCell align="left">Refurbishment</TableCell>
+                                    <TableCell align="right">{`${nf.format(props.refurbishment as number)}$`}</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell align="left">Net rental income</TableCell>
+                                    <TableCell align="right">{`${nf.format(props.netRentalIncome as number)}$`}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell scope="row"></TableCell>
+                                    <TableCell align="left">Total Price</TableCell>
+                                    <TableCell align="right">{`${nf.format(props.totalPrice as number)}$`}</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell align="left">Token Price</TableCell>
+                                    <TableCell align="right">{`${nf.format(props.tokenPrice as number)} USD-C`}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell scope="row"></TableCell>
+                                    <TableCell align="left">Mortgage</TableCell>
+                                    <TableCell align="right">{`${nf.format(props.mortgage as number)}$`}</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell align="left">Rent per Token</TableCell>
+                                    <TableCell align="right">{`${nf.format(props.rentPerToken as number)}$`}</TableCell>
+                                </TableRow>
+                                <TableRow sx={{ 'td, th': { border: 0 } }}>
+                                    <TableCell scope="row"></TableCell>
+                                    <TableCell align="left">Total Token</TableCell>
+                                    <TableCell align="right">{nf.format(props.tokensNumber as number)}</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell align="left">Internal rate of return</TableCell>
+                                    <TableCell align="right">{`${props.internalRateOfReturn}%`}</TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
         }
-        {active != 3 ? <></> :
-            <Card sx={{ borderRadius: '10px' }}>
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                        Property gallery
-                    </Typography>
-                    <Container>
+        {
+            active != 3 ? <></> :
+                <Card sx={{ borderRadius: '10px' }}>
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                            Property gallery
+                        </Typography>
+                        <ImageList cols={3}>
+                            {props.gallery.data.map((item: any) => (
+                                <ImageListItem key={item.id}>
+                                    <img
+                                        src={`http://localhost:1337${item.attributes.url}`}
+                                        srcSet={`http://localhost:1337${item.attributes.url}`}
+                                        // alt={item.title}
+                                        loading="lazy"
+                                    />
+                                </ImageListItem>
+                            ))}
+                        </ImageList>
+                        {/* <Container>
                         <ImageGallery items={images} showFullscreenButton={false} showNav={false} showPlayButton={false} />
-                    </Container>
-                </CardContent>
-            </Card>
+                    </Container> */}
+                    </CardContent>
+                </Card>
         }
     </>
 }

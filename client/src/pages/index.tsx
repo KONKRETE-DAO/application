@@ -1,10 +1,10 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../../styles/Home.module.css'
 import ResponsiveAppBar from '../components/ResponsiveAppBar'
 import AssetCard from '../components/AssetCard'
 import useSWR from 'swr'
+import _ from 'lodash'
 
 
 const fetcher = (...args: [RequestInfo, RequestInit | undefined]) => fetch(...args).then((res) => res.json())
@@ -14,9 +14,7 @@ const Home: NextPage = () => {
   const { data, error } = useSWR('http://localhost:1337/api/assets?populate=cover_image&populate=address', fetcher);
 
   if (error) return <div>Failed to load</div>
-  if (!data) return <div>Loading...</div>
-
-  console.log(data);
+  if (!data) return <></>
 
   return (
     <div className={styles.container}>
@@ -26,18 +24,14 @@ const Home: NextPage = () => {
       </Head>
       <ResponsiveAppBar></ResponsiveAppBar>
       {
-        data.data.map((element: any) => (<AssetCard
-          key={element.id}
-          {...element}
-        // uid={element.id}
-        // name={element.attributes.name}
-        // coverImage={element.attributes.cover_image}
-        // about={element.attributes.about}
-        // address={element.attributes.address}
-        // apr={element.attributes.apr}
-        // hasWaitlist={element.attributes.has_waitlist}
-        // isLeveraged={element.attributes.is_leveraged}
-        ></AssetCard>))
+        data.data.map((element: any) => {
+          const attributes = _.mapKeys(element.attributes, (v, k) => _.camelCase(k))
+          return (<AssetCard
+            key={element.id}
+            index={element.id}
+            {...attributes}
+          ></AssetCard>)
+        })
       }
     </div >
   )

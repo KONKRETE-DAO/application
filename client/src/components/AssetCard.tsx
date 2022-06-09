@@ -1,10 +1,6 @@
 import {
-    Card, Paper, CardActions,
-    CardHeader,
+    Card, CardActions,
     CardContent,
-    CardMedia,
-    Stack,
-    Button,
     Container,
     Chip,
     Box,
@@ -13,28 +9,9 @@ import {
 } from '@mui/material';
 import Link from 'next/link'
 
-// interface Props {
-//     uid: string,
-//     name: string,
-//     coverImage: any,
-//     about: string,
-//     address: any,
-//     apr: number,
-//     hasWaitlist: boolean,
-//     isLeveraged: boolean,
-// }
+const AssetCard = ({ ...props }) => {
 
-const AssetCard = ({
-    // uid,
-    // name,
-    // coverImage,
-    // about,
-    // address,
-    // apr,
-    // hasWaitlist,
-    // isLeveraged,
-    ...props }) => {
-
+    console.log(props.address)
     const loc = `${props.address.city_name}, ${props.address.state}`
 
     return <Card sx={{ maxWidth: 500, marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: 10, borderRadius: '5%' }}>
@@ -70,7 +47,7 @@ const AssetCard = ({
             <CardActions
                 sx={{ justifyContent: 'center' }}
             >
-                <Link href={`/assets/${props.uid}`}><Chip label='See More' color="primary" clickable /></Link>
+                <Link href={`/assets/${props.index}`}><Chip label='See More' color="primary" clickable /></Link>
             </CardActions>
         </CardContent>
     </Card>

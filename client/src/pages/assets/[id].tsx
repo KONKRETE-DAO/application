@@ -17,7 +17,7 @@ const Asset: NextPage = () => {
     const { data, error } = useSWR(id ? `http://localhost:1337/api/assets/${id}?populate=cover_image&populate=gallery&populate=address&populate=highlights` : null, fetcher);
 
     if (error) return <div>Failed to load</div>
-    if (!data) return <div>Loading...</div>
+    if (!data) return <></>
 
     const attributes = _.mapKeys(data.data.attributes, (v, k) => _.camelCase(k))
 

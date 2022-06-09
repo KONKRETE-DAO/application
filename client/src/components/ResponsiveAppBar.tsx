@@ -1,12 +1,24 @@
 import * as React from 'react';
-import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem, Paper } from '@mui/material';
+import { useRouter } from 'next/router'
+import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem, Paper, Link } from '@mui/material';
 import { useWeb3React } from '@web3-react/core'
 import { InjectedConnector } from "@web3-react/injected-connector"
 import MenuIcon from '@mui/icons-material/Menu'
-import AdbIcon from '@mui/icons-material/Adb'
 
-const pages = ['Property list', 'Dashboard', 'Resources'];
-// const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = [
+    {
+        label: 'Property list',
+        url: '/'
+    },
+    {
+        label: 'Dashboard',
+        url: '#'
+    },
+    {
+        label: 'Resources',
+        url: '#'
+    },
+];
 
 const Injected = new InjectedConnector({
     supportedChainIds: [1, 137] // Polygon
@@ -15,6 +27,8 @@ const Injected = new InjectedConnector({
 const ResponsiveAppBar = () => {
     const { activate, deactivate } = useWeb3React();
     const { active, chainId, account } = useWeb3React();
+
+    const router = useRouter()
 
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -42,7 +56,7 @@ const ResponsiveAppBar = () => {
                         variant="h6"
                         noWrap
                         component="a"
-                        href="/"
+                        href={router.asPath != '/' ? '/' : '#'}
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
@@ -84,9 +98,11 @@ const ResponsiveAppBar = () => {
                             }}
                         >
                             {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
-                                </MenuItem>
+                                <Link key={page.label} href={router.asPath != page.url ? page.url : '#'} underline="none">
+                                    <MenuItem onClick={handleCloseNavMenu}>
+                                        <Typography textAlign="center">{page.label}</Typography>
+                                    </MenuItem>
+                                </Link>
                             ))}
                         </Menu>
                     </Box>
@@ -109,13 +125,15 @@ const ResponsiveAppBar = () => {
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, display: 'block' }}
-                            >
-                                {page}
-                            </Button>
+                            <Link key={page.label}
+                                href={router.asPath != page.url ? page.url : '#'} underline="none">
+                                <Button
+                                    onClick={handleCloseNavMenu}
+                                    sx={{ my: 2, display: 'block' }}
+                                >
+                                    {page.label}
+                                </Button>
+                            </Link>
                         ))}
                     </Box>
                     <Box sx={{ flexGrow: 0 }}>

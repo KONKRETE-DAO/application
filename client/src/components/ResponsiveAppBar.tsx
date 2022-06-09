@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useRouter } from 'next/router'
-import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem, Paper, Link } from '@mui/material';
+import { AppBar, Chip, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem, Paper, Link } from '@mui/material';
 import { useWeb3React } from '@web3-react/core'
 import { InjectedConnector } from "@web3-react/injected-connector"
 import MenuIcon from '@mui/icons-material/Menu'
@@ -137,10 +137,8 @@ const ResponsiveAppBar = () => {
                         ))}
                     </Box>
                     <Box sx={{ flexGrow: 0 }}>
-                        <Button onClick={() => activate(Injected)} sx={{ my: 2, display: active ? 'none' : 'block' }}>
-                            Connect Wallet
-                        </Button>
-                        <Button onClick={deactivate} sx={{ my: 2, display: active ? 'block' : 'none' }}>Disconnect</Button>
+                        <Chip component='button' label='Connect Wallet' color="primary" onClick={() => activate(Injected)} sx={{ display: active ? 'none' : 'block' }} clickable />
+                        <Chip component='button' label='Disconnect' color="primary" onClick={deactivate} sx={{ display: active ? 'block' : 'none' }} clickable />
                     </Box >
                 </Toolbar >
             </Container >

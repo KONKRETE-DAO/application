@@ -11,7 +11,6 @@ import Link from 'next/link'
 
 const AssetCard = ({ ...props }) => {
 
-    console.log(props.address)
     const loc = `${props.address.city_name}, ${props.address.state}`
 
     return <Card sx={{ maxWidth: 500, marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: 10, borderRadius: '5%' }}>

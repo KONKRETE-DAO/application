@@ -20,7 +20,6 @@ const AssetDataTabs = ({ ...props }) => {
     const handleClick = (index: number) => () => setActive(index);
     const nf = new Intl.NumberFormat('en-US');
 
-    console.log(props.gallery.data)
     return <>
         <Stack direction='row' gap={2} sx={{ mb: '30px' }}>
             {

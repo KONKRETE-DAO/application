@@ -183,15 +183,10 @@ const AssetDataTabs = ({ ...props }) => {
                                     <img
                                         src={`http://localhost:1337${item.attributes.url}`}
                                         srcSet={`http://localhost:1337${item.attributes.url}`}
-                                        // alt={item.title}
-                                        loading="lazy"
                                     />
                                 </ImageListItem>
                             ))}
                         </ImageList>
-                        {/* <Container>
-                        <ImageGallery items={images} showFullscreenButton={false} showNav={false} showPlayButton={false} />
-                    </Container> */}
                     </CardContent>
                 </Card>
         }

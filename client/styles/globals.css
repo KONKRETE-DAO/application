@@ -17,3 +17,8 @@ a {
 * {
   box-sizing: border-box;
 }
+
+@font-face {
+  font-family: "FontelloRegular";
+  src: url("/fonts/Fontello-Regular.woff2") format("woff2");
+}

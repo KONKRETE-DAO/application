@@ -5,16 +5,23 @@ import {
     Chip,
     Box,
     Avatar,
-    Typography
+    Typography, Stack
 } from '@mui/material';
 import Link from 'next/link'
+import ClockIcon from '../common/components/icons/ClockIcon';
+import GraphAscendIcon from '../common/components/icons/GraphAscendIcon';
+import MarkIcon from '../common/components/icons/MarkIcon';
+import LightningIcon from '../common/components/icons/LightningIcon';
+import HeaderGradient from '../common/components/elements/HeaderGradient';
 
 const AssetCard = ({ ...props }) => {
 
     const loc = `${props.address.city_name}, ${props.address.state}`
 
-    return <Card sx={{ maxWidth: 500, marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: 10, borderRadius: '5%' }}>
-        <Container sx={{ height: 100, backgroundColor: '#A7A8FB' }} ></Container>
+    return <Card sx={{ maxWidth: 500, marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: 10, borderRadius: '20px' }}>
+        <Container sx={{ height: 100, backgroundColor: '#A7A8FB' }} >
+
+        </Container>
         <CardContent sx={{ pt: 0 }}>
             <Box sx={{ display: 'flex' }}>
                 <Box sx={{ width: 120, height: 95 }}>
@@ -28,17 +35,23 @@ const AssetCard = ({ ...props }) => {
                         {props.name}
                     </Typography>
                     <Box sx={{ display: 'flex', alignContent: 'flex-start', flexFlow: 'row wrap', gap: '12px' }}>
-                        <Chip label={`${loc}`} variant="outlined" />
-                        <Chip label={`${props.apr}% APR`} variant="outlined" />
-                        {props.hasWaitlist ? <Chip label='Waitlist' variant="outlined" /> : <></>}
-                        {props.isLeveraged ? <Chip label='Leveraged' variant="outlined" /> : <></>}
+                        <Chip icon={<span style={{ margin: '7px 0px 0px 7px' }}><GraphAscendIcon size={20} color="white" /></span>} label={`${props.apr}% Yield`} color="primary" />
+                        <Chip icon={<span style={{ margin: '7px 0px 0px 7px' }}><LightningIcon size={20} color="#111029" /></span>} label={`${props.debt}% debt`} variant="outlined" />
+                        {/* {props.hasWaitlist ? <Chip icon={<span style={{ margin: '7px 0px 0px 5px' }}><ClockIcon size={20} color="#111029" /></span>} label='Waitlist' variant="outlined" /> : <></>}
+                        {props.isLeveraged ? <Chip label='Leveraged' variant="outlined" /> : <></>} */}
                     </Box>
                 </CardContent>
             </Box>
             <CardContent>
                 <Typography variant="subtitle1" gutterBottom>
-                    About {props.name}
+                    About
                 </Typography>
+                <Stack direction="row" spacing={1} sx={{ mb: 3 }}>
+                    <Chip label={props.propertyType} variant="outlined" />
+                    <Chip label={`${props.bedroomsNumber}% beds`} variant="outlined" />
+                    <Chip label={`${props.surface}m²`} variant="outlined" />
+                    <Chip icon={<span style={{ margin: '7px 0px 0px 7px' }}><MarkIcon size={20} color="#111029" /></span>} label={loc} variant="outlined" />
+                </Stack>
                 <Typography variant="body2" paragraph>
                     {props.about}
                 </Typography>
@@ -46,10 +59,10 @@ const AssetCard = ({ ...props }) => {
             <CardActions
                 sx={{ justifyContent: 'center' }}
             >
-                <Link href={`/assets/${props.index}`}><Chip label='See More' color="primary" clickable /></Link>
+                <Link href={`/assets/${props.index}`}><Chip label='Learn More' color="primary" variant="outlined" clickable /></Link>
             </CardActions>
         </CardContent>
-    </Card>
+    </Card >
 }
 
 export default AssetCard;

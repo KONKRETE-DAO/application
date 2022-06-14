@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_bloc_coordinates",
+  "info": {
+    "displayName": "coordinates",
+    "icon": "map-marker-alt"
+  },
+  "options": {},
+  "attributes": {
+    "latitude": {
+      "type": "float"
+    },
+    "longitude": {
+      "type": "float"
+    }
+  }
+}

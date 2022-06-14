@@ -137,8 +137,8 @@ const ResponsiveAppBar = () => {
                         ))}
                     </Box>
                     <Box sx={{ flexGrow: 0 }}>
-                        <Chip component='button' label='Connect Wallet' color="primary" onClick={() => activate(Injected)} sx={{ display: active ? 'none' : 'block' }} clickable />
-                        <Chip component='button' label='Disconnect' color="primary" onClick={deactivate} sx={{ display: active ? 'block' : 'none' }} clickable />
+                        <Chip component='button' label='Connect Wallet' color="primary" onClick={() => activate(Injected)} sx={{ my: 2, display: active ? 'none' : 'block' }} clickable />
+                        <Chip component='button' label='Disconnect' color="primary" onClick={deactivate} sx={{ my: 2, display: active ? 'block' : 'none' }} clickable />
                     </Box >
                 </Toolbar >
             </Container >

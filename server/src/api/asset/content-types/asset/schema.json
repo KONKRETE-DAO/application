@@ -36,11 +36,6 @@
       "default": false,
       "required": true
     },
-    "is_leveraged": {
-      "type": "boolean",
-      "default": false,
-      "required": true
-    },
     "address": {
       "type": "component",
       "repeatable": false,
@@ -134,6 +129,21 @@
       "allowedTypes": [
         "images"
       ]
+    },
+    "coordinates": {
+      "type": "component",
+      "repeatable": false,
+      "component": "bloc.coordinates"
+    },
+    "surface": {
+      "type": "decimal"
+    },
+    "available": {
+      "type": "boolean",
+      "default": true
+    },
+    "debt": {
+      "type": "decimal"
     }
   }
 }

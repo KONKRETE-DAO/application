@@ -31,7 +31,7 @@
     "apr": {
       "type": "decimal"
     },
-    "has_waitlist": {
+    "is_waitlist": {
       "type": "boolean",
       "default": false,
       "required": true

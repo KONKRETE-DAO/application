@@ -21,7 +21,11 @@ export const theme = createTheme({
         // },
         body2: {
             color: '#4D4F60'
+        },
+        button: {
+            textTransform: 'none'
         }
+
     },
     palette: {
         primary: {

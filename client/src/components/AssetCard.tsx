@@ -48,7 +48,7 @@ const AssetCard = ({ ...props }) => {
                 </Typography>
                 <Stack direction="row" spacing={1} sx={{ mb: 3 }}>
                     <Chip label={props.propertyType} variant="outlined" />
-                    <Chip label={`${props.bedroomsNumber}% beds`} variant="outlined" />
+                    <Chip label={`${props.bedroomsNumber} beds`} variant="outlined" />
                     <Chip label={`${props.surface}m²`} variant="outlined" />
                     <Chip icon={<span style={{ margin: '7px 0px 0px 7px' }}><MarkIcon size={20} color="#111029" /></span>} label={loc} variant="outlined" />
                 </Stack>

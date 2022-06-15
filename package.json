@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/Policonickolu/konkrete-app/issues"
   },
-  "homepage": "https://github.com/Policonickolu/konkrete-app#readme"
+  "homepage": "https://github.com/Policonickolu/konkrete-app#readme",
+  "dependencies": {
+    "directus": "^9.12.2"
+  },
+  "devDependencies": {},
+  "keywords": []
 }

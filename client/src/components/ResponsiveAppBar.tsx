@@ -1,5 +1,7 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router'
+import Image from 'next/image'
+import ethers from 'ethers'
 import { AppBar, Chip, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem, Paper, Link } from '@mui/material';
 import { useWeb3React } from '@web3-react/core'
 import { InjectedConnector } from "@web3-react/injected-connector"
@@ -21,17 +23,18 @@ const pages = [
 ];
 
 const Injected = new InjectedConnector({
-    supportedChainIds: [1, 137] // Polygon
+    supportedChainIds: [137] // Ethereum, Polygon (need to remove ethereum)
 });
 
 const ResponsiveAppBar = () => {
     const { activate, deactivate } = useWeb3React();
-    const { active, chainId, account } = useWeb3React();
+    const { active, library, chainId, account } = useWeb3React();
+    const [isWalletValid, setIsWalletValid] = useState(false);
 
     const router = useRouter()
 
-    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+    const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+    const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -47,6 +50,25 @@ const ResponsiveAppBar = () => {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+    const handleActivate = () => {
+        activate(Injected, e => alert('Please switch to the Polygon Mainnet.'))
+    }
+
+    let shortAccount
+    let button
+
+    if (account == null) {
+        shortAccount = ''
+        button = <Chip component='button' label='Connect Wallet' color="primary" onClick={handleActivate} clickable />
+    } else if (active == false) {
+        shortAccount = ''
+        button = <Chip component='button' label='Connect to Polygon' color="primary" onClick={handleActivate} clickable />
+    } else {
+        shortAccount = `${account.substring(0, 6)}...${account.substring(account.length - 4)}`
+        button = <Chip avatar={<Avatar sx={{ backgroundColor: '#ffffff' }} src="/polygon-matic-logo.svg" />} component='button' label={shortAccount} color="primary" sx={{ my: 2, display: active ? 'inline-flex' : 'none' }} />
+    }
+
 
     return (
         <AppBar position="static" color='transparent' elevation={0}>
@@ -137,8 +159,11 @@ const ResponsiveAppBar = () => {
                         ))}
                     </Box>
                     <Box sx={{ flexGrow: 0 }}>
-                        <Chip component='button' label='Connect Wallet' color="primary" onClick={() => activate(Injected)} sx={{ my: 2, display: active ? 'none' : 'block' }} clickable />
-                        <Chip component='button' label='Disconnect' color="primary" onClick={deactivate} sx={{ my: 2, display: active ? 'block' : 'none' }} clickable />
+                        {button}
+                        {/* { if (account == null)
+                        return () : <></>}
+                        {account == null ? (<Chip component='button' label='Connect to Polygon' color="primary" onClick={handleActivate} clickable />) : <></>}
+                        <Chip component='button' label='Connect to Polygon' color="primary" onClick={handleActivate} sx={{ my: 2, display: account != '' && !active ? 'inline-flex' : 'none' }} clickable /> */}
                     </Box >
                 </Toolbar >
             </Container >

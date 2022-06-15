@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
@@ -7,17 +8,60 @@ import MarkIcon from '../common/components/icons/MarkIcon';
 import GraphAscendIcon from '../common/components/icons/GraphAscendIcon';
 import ClockIcon from '../common/components/icons/ClockIcon';
 import LightningIcon from '../common/components/icons/LightningIcon';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, InputAdornment, TextField } from '@mui/material';
 import HomeIcon from '../common/components/icons/HomeIcon';
+import { AccountCircle } from '@mui/icons-material';
+import Image from 'next/image'
+import { useWeb3React } from '@web3-react/core';
+import { ethers } from 'ethers';
+import { InjectedConnector } from '@web3-react/injected-connector';
+
+const Injected = new InjectedConnector({
+    supportedChainIds: [137] // Ethereum, Polygon (need to remove ethereum)
+});
 
 const LargeAssetCard = ({ ...props }) => {
+    const { activate, deactivate } = useWeb3React();
+    const { active, library, chainId, account } = useWeb3React();
+    // const [isWalletValid, setIsWalletValid] = useState(false);
+    const [email, setEmail] = useState('')
 
     const loc = `${props.address.city_name}, ${props.address.state}`
+
+    const handleEmailClick = async () => {
+        if (!active) {
+            await handleActivate()
+        }
+        if (email.length > 0) {
+            const isWalletValid = await signAndVerifyMessage(email)
+            alert(`wallet is ${isWalletValid ? 'valid' : 'invalid'}`)
+        }
+    }
+
+    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(event.currentTarget.value)
+    }
+
+    const handleActivate = async () => {
+        await activate(Injected, e => alert('Please switch to the Polygon Mainnet.'))
+    }
+
+    const signAndVerifyMessage = async (message: string) => {
+        try {
+            const signer = library.getSigner(account);
+            const signature = await signer.signMessage(message);
+            const signerAddr = await ethers.utils.verifyMessage(message, signature);
+            return signerAddr == account
+        } catch (err) {
+            // console.log(err);    
+        }
+        return false
+    };
 
     return <Card sx={{
         marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: 5, borderRadius: '20px'
     }}>
-        <CardContent sx={{ display: 'flex' }} >
+        <CardContent sx={{ display: 'flex', pb: 0 }} >
             <CardContent >
                 <Avatar
                     sx={{ width: 100, height: 100 }}
@@ -45,16 +89,42 @@ const LargeAssetCard = ({ ...props }) => {
                 {props.isLeveraged ? <Chip label='Leveraged' variant="outlined" /> : <></>}
             </CardContent> */}
         </CardContent>
-        <CardContent>
+        <CardContent sx={{ pt: 0, display: props.isWaitlist ? 'none' : 'block' }}>
             <CardContent sx={{
-                display: 'flex', justifyContent: 'flex-end', flexDirection: 'row', gap: 2, "&:last-child": { paddingBottom: 1 }, height: 80
+                display: 'flex', justifyContent: 'flex-end', flexDirection: 'row', gap: 2, "&:last-child": { paddingBottom: 0 }, height: 80
             }} >
-                <Box sx={{ flex: 1 }}>
+                <Box sx={{ flex: 1, alignSelf: 'center' }}>
                     <Typography variant="h6">Buy real estate tokens</Typography>
-                    <Typography variant="subtitle2">Use USD-C and receive real estate tokens</Typography>
+                    <Typography variant="body2">Use USD-C and receive real estate tokens</Typography>
                 </Box>
-                <TextField sx={{ width: '40%' }} placeholder='Amount'></TextField>
-                <Button variant="contained" color="secondary" disableElevation>Connect Wallet</Button>
+                <TextField size="small" sx={{ width: '55%', alignSelf: 'center' }}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <Image src="/usdc.png" width="25px" height="25px" />
+                            </InputAdornment>
+                        ),
+                    }}
+                    placeholder='Amount'></TextField>
+                <Button sx={{ alignSelf: 'center' }} variant="contained" color="secondary" disableElevation>Connect Wallet</Button>
+            </CardContent>
+        </CardContent>
+        <CardContent sx={{ pt: 0, display: props.isWaitlist ? 'block' : 'none' }}>
+            <CardContent sx={{
+                display: 'flex', justifyContent: 'flex-end', flexDirection: 'row', gap: 2, "&:last-child": { paddingBottom: 0 }, height: 80
+            }} >
+                <Box sx={{ flex: 1, alignSelf: 'center' }}>
+                    <Typography variant="h6">Coming soon</Typography>
+                    <Typography variant="body2">Join waitlist to unlock access</Typography>
+                </Box>
+                <TextField size="small" sx={{ width: '55%', alignSelf: 'center' }}
+                    placeholder='Email address'
+                    InputProps={{
+                        value: email,
+                        onChange: handleEmailChange
+                    }}
+                ></TextField>
+                <Chip sx={{ alignSelf: 'center', ml: '20px' }} component='button' label='Join Waitlist' color="primary" onClick={handleEmailClick} clickable />
             </CardContent>
         </CardContent>
     </Card >

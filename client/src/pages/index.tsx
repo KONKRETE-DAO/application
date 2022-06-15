@@ -5,7 +5,8 @@ import ResponsiveAppBar from '../components/ResponsiveAppBar'
 import AssetCard from '../components/AssetCard'
 import useSWR from 'swr'
 import _ from 'lodash'
-import { Typography, Box, Container } from '@mui/material'
+import { Typography, Box, Container, Toolbar } from '@mui/material'
+import Footer from '../components/Footer'
 // import '../../public/fonts/Fontello-Regular.woff2'
 
 

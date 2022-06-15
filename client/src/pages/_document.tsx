@@ -1,5 +1,6 @@
-import { AppBar } from '@mui/material'
+import { AppBar, Container, Toolbar } from '@mui/material'
 import Document, { DocumentContext, Html, Head, Main, NextScript } from 'next/document'
+import Footer from '../components/Footer'
 
 class MyDocument extends Document {
     render() {
@@ -20,8 +21,8 @@ class MyDocument extends Document {
                 </Head>
                 <body>
                     <Main />
+                    <Footer />
                     <NextScript />
-                    <AppBar></AppBar>
                 </body>
             </Html>
         )

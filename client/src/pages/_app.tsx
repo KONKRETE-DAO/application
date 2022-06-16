@@ -5,8 +5,11 @@ import { ExternalProvider, JsonRpcFetchFunc, Web3Provider } from "@ethersproject
 import { useWeb3React } from '@web3-react/core'
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-
 import { theme } from '../common/utils/ThemeConfig';
+import { Amplify, API } from 'aws-amplify';
+import awsExports from '../aws-exports';
+
+Amplify.configure(awsExports);
 
 function getLibrary(provider: ExternalProvider | JsonRpcFetchFunc) {
   return new Web3Provider(provider);

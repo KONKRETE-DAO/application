@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
@@ -15,6 +15,8 @@ import Image from 'next/image'
 import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
 import { InjectedConnector } from '@web3-react/injected-connector';
+import { Storage } from '@aws-amplify/storage';
+import { EstateModel } from '../models';
 
 const Injected = new InjectedConnector({
     supportedChainIds: [137] // Ethereum, Polygon (need to remove ethereum)
@@ -25,8 +27,18 @@ const LargeAssetCard = ({ ...props }) => {
     const { active, library, chainId, account } = useWeb3React();
     // const [isWalletValid, setIsWalletValid] = useState(false);
     const [email, setEmail] = useState('')
+    const [cover, updateCover] = useState<string>();
 
-    const loc = `${props.address.city_name}, ${props.address.state}`
+    useEffect(() => {
+        fetchCover()
+    }, [cover]);
+
+    async function fetchCover() {
+        const cover = await Storage.get(`${props.slug}/cover.jpg`, {
+            level: "public"
+        });
+        updateCover(cover);
+    }
 
     const handleEmailClick = async () => {
         if (!active) {
@@ -34,7 +46,6 @@ const LargeAssetCard = ({ ...props }) => {
         }
         if (email.length > 0) {
             const isWalletValid = await signAndVerifyMessage(email)
-            alert(`wallet is ${isWalletValid ? 'valid' : 'invalid'}`)
         }
     }
 
@@ -58,6 +69,8 @@ const LargeAssetCard = ({ ...props }) => {
         return false
     };
 
+    const loc = `${props.address.cityName || ''}, ${props.address.state || ''}`
+
     return <Card sx={{
         marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: 5, borderRadius: '20px'
     }}>
@@ -65,7 +78,7 @@ const LargeAssetCard = ({ ...props }) => {
             <CardContent >
                 <Avatar
                     sx={{ width: 100, height: 100 }}
-                    src={`http://localhost:1337${props.coverImage.data.attributes.url}`}
+                    src={cover}
                 />
             </CardContent>
             <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -73,7 +86,7 @@ const LargeAssetCard = ({ ...props }) => {
                     {props.name} ({loc})
                 </Typography>
                 <Box sx={{ display: 'flex', alignContent: 'flex-start', flexFlow: 'row wrap', gap: '12px' }}>
-                    <Chip icon={<span style={{ margin: '7px 0px 0px 7px' }}><GraphAscendIcon size={20} color="white" /></span>} label={`${props.apr}% Yield`} color="primary" />
+                    <Chip icon={<span style={{ margin: '7px 0px 0px 7px' }}><GraphAscendIcon size={20} color="white" /></span>} label={`${props.grossYield}% Yield`} color="primary" />
                     <Chip icon={<span style={{ margin: '7px 0px 0px 7px' }}><LightningIcon size={20} color="#111029" /></span>} label={`${props.debt}% debt`} variant="outlined" />
                     {/* {props.hasWaitlist ? <Chip icon={<span style={{ margin: '7px 0px 0px 5px' }}><ClockIcon size={20} color="#111029" /></span>} label='Waitlist' variant="outlined" /> : <></>}
                         {props.isLeveraged ? <Chip label='Leveraged' variant="outlined" /> : <></>} */}

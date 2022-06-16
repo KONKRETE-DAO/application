@@ -78,7 +78,7 @@ const ResponsiveAppBar = () => {
                         variant="h6"
                         noWrap
                         component="a"
-                        href={router.asPath != '/' ? '/' : '#'}
+                        href="https://www.konkretedao.com/"
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },

@@ -7,7 +7,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { theme } from '../common/utils/ThemeConfig';
 import { Amplify, API } from 'aws-amplify';
-import awsExports from '../aws-exports';
+import awsExports from '../aws-exports.js';
 
 Amplify.configure(awsExports);
 

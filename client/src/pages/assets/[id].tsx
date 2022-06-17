@@ -24,8 +24,6 @@ const render = (status: Status): ReactElement => {
 const Asset: NextPage = ({ }) => {
     const router = useRouter()
     const { id } = router.query
-    // const { data, error } = useSWR(id ? `http://localhost:1337/api/assets/${id}?populate=cover_image&populate=gallery&populate=address&populate=coordinates&populate=highlights` : null, fetcher);
-
     const [estate, updateEstate] = useState<EstateModel>();
 
     useEffect(() => {
@@ -36,14 +34,12 @@ const Asset: NextPage = ({ }) => {
         return () => subscription.unsubscribe();
     }, [id]);
 
-
     const fetchEstate = async () => {
         if (id) {
             const estate = await DataStore.query(EstateModel, `${id}`);
             updateEstate(estate);
         }
     }
-
 
     if (!estate) return <></>
 
@@ -53,8 +49,7 @@ const Asset: NextPage = ({ }) => {
 
     return (
         <div>
-            <ResponsiveAppBar></ResponsiveAppBar>
-            <Container>
+            <Container sx={{ minHeight: '1000px', mb: 10 }}>
                 <LargeAssetCard
                     {...estate}
                 ></LargeAssetCard>

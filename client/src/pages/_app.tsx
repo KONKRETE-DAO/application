@@ -8,6 +8,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { theme } from '../common/utils/ThemeConfig';
 import { Amplify, API } from 'aws-amplify';
 import awsExports from '../aws-exports';
+import Layout from '../components/Layout';
 
 Amplify.configure(awsExports);
 
@@ -21,7 +22,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ThemeProvider theme={theme}>
       <Web3ReactProvider getLibrary={getLibrary}>
         <CssBaseline />
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </Web3ReactProvider>
     </ThemeProvider>
   )

@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import styles from '../../styles/Home.module.css'
+// import styles from '../../styles/Home.module.css'
 import ResponsiveAppBar from '../components/ResponsiveAppBar'
 import AssetCard from '../components/AssetCard'
 import useSWR from 'swr'
 import _ from 'lodash'
 import { Typography, Box, Container, Toolbar } from '@mui/material'
-import Footer from '../components/Footer'
 // import '../../public/fonts/Fontello-Regular.woff2'
 import { DataStore } from '@aws-amplify/datastore';
 import { EstateModel } from '../models';
@@ -25,23 +24,22 @@ const Home: NextPage = () => {
       fetchEstates()
     );
     return () => subscription.unsubscribe();
-  });
+  }, [fetchEstates]);
 
-  const fetchEstates = async () => {
+  async function fetchEstates() {
     const estates = await DataStore.query(EstateModel);
     updateEstates(estates);
   }
 
-
   if (estates.length == 0) return <></>
 
   return (
-    <div className={styles.container}>
+    // <div className={styles.container}>
+    <>
       <Head>
         <title>Konkrete</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ResponsiveAppBar></ResponsiveAppBar>
       <Container sx={{
         textAlign: 'center',
         marginTop: 5
@@ -59,7 +57,7 @@ const Home: NextPage = () => {
           ></AssetCard>)
         })
       }
-    </div >
+    </>
   )
 }
 

@@ -1,5 +1,6 @@
 import { AppBar, Container, Toolbar } from '@mui/material'
 import Document, { DocumentContext, Html, Head, Main, NextScript } from 'next/document'
+import DocumentationSection from '../components/DocumentationSection'
 import Footer from '../components/Footer'
 
 class MyDocument extends Document {
@@ -21,7 +22,6 @@ class MyDocument extends Document {
                 </Head>
                 <body>
                     <Main />
-                    <Footer />
                     <NextScript />
                 </body>
             </Html>

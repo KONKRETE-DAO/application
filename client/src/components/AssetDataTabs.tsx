@@ -71,7 +71,7 @@ const AssetDataTabs = ({ ...props }) => {
 
     useEffect(() => {
         fetchImages()
-    }, [images]);
+    }, [images, fetchImages]);
 
     async function fetchImages() {
         const image1 = await Storage.get(`${props.slug}/gallery/image1.jpg`, {

@@ -14,7 +14,7 @@ const pages = [
     },
     {
         label: 'Dashboard',
-        url: '#'
+        url: '/dashboard'
     },
     {
         label: 'Resources',
@@ -72,7 +72,7 @@ const ResponsiveAppBar = () => {
 
     return (
         <AppBar position="static" color='transparent' elevation={0}>
-            <Container maxWidth="xl">
+            <Container maxWidth="lg">
                 <Toolbar disableGutters>
                     <Typography
                         variant="h6"

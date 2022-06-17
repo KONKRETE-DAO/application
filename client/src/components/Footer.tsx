@@ -12,7 +12,7 @@ import HomeIcon from '../common/components/icons/HomeIcon';
 
 const Footer = ({ ...props }) => {
 
-    return <Container maxWidth={false} sx={{ bgcolor: '#111029', height: '150px', position: 'relative', marginTop: '75px' }}>
+    return <Container maxWidth={false} sx={{ bgcolor: '#111029', height: '150px', position: 'relative' }}>
         <Box sx={{ padding: '15px' }}>
             <Typography
                 variant="h5"

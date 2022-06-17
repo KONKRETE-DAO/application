@@ -25,7 +25,6 @@ export const theme = createTheme({
         button: {
             textTransform: 'none'
         }
-
     },
     palette: {
         primary: {

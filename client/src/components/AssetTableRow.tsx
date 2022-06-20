@@ -1,20 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, forwardRef } from 'react'
 import {
-    Card, CardActions,
-    CardContent,
-    Container,
-    Chip,
     Box,
     Avatar,
     Typography, Stack, TableRow, TableCell
 } from '@mui/material';
 import Link from 'next/link'
-import ClockIcon from '../common/components/icons/ClockIcon';
-import GraphAscendIcon from '../common/components/icons/GraphAscendIcon';
-import MarkIcon from '../common/components/icons/MarkIcon';
-import LightningIcon from '../common/components/icons/LightningIcon';
-import HeaderGradient from '../common/components/elements/HeaderGradient';
-import { EstateModel } from '../models';
+import { Link as MUILink } from '@mui/material';
 import { Storage } from '@aws-amplify/storage';
 
 function humanize(str: string) {
@@ -26,12 +17,23 @@ function humanize(str: string) {
 }
 
 const AssetCard = ({ ...props }) => {
-
+    const { id } = props
     const [cover, updateCover] = useState<string>();
 
     useEffect(() => {
         fetchCover()
     }, [cover, fetchCover]);
+
+    // const CustomLink = useMemo(
+    //     () =>
+    //         forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(function Link(
+    //             linkProps,
+    //             ref,
+    //         ) {
+    //             return <Link ref={ref} href={`/assets/${id}`} {...linkProps} />;
+    //         }),
+    //     [id],
+    // );
 
     async function fetchCover() {
         const cover = await Storage.get(`${props.slug}/cover.jpg`, {
@@ -55,7 +57,13 @@ const AssetCard = ({ ...props }) => {
                 justifyContent: "center"
 
             }}>
-                <Typography variant="body1" gutterBottom>{props.name}</Typography>
+                <Typography variant="body1" gutterBottom>
+                    <Link href={`/assets/${props.id}`} passHref>
+                        <MUILink underline="always">
+                            {props.name}
+                        </MUILink>
+                    </Link>
+                </Typography>
                 <Typography variant="body2">{loc}</Typography>
             </Box>
         </TableCell>

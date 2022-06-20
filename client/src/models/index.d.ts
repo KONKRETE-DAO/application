@@ -32,11 +32,11 @@ export declare class AddressJSON {
   constructor(init: ModelInit<AddressJSON>);
 }
 
-type GalleryImageModelMetaData = {
+type WaitListItemModelMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type HighlightModelMetaData = {
+type GalleryImageModelMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
@@ -48,6 +48,17 @@ type EstateModelMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
+export declare class WaitListItemModel {
+  readonly id: string;
+  readonly emailAddress: string;
+  readonly publicKey: string;
+  readonly estatemodelID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  constructor(init: ModelInit<WaitListItemModel, WaitListItemModelMetaData>);
+  static copyOf(source: WaitListItemModel, mutator: (draft: MutableModel<WaitListItemModel, WaitListItemModelMetaData>) => MutableModel<WaitListItemModel, WaitListItemModelMetaData> | void): WaitListItemModel;
+}
+
 export declare class GalleryImageModel {
   readonly id: string;
   readonly url?: string | null;
@@ -56,16 +67,6 @@ export declare class GalleryImageModel {
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<GalleryImageModel, GalleryImageModelMetaData>);
   static copyOf(source: GalleryImageModel, mutator: (draft: MutableModel<GalleryImageModel, GalleryImageModelMetaData>) => MutableModel<GalleryImageModel, GalleryImageModelMetaData> | void): GalleryImageModel;
-}
-
-export declare class HighlightModel {
-  readonly id: string;
-  readonly value?: string | null;
-  readonly estatemodelID: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  constructor(init: ModelInit<HighlightModel, HighlightModelMetaData>);
-  static copyOf(source: HighlightModel, mutator: (draft: MutableModel<HighlightModel, HighlightModelMetaData>) => MutableModel<HighlightModel, HighlightModelMetaData> | void): HighlightModel;
 }
 
 export declare class GMapsConfigModel {
@@ -90,8 +91,7 @@ export declare class EstateModel {
   readonly map?: GMapsConfigModel | null;
   readonly coverImageUrl?: string | null;
   readonly debt?: number | null;
-  readonly highlights?: (HighlightModel | null)[] | null;
-  readonly gallery?: (GalleryImageModel | null)[] | null;
+  readonly gallery?: (WaitListItemModel | null)[] | null;
   readonly grossYield?: number | null;
   readonly propertyType?: PropertyTypeEnum | keyof typeof PropertyTypeEnum | null;
   readonly returnOnCapitalEmployed?: number | null;
@@ -111,6 +111,8 @@ export declare class EstateModel {
   readonly governmentTaxes?: number | null;
   readonly mortgage?: number | null;
   readonly capitalCall?: number | null;
+  readonly waitListItems?: (WaitListItemModel | null)[] | null;
+  readonly highlights?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly estateModelMapId?: string | null;

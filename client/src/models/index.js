@@ -17,11 +17,11 @@ const AssetTypeEnum = {
   "RESIDENTIAL": "RESIDENTIAL"
 };
 
-const { GalleryImageModel, HighlightModel, GMapsConfigModel, EstateModel, CoordinateJSON, AddressJSON } = initSchema(schema);
+const { WaitListItemModel, GalleryImageModel, GMapsConfigModel, EstateModel, CoordinateJSON, AddressJSON } = initSchema(schema);
 
 export {
+  WaitListItemModel,
   GalleryImageModel,
-  HighlightModel,
   GMapsConfigModel,
   EstateModel,
   RentalTypeEnum,

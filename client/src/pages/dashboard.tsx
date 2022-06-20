@@ -1,18 +1,14 @@
 import { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-// import styles from '../../styles/Home.module.css'
-import ResponsiveAppBar from '../../components/ResponsiveAppBar'
-import AssetCard from '../../components/AssetCard'
+import ResponsiveAppBar from '../components/ResponsiveAppBar'
+import AssetCard from '../components/AssetCard'
 import useSWR from 'swr'
 import _ from 'lodash'
 import { Typography, Box, Container, Toolbar, TableRow, TableCell, TableBody, Table, TableHead, Avatar } from '@mui/material'
-// import '../../public/fonts/Fontello-Regular.woff2'
 import { DataStore } from '@aws-amplify/datastore';
-import { EstateModel } from '../../models';
-import AssetTableRow from '../../components/AssetTableRow'
-
-// const fetcher = (...args: [RequestInfo, RequestInit | undefined]) => fetch(...args).then((res) => res.json())
+import { EstateModel } from '../models';
+import AssetTableRow from '../components/AssetTableRow'
 
 const Dashboard: NextPage = () => {
 

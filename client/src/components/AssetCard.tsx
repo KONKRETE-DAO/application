@@ -31,9 +31,9 @@ const AssetCard = ({ ...props }) => {
 
     useEffect(() => {
         fetchCover()
-    }, [cover, fetchCover]);
+    }, [cover]);
 
-    async function fetchCover() {
+    const fetchCover = async () => {
         const cover = await Storage.get(`${props.slug}/cover.jpg`, {
             level: "public"
         });

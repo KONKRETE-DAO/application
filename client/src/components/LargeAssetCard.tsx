@@ -16,28 +16,88 @@ import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { Storage } from '@aws-amplify/storage';
-import { EstateModel } from '../models';
+import { EstateModel, WaitListItemModel } from '../models';
+import MailchimpSubscribe from "react-mailchimp-subscribe";
+import { DataStore } from 'aws-amplify';
 
 const Injected = new InjectedConnector({
     supportedChainIds: [137] // Ethereum, Polygon (need to remove ethereum)
 });
 
-const LargeAssetCard = ({ ...props }) => {
+// const CustomForm = ({ status, message, assetName, onSubmitted }: any) => {
+//     const { activate, deactivate } = useWeb3React();
+//     const { active, library, chainId, account } = useWeb3React();
+//     // const [isWalletValid, setIsWalletValid] = useState(false);
+//     const [email, setEmail] = useState('')
+
+//     useEffect(() => {
+//         if (status === "success") clearFields();
+//     }, [status])
+
+//     const clearFields = () => {
+//         setEmail('');
+//     }
+
+//     const handleEmailClick = async () => {
+//         if (!active) {
+//             await handleActivate()
+//         }
+//         if (email.length > 0) {
+//             const isWalletValid = await signAndVerifyMessage(email)
+//         }
+//     }
+
+//     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//         setEmail(event.currentTarget.value)
+//     }
+
+//     const handleActivate = async () => {
+//         await activate(Injected, e => alert('Please switch to the Polygon Mainnet.'))
+//     }
+
+//     const signAndVerifyMessage = async (message: string) => {
+//         try {
+//             const signer = library.getSigner(account);
+//             const signature = await signer.signMessage(message);
+//             const signerAddr = await ethers.utils.verifyMessage(message, signature);
+//             if (signerAddr == account) {
+//                 // onSubmitted({ MERGE0: email, MERGE2: account, tags: `${assetName}` })
+//                 onSubmitted({ MERGE0: email, MERGE17: account })
+//                 return true
+//             }
+//         } catch (err) {
+//             // console.log(err);    
+//         }
+//         return false
+//     };
+
+//     return (<CardContent sx={{
+//         display: 'flex', justifyContent: 'flex-end', flexDirection: 'row', gap: 2, "&:last-child": { paddingBottom: 0 }, height: 80
+//     }} >
+//         <Box sx={{ flex: 1, alignSelf: 'center' }}>
+//             <Typography variant="h6">Coming soon</Typography>
+//             <Typography variant="body2">Join waitlist to unlock access</Typography>
+//         </Box>
+//         <TextField size="small" sx={{ width: '55%', alignSelf: 'center' }}
+//             placeholder='Email address'
+//             InputProps={{
+//                 value: email,
+//                 type: "email",
+//                 onChange: handleEmailChange
+//             }}
+//         ></TextField>
+//         <Chip sx={{ alignSelf: 'center', ml: '20px' }} label='Join Waitlist' color="primary" onClick={handleEmailClick} clickable />
+
+//     </CardContent>);
+// };
+
+const CustomForm = ({ assetId }: any) => {
     const { activate, deactivate } = useWeb3React();
     const { active, library, chainId, account } = useWeb3React();
-    // const [isWalletValid, setIsWalletValid] = useState(false);
     const [email, setEmail] = useState('')
-    const [cover, updateCover] = useState<string>();
 
-    useEffect(() => {
-        fetchCover()
-    }, [cover, fetchCover]);
-
-    async function fetchCover() {
-        const cover = await Storage.get(`${props.slug}/cover.jpg`, {
-            level: "public"
-        });
-        updateCover(cover);
+    const clearFields = () => {
+        setEmail('');
     }
 
     const handleEmailClick = async () => {
@@ -45,7 +105,7 @@ const LargeAssetCard = ({ ...props }) => {
             await handleActivate()
         }
         if (email.length > 0) {
-            const isWalletValid = await signAndVerifyMessage(email)
+            await signAndVerifyMessage(email)
         }
     }
 
@@ -62,14 +122,70 @@ const LargeAssetCard = ({ ...props }) => {
             const signer = library.getSigner(account);
             const signature = await signer.signMessage(message);
             const signerAddr = await ethers.utils.verifyMessage(message, signature);
-            return signerAddr == account
+            if (signerAddr == account) {
+                // onSubmitted({ MERGE0: email, MERGE2: account, tags: `${assetName}` })
+                // onSubmitted({ MERGE0: email, MERGE17: account })
+                try {
+                    await DataStore.save(
+                        new WaitListItemModel({
+                            emailAddress: email,
+                            publicKey: account,
+                            estatemodelID: assetId
+                        })
+                    )
+                    clearFields()
+                    alert('Your address has been added to the waitlist !')
+                } catch (error) {
+                    alert('Error, please insert a valid email address')
+                }
+                return true
+            }
         } catch (err) {
-            // console.log(err);    
+            alert('Error, please connect a valid wallet')
         }
         return false
     };
 
+    return (
+        <CardContent sx={{
+            display: 'flex', justifyContent: 'flex-end', flexDirection: 'row', gap: 2, "&:last-child": { paddingBottom: 0 }, height: 80
+        }} >
+            <Box sx={{ flex: 1, alignSelf: 'center' }}>
+                <Typography variant="h6">Coming soon</Typography>
+                <Typography variant="body2">Join waitlist to unlock access</Typography>
+            </Box>
+            <TextField size="small" sx={{ width: '55%', alignSelf: 'center' }}
+                placeholder='Email address'
+                InputProps={{
+                    value: email,
+                    type: "email",
+                    onChange: handleEmailChange
+                }}
+            ></TextField>
+            <Chip sx={{ alignSelf: 'center', ml: '20px' }} label='Join Waitlist' color="primary" onClick={handleEmailClick} clickable />
+        </CardContent>
+    )
+}
+
+
+
+const LargeAssetCard = ({ ...props }) => {
+    const [cover, updateCover] = useState<string>();
+
+    useEffect(() => {
+        fetchCover()
+    }, [cover]);
+
+    const fetchCover = async () => {
+        const cover = await Storage.get(`${props.slug}/cover.jpg`, {
+            level: "public"
+        });
+        updateCover(cover);
+    }
+
     const loc = `${props.address.cityName || ''}, ${props.address.state || ''}`
+
+    console.log(props.mailingListUrl)
 
     return <Card sx={{
         marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: 5, borderRadius: '20px'
@@ -123,22 +239,18 @@ const LargeAssetCard = ({ ...props }) => {
             </CardContent>
         </CardContent>
         <CardContent sx={{ pt: 0, display: props.isWaitlist ? 'block' : 'none' }}>
-            <CardContent sx={{
-                display: 'flex', justifyContent: 'flex-end', flexDirection: 'row', gap: 2, "&:last-child": { paddingBottom: 0 }, height: 80
-            }} >
-                <Box sx={{ flex: 1, alignSelf: 'center' }}>
-                    <Typography variant="h6">Coming soon</Typography>
-                    <Typography variant="body2">Join waitlist to unlock access</Typography>
-                </Box>
-                <TextField size="small" sx={{ width: '55%', alignSelf: 'center' }}
-                    placeholder='Email address'
-                    InputProps={{
-                        value: email,
-                        onChange: handleEmailChange
-                    }}
-                ></TextField>
-                <Chip sx={{ alignSelf: 'center', ml: '20px' }} component='button' label='Join Waitlist' color="primary" onClick={handleEmailClick} clickable />
-            </CardContent>
+            {/* <MailchimpSubscribe
+                url=`${process.env.MAILING_LIST_URL}&{props.mailingListTagId}`
+            render={({ subscribe, status, message }: any) => (
+                <CustomForm
+                    status={status}
+                    message={message}
+                    assetName={props.name}
+                    onSubmitted={(formData: any) => subscribe(formData)}
+                />
+            )}
+            /> */}
+            <CustomForm assetId={props.id} />
         </CardContent>
     </Card >
 }

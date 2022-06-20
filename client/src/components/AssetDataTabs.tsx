@@ -27,7 +27,7 @@ import ShareIcon from '../common/components/icons/ShareIcon';
 import MegaphoneIcon from '../common/components/icons/MegaphoneIcon';
 import CogIcon from '../common/components/icons/CogIcon';
 import BookmarkIcon from '../common/components/icons/BookmarkIcon';
-import { EstateModel, HighlightModel } from '../models';
+import { EstateModel } from '../models';
 import { Storage } from 'aws-amplify';
 
 const tabs = ['Highlights', 'Location', 'Financials', 'Gallery'];
@@ -71,9 +71,9 @@ const AssetDataTabs = ({ ...props }) => {
 
     useEffect(() => {
         fetchImages()
-    }, [images, fetchImages]);
+    }, [images]);
 
-    async function fetchImages() {
+    const fetchImages = async () => {
         const image1 = await Storage.get(`${props.slug}/gallery/image1.jpg`, {
             level: "public"
         });
@@ -90,6 +90,8 @@ const AssetDataTabs = ({ ...props }) => {
     const loc = `${props.address.city_name}, ${props.address.state}`
     const handleClick = (index: number) => () => setActive(index);
     const nf = new Intl.NumberFormat('en-US');
+
+    console.log(props.highlights)
 
     return <>
         <Stack direction='row' gap={2} sx={{ mb: '30px' }}>
@@ -191,22 +193,13 @@ const AssetDataTabs = ({ ...props }) => {
                     </CardContent>
                     <Table sx={{ flex: 2, mt: '20px' }} size="small">
                         <TableBody>
-                            {/* {props.highlights &&
-                                props.highlights.map((element: { highlight: string }, index: number) => (
-                                    // <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                    <TableRow key={index} sx={{ 'td, th': { border: 0 } }}>
-                                        <TableCell scope="row" align="right" padding="checkbox"><VerifiedOutlinedIcon sx={{ color: '#57596C' }} /></TableCell>
-                                        <TableCell align="left">{element.highlight}</TableCell>
-                                    </TableRow>)
-                                )
-                            } */}
 
                             {
-                                staticHighlights.map((element: { highlight: string }, index: number) => (
+                                props.highlights.map((element: string, index: number) => (
                                     // <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                     <TableRow key={index} sx={{ 'td, th': { border: 0 } }}>
                                         <TableCell scope="row" align="right" padding="checkbox"><VerifiedOutlinedIcon sx={{ color: '#57596C' }} /></TableCell>
-                                        <TableCell align="left">{element.highlight}</TableCell>
+                                        <TableCell align="left">{element}</TableCell>
                                     </TableRow>)
                                 )
                             }

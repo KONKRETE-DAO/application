@@ -34,29 +34,21 @@ const Home: NextPage = () => {
   if (estates.length == 0) return <></>
 
   return (
-    // <div className={styles.container}>
     <>
-      <Head>
-        <title>Konkrete</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Container sx={{
-        textAlign: 'center',
-        marginTop: 5
-      }} >
-        <Typography gutterBottom variant="h4" component="div">Our curated properties</Typography>
-        <Typography gutterBottom variant="subtitle2" component="div">Invest any amount. Stake your tokens. Earn now.</Typography>
+      <Container sx={{ mb: 10 }}>
+        <Container sx={{ textAlign: 'center', mb: 7 }} >
+          <Typography gutterBottom variant="h4" component="div">Our curated properties</Typography>
+          <Typography gutterBottom variant="subtitle2" component="div">Invest any amount. Stake your tokens. Earn now.</Typography>
+        </Container>
+        {
+          estates.map((estate: EstateModel) => {
+            return (<AssetCard
+              key={estate.id}
+              {...estate}
+            ></AssetCard>)
+          })
+        }
       </Container>
-      {
-        estates.map((estate: EstateModel) => {
-          // const attributes = _.mapKeys(element.attributes, (v, k) => _.camelCase(k))
-          return (<AssetCard
-            key={estate.id}
-            // index={estate.id}
-            {...estate}
-          ></AssetCard>)
-        })
-      }
     </>
   )
 }

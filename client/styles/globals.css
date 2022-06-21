@@ -22,3 +22,9 @@ a {
   font-family: "FontelloRegular";
   src: url("/fonts/Fontello-Regular.woff2") format("woff2");
 }
+
+#__next {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}

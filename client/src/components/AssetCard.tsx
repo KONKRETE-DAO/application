@@ -42,10 +42,9 @@ const AssetCard = ({ ...props }) => {
 
     const loc = `${props.address.cityName || ''}, ${props.address.state || ''}`
 
-    return <Card sx={{ maxWidth: 500, marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: 10, borderRadius: '20px' }}>
-        <Container sx={{ height: 100, backgroundColor: '#A7A8FB' }} >
-
-        </Container>
+    return <Card sx={{ maxWidth: '500px', marginLeft: 'auto', marginRight: 'auto', marginBottom: 4, borderRadius: '20px' }}>
+        <Box sx={{ height: '100px', backgroundColor: '#A7A8FB' }} >
+        </Box>
         <CardContent sx={{ pt: 0 }}>
             <Box sx={{ display: 'flex' }}>
                 <Box sx={{ width: 120, height: 95 }}>
@@ -61,8 +60,6 @@ const AssetCard = ({ ...props }) => {
                     <Box sx={{ display: 'flex', alignContent: 'flex-start', flexFlow: 'row wrap', gap: '12px' }}>
                         <Chip icon={<span style={{ margin: '7px 0px 0px 7px' }}><GraphAscendIcon size={20} color="white" /></span>} label={`${props.grossYield}% Yield`} color="primary" />
                         <Chip icon={<span style={{ margin: '7px 0px 0px 7px' }}><LightningIcon size={20} color="#111029" /></span>} label={`${props.debt}% debt`} variant="outlined" />
-                        {/* {props.hasWaitlist ? <Chip icon={<span style={{ margin: '7px 0px 0px 5px' }}><ClockIcon size={20} color="#111029" /></span>} label='Waitlist' variant="outlined" /> : <></>}
-                        {props.isLeveraged ? <Chip label='Leveraged' variant="outlined" /> : <></>} */}
                     </Box>
                 </CardContent>
             </Box>
@@ -70,12 +67,12 @@ const AssetCard = ({ ...props }) => {
                 <Typography variant="subtitle1" gutterBottom>
                     About
                 </Typography>
-                <Stack direction="row" spacing={1} sx={{ mb: 3 }}>
+                <Box sx={{ display: 'flex', alignContent: 'flex-start', flexFlow: 'row wrap', gap: '12px', mb: 3 }}>
                     <Chip label={humanize(props.propertyType)} variant="outlined" />
                     <Chip label={`${props.bedrooms} beds`} variant="outlined" />
                     <Chip label={`${props.surface}m²`} variant="outlined" />
                     <Chip icon={<span style={{ margin: '7px 0px 0px 7px' }}><MarkIcon size={20} color="#111029" /></span>} label={loc} variant="outlined" />
-                </Stack>
+                </Box>
                 <Typography variant="body2" paragraph>
                     {props.description}
                 </Typography>

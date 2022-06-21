@@ -69,9 +69,8 @@ const ResponsiveAppBar = () => {
         button = <Chip avatar={<Avatar sx={{ backgroundColor: '#ffffff' }} src="/polygon-matic-logo.svg" />} component='button' label={shortAccount} color="primary" sx={{ my: 2, display: active ? 'inline-flex' : 'none' }} />
     }
 
-
     return (
-        <AppBar position="static" color='transparent' elevation={0}>
+        <AppBar position="static" color='transparent' elevation={0} sx={{ mb: 5 }}>
             <Container maxWidth="lg">
                 <Toolbar disableGutters>
                     <Typography
@@ -160,10 +159,6 @@ const ResponsiveAppBar = () => {
                     </Box>
                     <Box sx={{ flexGrow: 0 }}>
                         {button}
-                        {/* { if (account == null)
-                        return () : <></>}
-                        {account == null ? (<Chip component='button' label='Connect to Polygon' color="primary" onClick={handleActivate} clickable />) : <></>}
-                        <Chip component='button' label='Connect to Polygon' color="primary" onClick={handleActivate} sx={{ my: 2, display: account != '' && !active ? 'inline-flex' : 'none' }} clickable /> */}
                     </Box >
                 </Toolbar >
             </Container >

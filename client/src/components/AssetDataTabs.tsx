@@ -3,7 +3,7 @@ import {
     Card,
     CardContent,
     Stack,
-    Chip,
+    Chip, Grid,
     Box,
     Avatar,
     Typography,
@@ -45,6 +45,24 @@ function humanize(str: string) {
         frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1).toLowerCase();
     }
     return frags.join(' ');
+}
+
+const RowItem = ({ icon, label, val }: any) => {
+    return (
+        <Grid container item spacing={2} alignItems='center' md={12} xs={12} sm={12} sx={{ height: '75px', borderBottom: '1px solid lightgrey' }}>
+            < Grid item sm='auto' xs='auto' md='auto'>
+                {icon}
+            </Grid >
+            <Grid item sm xs md>
+                <Typography component="span">
+                    {label}
+                </Typography>
+            </Grid>
+            <Grid item sx={{ textAlign: 'right' }} sm='auto' xs='auto' md='auto'>
+                <Typography noWrap>{val}</Typography>
+            </Grid>
+        </Grid >
+    )
 }
 
 const AssetDataTabs = ({ ...props }) => {
@@ -104,7 +122,39 @@ const AssetDataTabs = ({ ...props }) => {
                 <Typography gutterBottom variant="h5" component="div">
                     Property highlights
                 </Typography>
-                <Table>
+                <Grid key="0" container spacing={{ xs: 0, sm: 0, md: 5 }}>
+                    <Grid container item spacing={0} md={6} sm={12} xs={12}>
+                        <RowItem icon={<GraphAscendIcon />} label="Gross Yield" val={`${props.grossYield}%`} />
+                        <RowItem icon={<CoinIcon />} label="Return on capital employed" val={`${props.returnOnCapitalEmployed}%`} />
+                        <RowItem icon={<DatabaseIcon />} label="Revenue per Token" val={`${nf.format(props.revenuePerToken as number)}€`} />
+                        <RowItem icon={<DatabaseIcon />} label="Token Price" val={`${nf.format(props.tokenPrice as number)}€`} />
+                        <RowItem icon={<SettingsIcon />} label="Total Tokens" val={nf.format(props.totalTokens as number)} />
+                    </Grid>
+                    <Grid container item spacing={0} md={6} sm={12} xs={12}>
+                        <RowItem icon={<HomeIcon />} label="Property Type" val={humanize(props.propertyType)} />
+                        <RowItem icon={<MarkIcon />} label="Neighborhood" val={props.neighborhood} />
+                        <RowItem icon={<UserIcon />} label="Bedrooms" val={props.bedrooms} />
+                        <RowItem icon={<TestIcon />} label="Rental Type" val={humanize(props.rentalType)} />
+                        <RowItem icon={<LightningIcon />} label="Acquisition Strategy" val={props.acquisitionStrategy} />
+                    </Grid>
+                </Grid>
+
+                {/* <Grid container item spacing={3} sm={6}>
+
+                        <Grid item sm={1}>
+                            <HomeIcon />
+                        </Grid>
+                        <Grid item sm={6}>
+                            <Typography component="span">
+                                Property Type
+                            </Typography>
+                        </Grid>
+                        <Grid item sx={{ textAlign: 'right' }} sm>
+                            <Typography>{humanize(props.propertyType)}</Typography>
+                        </Grid>
+
+                    </Grid> */}
+                {/* <Table>
                     <TableBody>
                         <TableRow>
                             <TableCell scope="row" align="right" padding="checkbox"><GraphAscendIcon /></TableCell>
@@ -118,7 +168,6 @@ const AssetDataTabs = ({ ...props }) => {
                         <TableRow>
                             <TableCell scope="row" align="right" padding="checkbox"><CoinIcon /></TableCell>
                             <TableCell align="left">Return on capital employed</TableCell>
-                            {/* <TableCell align="right">{new Date(props.rentStartDate).toLocaleString('en-US', { year: "numeric", month: "long", day: "numeric" })}</TableCell> */}
                             <TableCell align="right">{`${props.returnOnCapitalEmployed}%`}</TableCell>
                             <TableCell></TableCell>
                             <TableCell align="right" padding="checkbox"><MarkIcon /></TableCell>
@@ -153,16 +202,62 @@ const AssetDataTabs = ({ ...props }) => {
                             <TableCell align="right">{props.acquisitionStrategy}</TableCell>
                         </TableRow>
                     </TableBody>
-                </Table>
+                </Table> */}
             </CardContent>
         </Card>
 
-        <Card sx={{ borderRadius: '10px', display: active != 1 ? 'none' : 'block' }}>
+        <Card key="1" sx={{ borderRadius: '10px', display: active != 1 ? 'none' : 'block' }}>
             <CardContent sx={{ py: '20px', px: '50px' }}>
                 <Typography gutterBottom variant="h5" component="div">
                     Property location
                 </Typography>
-                <Box sx={{ display: 'flex', flexFlow: 'row' }}>
+                <Grid key="0" container spacing={{ xs: 0, sm: 0, md: 5 }}>
+                    <Grid item spacing={0} md={4} sm={12} xs={12}>
+                        <Box sx={{ width: '100%', display: 'flex' }}>
+                            <Box sx={{ width: 180, height: 180, position: 'relative', display: 'inline-flex', mt: 3, mx: 'auto' }}>
+                                <CircularProgress size='180px' thickness={4.5} variant="determinate" value={props.trustIndice} sx={{ color: '#B3D768' }} />
+                                <Box
+                                    sx={{
+                                        top: 0,
+                                        left: 0,
+                                        bottom: 0,
+                                        right: 0,
+                                        position: 'absolute',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                    }}
+                                >
+                                    <Typography
+                                        variant="h2"
+                                        component="div"
+                                        color="#B3D768"
+                                    >{`${Math.round(props.trustIndice)}`}</Typography>
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Grid>
+                    <Grid container item spacing={0} md={8} sm={12} xs={12}>
+                        {
+                            props.highlights.map((element: string, index: number) => (
+                                // <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                <Grid key={index} container item spacing={2} alignItems='center' md={12} xs={12} sm={12} sx={{ height: '75px', borderBottom: '1px solid lightgrey' }}>
+                                    <Grid item sm='auto' xs='auto' md='auto'>
+                                        <VerifiedOutlinedIcon />
+                                    </Grid >
+                                    <Grid item sx={{ textAlign: 'left' }} sm xs md>
+                                        <Typography>{element}</Typography>
+                                    </Grid>
+                                </Grid >
+                                // <TableRow key={index} sx={{ 'td, th': { border: 0 } }}>
+                                //     <TableCell scope="row" align="right" padding="checkbox"><VerifiedOutlinedIcon sx={{ color: '#57596C' }} /></TableCell>
+                                //     <TableCell align="left">{element}</TableCell>
+                                // </TableRow>
+                            ))
+                        }
+                    </Grid>
+                </Grid>
+                {/* <Box sx={{ display: 'flex', flexFlow: 'row' }}>
                     <CardContent sx={{ flex: 1, pl: 0 }} >
                         <Typography gutterBottom variant="h6" component="div">
                             Trust indice in {loc}
@@ -193,7 +288,6 @@ const AssetDataTabs = ({ ...props }) => {
                     </CardContent>
                     <Table sx={{ flex: 2, mt: '20px' }} size="small">
                         <TableBody>
-
                             {
                                 props.highlights.map((element: string, index: number) => (
                                     // <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
@@ -205,18 +299,34 @@ const AssetDataTabs = ({ ...props }) => {
                             }
                         </TableBody>
                     </Table>
-                </Box>
+                </Box> */}
 
             </CardContent>
         </Card >
 
 
-        <Card sx={{ borderRadius: '10px', display: active != 2 ? 'none' : 'block' }}>
+        <Card key="2" sx={{ borderRadius: '10px', display: active != 2 ? 'none' : 'block' }}>
             <CardContent sx={{ py: '20px', px: '50px' }}>
                 <Typography gutterBottom variant="h5" component="div">
                     Property financials
                 </Typography>
-                <Table>
+                <Grid container spacing={{ xs: 0, sm: 0, md: 5 }}>
+                    <Grid container item spacing={0} md={6} sm={12} xs={12}>
+                        <RowItem icon={<HomeIcon />} label="Acquisition Price" val={`${nf.format(props.acquisitionPrice as number)}€`} />
+                        <RowItem icon={<ToolsIcon />} label="Refurbishment" val={`+${nf.format(props.refurbishment as number)}€`} />
+                        <RowItem icon={<ShareIcon />} label="Konkrete Fee" val={`${nf.format(props.fee as number)}€`} />
+                        <RowItem icon={<WritingPencilIcon />} label="Mortgage" val={`${nf.format(props.mortgage as number)}€`} />
+                        <RowItem icon={<MegaphoneIcon />} label="Capital Call" val={`${nf.format(props.capitalCall as number)}€`} />
+                    </Grid>
+                    <Grid container item spacing={0} md={6} sm={12} xs={12}>
+                        <RowItem icon={<CoinIcon />} label="Rental Income" val={`${nf.format(props.rentalIncome as number)}€`} />
+                        <RowItem icon={<CogIcon />} label="Property management" val={`${nf.format(props.propertyManagement as number)}€`} />
+                        <RowItem icon={<BookmarkIcon />} label="Government Taxes" val={`${nf.format(props.governmentTaxes as number)}€`} />
+                        <RowItem icon={<DatabaseIcon />} label="Total token supply" val={`${nf.format(props.totalTokens as number)}`} />
+                        <RowItem icon={<DatabaseIcon />} label="Price per token" val={`${nf.format(props.tokenPrice as number)}€`} />
+                    </Grid>
+                </Grid>
+                {/* <Table>
                     <TableBody>
                         <TableRow>
                             <TableCell scope="row" align="right" padding="checkbox"><HomeIcon /></TableCell>
@@ -264,10 +374,10 @@ const AssetDataTabs = ({ ...props }) => {
                             <TableCell align="right">{`${nf.format(props.tokenPrice as number)}€`}</TableCell>
                         </TableRow>
                     </TableBody>
-                </Table>
+                </Table> */}
             </CardContent>
         </Card>
-        <Card sx={{ borderRadius: '10px', display: active != 3 ? 'none' : 'block' }}>
+        <Card key="3" sx={{ borderRadius: '10px', display: active != 3 ? 'none' : 'block' }}>
             <CardContent sx={{ py: '20px', px: '50px' }}>
                 <Typography gutterBottom variant="h5" component="div">
                     Property gallery

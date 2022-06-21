@@ -1,23 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Chip from '@mui/material/Chip';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
-import MarkIcon from '../common/components/icons/MarkIcon';
+import { Card, CardContent, Typography, Chip, Box, Button, InputAdornment, TextField, Avatar, Grid } from '@mui/material';
 import GraphAscendIcon from '../common/components/icons/GraphAscendIcon';
-import ClockIcon from '../common/components/icons/ClockIcon';
 import LightningIcon from '../common/components/icons/LightningIcon';
-import { Box, Button, InputAdornment, TextField } from '@mui/material';
-import HomeIcon from '../common/components/icons/HomeIcon';
-import { AccountCircle } from '@mui/icons-material';
 import Image from 'next/image'
 import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import { Storage } from '@aws-amplify/storage';
-import { EstateModel, WaitListItemModel } from '../models';
-import MailchimpSubscribe from "react-mailchimp-subscribe";
+import { WaitListItemModel } from '../models';
 import { DataStore } from 'aws-amplify';
 
 const Injected = new InjectedConnector({
@@ -148,22 +138,31 @@ const CustomForm = ({ assetId }: any) => {
 
     return (
         <CardContent sx={{
-            display: 'flex', justifyContent: 'flex-end', flexDirection: 'row', gap: 2, "&:last-child": { paddingBottom: 0 }, height: 80
+            // display: 'flex', justifyContent: 'flex-end', flexFlow: 'row wrap', gap: 2,
+            "&:last-child": { paddingBottom: 0 }
         }} >
-            <Box sx={{ flex: 1, alignSelf: 'center' }}>
-                <Typography variant="h6">Coming soon</Typography>
-                <Typography variant="body2">Join waitlist to unlock access</Typography>
-            </Box>
-            <TextField size="small" sx={{ width: '55%', alignSelf: 'center' }}
-                placeholder='Email address'
-                InputProps={{
-                    value: email,
-                    type: "email",
-                    onChange: handleEmailChange
-                }}
-            ></TextField>
-            <Chip sx={{ alignSelf: 'center', ml: '20px' }} label='Join Waitlist' color="primary" onClick={handleEmailClick} clickable />
-        </CardContent>
+            <Grid container spacing={2} alignItems="center">
+                <Grid item sm="auto">
+                    <Box sx={{ alignSelf: 'center' }}>
+                        <Typography variant="h6">Coming soon</Typography>
+                        <Typography variant="body2">Join waitlist to unlock access</Typography>
+                    </Box>
+                </Grid>
+                <Grid item xs={12} sm>
+                    <TextField size="small" sx={{ width: '100%', alignSelf: 'center' }}
+                        placeholder='Email address'
+                        InputProps={{
+                            value: email,
+                            type: "email",
+                            onChange: handleEmailChange
+                        }}
+                    ></TextField>
+                </Grid>
+                <Grid item sm="auto" sx={{ textAlign: 'right' }}>
+                    <Chip sx={{ alignSelf: 'center' }} label='Join Waitlist' color="primary" onClick={handleEmailClick} clickable />
+                </Grid>
+            </Grid>
+        </CardContent >
     )
 }
 
@@ -239,17 +238,6 @@ const LargeAssetCard = ({ ...props }) => {
             </CardContent>
         </CardContent>
         <CardContent sx={{ pt: 0, display: props.isWaitlist ? 'block' : 'none' }}>
-            {/* <MailchimpSubscribe
-                url=`${process.env.MAILING_LIST_URL}&{props.mailingListTagId}`
-            render={({ subscribe, status, message }: any) => (
-                <CustomForm
-                    status={status}
-                    message={message}
-                    assetName={props.name}
-                    onSubmitted={(formData: any) => subscribe(formData)}
-                />
-            )}
-            /> */}
             <CustomForm assetId={props.id} />
         </CardContent>
     </Card >

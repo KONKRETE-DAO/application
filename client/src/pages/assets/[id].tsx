@@ -1,15 +1,11 @@
 import { ReactElement, useState, useEffect } from 'react'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import Head from 'next/head'
-import Image from 'next/image'
-import ResponsiveAppBar from '../../components/ResponsiveAppBar'
 import LargeAssetCard from '../../components/LargeAssetCard'
 import AssetDataTabs from '../../components/AssetDataTabs'
 import MyMapComponent from '../../components/MyMapComponent'
 import { Container, Box } from '@mui/material'
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
-import useSWR from 'swr'
 import _ from 'lodash'
 import { EstateModel, GMapsConfigModel } from '../../models'
 import { DataStore } from 'aws-amplify'
@@ -43,24 +39,20 @@ const Asset: NextPage = ({ }) => {
 
     if (!estate) return <></>
 
-    // const attributes = _.mapKeys(data.data.attributes, (v, k) => _.camelCase(k))
-
     const map = estate.map
 
     return (
-        <div>
-            <Container sx={{ minHeight: '1000px', mb: 10 }}>
-                <LargeAssetCard
-                    {...estate}
-                ></LargeAssetCard>
-                <Wrapper apiKey={"AIzaSyDlw8AtkvLkV3WNnfB6Rm7qKyII5j56k00"} render={render}>
-                    {map && map.center && (<MyMapComponent center={{ lat: map.center.latitude || 0, lng: map.center.longitude || 0 }} zoom={map.zoom || 17} />)}
-                </Wrapper>
-                <AssetDataTabs
-                    {...estate}
-                ></AssetDataTabs>
-            </Container>
-        </div >
+        <Container sx={{ mb: 10 }}>
+            <LargeAssetCard
+                {...estate}
+            ></LargeAssetCard>
+            <Wrapper apiKey={"AIzaSyDlw8AtkvLkV3WNnfB6Rm7qKyII5j56k00"} render={render}>
+                {map && map.center && (<MyMapComponent center={{ lat: map.center.latitude || 0, lng: map.center.longitude || 0 }} zoom={map.zoom || 17} />)}
+            </Wrapper>
+            <AssetDataTabs
+                {...estate}
+            ></AssetDataTabs>
+        </Container>
     )
 }
 

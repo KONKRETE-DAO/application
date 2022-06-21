@@ -12,13 +12,20 @@ import HomeIcon from '../common/components/icons/HomeIcon';
 
 const Footer = ({ ...props }) => {
 
-    return <Container maxWidth={false} sx={{ bgcolor: '#111029', height: '150px', position: 'relative' }}>
-        <Box sx={{ padding: '15px' }}>
+    const style = {
+        position: 'relative',
+        marginTop: 'auto',
+        bgcolor: '#111029',
+    }
+
+    return <Box sx={style}>
+        <Container maxWidth="lg" sx={{
+            display: 'flex', flexDirection: 'column', minHeight: '125px', padding: '12px'
+        }}>
             <Typography
                 variant="h5"
                 noWrap
                 sx={{
-                    mr: 2,
                     fontWeight: 700,
                     letterSpacing: '.3rem',
                     textDecoration: 'none',
@@ -27,12 +34,12 @@ const Footer = ({ ...props }) => {
             >
                 Konkrete
             </Typography>
-        </Box>
-        <Box sx={{ height: '50px', justifyContent: 'center', position: 'absolute', bottom: 0, left: '30px', right: '30px' }}>
-            <Divider sx={{ borderColor: '#557598', mb: '12px' }}></Divider>
-            <Typography sx={{ color: 'white' }}>Copyright © Konkrete 2022</Typography>
-        </Box>
-    </Container>
+            <Box sx={{ mt: 'auto' }}>
+                <Divider sx={{ borderColor: '#557598', mb: '12px' }}></Divider>
+                <Typography sx={{ color: 'white' }}>Copyright © Konkrete 2022</Typography>
+            </Box>
+        </Container>
+    </Box>
 }
 
 export default Footer;

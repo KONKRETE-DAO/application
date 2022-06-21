@@ -1,5 +1,4 @@
 import { useRef, useEffect } from 'react'
-import { Box } from '@mui/material';
 
 const MyMapComponent = ({
     center,

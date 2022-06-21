@@ -8,6 +8,8 @@ class MyDocument extends Document {
         return (
             <Html>
                 <Head>
+                    <title>Konkrete</title>
+                    <link rel="icon" href="/favicon.ico" />
                     <link
                         href="https://fonts.googleapis.com/css2?family=Varela&display=swap"
                         rel="stylesheet"

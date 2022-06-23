@@ -1,13 +1,8 @@
 import { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
-import Head from 'next/head'
-// import styles from '../../styles/Home.module.css'
-import ResponsiveAppBar from '../components/ResponsiveAppBar'
 import AssetCard from '../components/AssetCard'
-import useSWR from 'swr'
 import _ from 'lodash'
 import { Typography, Box, Container, Toolbar } from '@mui/material'
-// import '../../public/fonts/Fontello-Regular.woff2'
 import { DataStore } from '@aws-amplify/datastore';
 import { EstateModel } from '../models';
 

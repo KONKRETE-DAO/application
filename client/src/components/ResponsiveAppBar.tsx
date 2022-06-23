@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router'
-import Image from 'next/image'
-import ethers from 'ethers'
 import { AppBar, Chip, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem, Paper, Link } from '@mui/material';
 import { useWeb3React } from '@web3-react/core'
 import { InjectedConnector } from "@web3-react/injected-connector"

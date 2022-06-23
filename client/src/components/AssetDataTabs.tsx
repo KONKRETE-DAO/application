@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTheme } from '@mui/material/styles';
 import {
     Card,
     CardContent,
@@ -8,7 +9,7 @@ import {
     Avatar,
     Typography,
     Table, TableBody, TableRow, TableCell,
-    ImageList, ImageListItem, CircularProgress
+    ImageList, ImageListItem, CircularProgress, useMediaQuery
 } from '@mui/material';
 import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined';
 import TestIcon from '../common/components/icons/TestIcon';
@@ -18,7 +19,6 @@ import CoinIcon from '../common/components/icons/CoinIcon';
 import DatabaseIcon from '../common/components/icons/DatabaseIcon';
 import HomeIcon from '../common/components/icons/HomeIcon';
 import MarkIcon from '../common/components/icons/MarkIcon';
-import CalendarIcon from '../common/components/icons/CalendarIcon';
 import SettingsIcon from '../common/components/icons/SettingsIcon';
 import UserIcon from '../common/components/icons/UserIcon';
 import ToolsIcon from '../common/components/icons/ToolsIcon';
@@ -27,17 +27,9 @@ import ShareIcon from '../common/components/icons/ShareIcon';
 import MegaphoneIcon from '../common/components/icons/MegaphoneIcon';
 import CogIcon from '../common/components/icons/CogIcon';
 import BookmarkIcon from '../common/components/icons/BookmarkIcon';
-import { EstateModel } from '../models';
 import { Storage } from 'aws-amplify';
 
 const tabs = ['Highlights', 'Location', 'Financials', 'Gallery'];
-const staticHighlights = [
-    { highlight: 'Ranked 2nd best university city in France' },
-    { highlight: 'Dynamic with 17% price increase in the past 5 years' },
-    { highlight: 'Transaction volume 73% superior to the national average' },
-    { highlight: 'Healthy long term investment' },
-    { highlight: 'Dynamic short term investment' },
-]
 
 function humanize(str: string) {
     var i, frags = str.split('_');
@@ -65,31 +57,16 @@ const RowItem = ({ icon, label, val }: any) => {
     )
 }
 
-const AssetDataTabs = ({ ...props }) => {
+const AssetDataTabs = ({ ...props }: any) => {
     const [active, setActive] = useState(0);
-
-    // const [highlights, updateHighlights] = useState<HighlightModel[]>([]);
-
-    // useEffect(() => {
-    //     fetchEstates()
-    //     const subscription = DataStore.observe(HighlightModel).subscribe(() =>
-    //         fetchEstates()
-    //     );
-    //     return () => subscription.unsubscribe();
-    // });
-
-    // const fetchEstates = async () => {
-    //     const estate = props as EstateModel
-
-    //     const highlights = await DataStore.query(HighlightModel, where: HighlightModel. EstateModel.ID.eq(props.id));
-    //     updateHighlights(highlights);
-    // }
-
     const [images, updateCover] = useState<string[]>([]);
+    const theme = useTheme();
+    const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
 
     useEffect(() => {
         fetchImages()
     }, [images]);
+
 
     const fetchImages = async () => {
         const image1 = await Storage.get(`${props.slug}/gallery/image1.jpg`, {
@@ -382,7 +359,7 @@ const AssetDataTabs = ({ ...props }) => {
                 <Typography gutterBottom variant="h5" component="div">
                     Property gallery
                 </Typography>
-                <ImageList cols={3}>
+                <ImageList cols={matchDownSm ? 1 : 3}>
                     {images.map((item: string, index) => (
                         <ImageListItem key={index}>
                             <img

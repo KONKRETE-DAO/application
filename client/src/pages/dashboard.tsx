@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import ResponsiveAppBar from '../components/ResponsiveAppBar'
-import AssetCard from '../components/AssetCard'
-import useSWR from 'swr'
 import _ from 'lodash'
 import { Typography, Box, Container, Toolbar, TableRow, TableCell, TableBody, Table, TableHead, Avatar } from '@mui/material'
 import { DataStore } from '@aws-amplify/datastore';

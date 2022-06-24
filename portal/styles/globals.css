@@ -1,0 +1,262 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#logo {
+  width: 80%;
+  max-width: 240px;
+  margin: 30px auto;
+}
+
+#logo img {
+  width: 100%;
+}
+
+#tagline h3 {
+  text-align: center;
+  font-size: 20px;
+  color: #222;
+  padding: 0 20px;
+}
+
+#keypad {
+  width: 300px;
+  height: auto;
+  margin: 40px auto;
+  padding: 20px;
+  padding-left: 28px;
+  border: 2px solid #999;
+  /* background: url(../img/metal.jpg) no-repeat; */
+  background-size: 100% auto;
+  border-radius: 5px;
+  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.3);
+  font-family: "Open Sans", sans-serif;
+}
+
+.button {
+  width: 80px;
+  height: 71px;
+  padding-top: 14px;
+
+  /* background: url("../img/button.png") no-repeat; */
+  background-size: 100% 100%;
+  text-align: center;
+  font-size: 26px;
+  color: #1d1f1f;
+  text-shadow: 2px 2px 0px #cdd1d9;
+  font-weight: 700;
+  text-indent: -6px;
+
+  display: inline-block;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.button:hover {
+  /* background: url("../img/button2.png") no-repeat; */
+
+  background-size: 100% 100%;
+  text-indent: -5px;
+  text-shadow: 2px 2px 0px #999;
+}
+
+.button span {
+  display: block;
+  font-size: 12px;
+  margin-top: 3px;
+  text-shadow: 1px 1px 0px #cdd1d9;
+}
+
+.button span:hover {
+  display: block;
+  margin-top: 3px;
+  text-shadow: 1px 1px 0px #999;
+}
+
+.redbro h4 {
+  font-size: 24px;
+  text-align: center;
+  padding: 40px 0 10px;
+}
+
+.redbro h4 {
+  color: #c40000;
+}
+
+.redbro span {
+  font-size: 14px;
+  color: #222;
+}
+
+.innahpanel {
+  font-family: "alarm clock", sans-serif;
+  font-size: 47px;
+  text-align: center;
+  color: #2d322a;
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.1);
+  letter-spacing: 4px;
+  transition: 0.5s;
+}
+
+#panel {
+  width: calc(100% - 60px);
+  margin: 0 auto;
+  padding: 5px 20px;
+  background: #666b64;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  border: 1px solid #2d322a;
+}
+
+.redme {
+  transition: 0.5s;
+  background: #a00 !important;
+}
+
+.greenme {
+  background: #0a0 !important;
+}
+
+.content {
+  text-align: center;
+  padding-top: 30px;
+  margin-bottom: 40px;
+}
+
+.content p {
+  font-size: 18px;
+  padding: 5px 20px;
+}
+
+.content h1 {
+  font-size: 36px;
+  padding: 20px;
+}
+
+#acco {
+  margin: 20px auto;
+  width: 800px;
+  max-width: 90%;
+}
+
+.item {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.itemhead {
+  background: no-repeat;
+  background-size: 40px 40px;
+  background-position: left 10px top 10px;
+  height: 40px;
+  padding-left: 80px;
+  font-size: 20px;
+  padding-top: 20px;
+  border-radius: 4px;
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+}
+
+.itemhead span {
+  font-weight: bold;
+}
+
+#item1 .itemhead,
+#item2 .itemhead,
+#item3 .itemhead {
+  background-color: #ac7e59;
+  border: 2px solid #8a6e45;
+}
+
+#item4 .itemhead,
+#item5 .itemhead,
+#item6 .itemhead {
+  background-color: #b4b4b4;
+  border: 2px solid #999;
+}
+
+#item7 .itemhead {
+  background-color: #c8b037;
+  border: 2px solid #af9500;
+}
+
+#item8 .itemhead {
+  background-color: #222;
+  border: 2px solid #000;
+  color: #fff;
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
+}
+
+#item1 .itemhead {
+  /* background-image: url("../img/badges/level1.png"); */
+}
+
+#item2 .itemhead {
+  /* background-image: url("../img/badges/level2.png"); */
+}
+
+#item3 .itemhead {
+  /* background-image: url("../img/badges/level3.png"); */
+}
+
+#item4 .itemhead {
+  /* background-image: url("../img/badges/level4.png"); */
+}
+
+#item5 .itemhead {
+  /* background-image: url("../img/badges/level5.png"); */
+}
+
+#item6 .itemhead {
+  /* background-image: url("../img/badges/level6.png"); */
+}
+
+#item7 .itemhead {
+  /* background-image: url("../img/badges/level7.png"); */
+}
+
+#item8 .itemhead {
+  /* background-image: url("../img/badges/level8.png"); */
+}
+
+.lock {
+  float: right;
+  width: 60px;
+  height: 60px;
+  /* background: url("../img/lock.png") no-repeat; */
+  background-size: 40px 40px;
+  margin-top: -10px;
+  margin-right: -10px;
+  opacity: 0.5;
+}
+
+#loginbro {
+  background: #c40000;
+  font-size: 18px;
+  float: right;
+  margin-top: 10px;
+  margin-left: 10px;
+  display: block;
+  position: absolute;
+  right: 10px;
+  top: 0;
+  padding: 10px;
+  border-bottom: 4px solid #990000;
+  border-radius: 4px;
+  color: #fff;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}

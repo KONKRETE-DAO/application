@@ -17,7 +17,10 @@
   },
   "homepage": "https://github.com/Policonickolu/konkrete-app#readme",
   "dependencies": {
-    "directus": "^9.12.2"
+    "directus": "^9.12.2",
+    "next": "^12.1.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "keywords": []
 }

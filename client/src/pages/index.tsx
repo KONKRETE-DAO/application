@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import AssetCard from '../components/AssetCard'
 import _ from 'lodash'
-import { Typography, Box, Container, Toolbar } from '@mui/material'
+import { Typography, Container } from '@mui/material'
 import { DataStore } from '@aws-amplify/datastore';
 import { EstateModel } from '../models';
 

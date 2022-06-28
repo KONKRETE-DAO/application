@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/codes": {
+      "name": "/codes",
+      "lambdaFunction": "apiLambda",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

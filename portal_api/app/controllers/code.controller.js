@@ -5,9 +5,10 @@ const Code = db.codes;
 exports.create = (req, res) => {
     const referralCode = req.body.code;
     const email = req.body.email;
+    const name = req.body.name;
     const newReferralCode = (Math.floor(Math.random() * (999999))).toString().padStart(6, '0');
 
-    const newCode = new Code({ value: newReferralCode, email: email, usageCount: 0 });
+    const newCode = new Code({ value: newReferralCode, name: name, email: email, usageCount: 0 });
     newCode.save().then(data => {
         console.log(data)
         if (!data) {
@@ -15,7 +16,6 @@ exports.create = (req, res) => {
         } else {
 
             Code.updateOne({ 'value': referralCode }, { $inc: { usageCount: 1 } }).then(data => {
-                console.log('incremented !!!')
                 res.send({ message: "Success" });
             })
                 .catch(err => {
@@ -92,12 +92,6 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
 
 };
-
-// Find all published Codes
-exports.findAllPublished = (req, res) => {
-
-};
-
 
 // Seed 200 codes
 exports.seed = async (req, res) => {

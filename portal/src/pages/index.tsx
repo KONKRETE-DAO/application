@@ -1,24 +1,29 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { Box, Button, Container, TextField } from '@mui/material'
-// import { Amplify, API, Auth } from 'aws-amplify';
-// import awsconfig from '../aws-exports';
-
-// Amplify.configure(awsconfig);
+import { Box, Button, ButtonBase, Card, CardContent, Container, Grid, IconButton, TextField, Typography } from '@mui/material'
+import CloseIcon from '../common/components/icons/CloseIcon'
+import CheckIcon from '../common/components/icons/CheckIcon'
 
 const mapping = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
 const Home: NextPage = () => {
   const [code, setCode] = useState('')
   const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
   const [isRegistered, setRegistered] = useState(false)
   const [isLoading, setLoading] = useState(false)
   const [isValid, setValid] = useState(false)
+  const [page, setPage] = useState(0)
+  const timerRef = useRef<ReturnType<typeof setTimeout>>();
+
+  useEffect(() => {
+    return () => clearTimeout(timerRef.current);
+  }, []);
 
   const handleClick = (value: number) => (event: any) => {
     if (value == -1) {
-      setCode('')
+      setCode(code.slice(0, -1))
     } else if (code.length < 6 && value >= 0 && value <= 9) {
       setCode(code + mapping[value])
     }
@@ -33,11 +38,15 @@ const Home: NextPage = () => {
             return res.json()
         })
         .then((data) => {
+          setLoading(false)
           if (data) {
-            console.log(data)
             setValid(true)
-            setLoading(false)
+            clearTimeout(timerRef.current);
+            timerRef.current = setTimeout(() => {
+              setPage(1)
+            }, 1000);
           }
+          setCode('')
         })
     }
   }
@@ -46,28 +55,42 @@ const Home: NextPage = () => {
     setEmail(event.currentTarget.value)
   }
 
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.currentTarget.value)
+  }
+
   const handleEmailSubmit = (event: any) => {
+    event.preventDefault()
     setLoading(true)
-    fetch(`http://localhost:8080/codes/`, {
-      body: JSON.stringify({
-        'code': code,
-        'email': email
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST'
-    })
+    fetch(`https://open.kickbox.com/v1/disposable/${email}`)
+      .then((res) => res.json())
       .then((res) => {
-        console.log(res)
-        if (res.status == 200)
-          return res.json()
-      })
-      .then((data) => {
-        if (data) {
-          console.log(data)
-          setRegistered(true)
+        if (res.disposable) {
+          alert('This email address is not allowed')
           setLoading(false)
+        } else {
+          fetch(`http://localhost:8080/codes/`, {
+            body: JSON.stringify({
+              'code': code,
+              'name': name,
+              'email': email
+            }),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            method: 'POST'
+          })
+            .then((res) => {
+              if (res.status == 200)
+                return res.json()
+            })
+            .then((data) => {
+              setLoading(false)
+              if (data) {
+                setRegistered(true)
+                console.log('REGISTERED !!!')
+              }
+            })
         }
       })
 
@@ -88,64 +111,118 @@ const Home: NextPage = () => {
     // }
   }
 
+  const displayedCode = code.padEnd(6, '_')
   return (
     <>
-      {isValid && <div>VALIDE</div>}
-      {isLoading && <div>LOADING</div>}
-      {isRegistered && <div>REGISTERED</div>}
-      {!isValid &&
-        (<div>
-          <Head>
-            <title>???</title>
-            <link rel="icon" href="/favicon.ico" />
-          </Head>
-          <Container>
-            <div id="keypad">
-              <div id="panel">
-                <p className="innahpanel">{code}</p>
-              </div>
-              <div className="button-row">
-                <div className="button" id="b1" data-value="1" onClick={handleClick(1)}>1<span>&nbsp;</span></div>
-                <div className="button" id="b2" data-value="2" onClick={handleClick(2)}>2<span>ABC</span></div>
-                <div className="button" id="b3" data-value="3" onClick={handleClick(3)}>3<span>DEF</span></div>
-              </div>
-              <div className="button-row">
-                <div className="button" id="b4" data-value="4" onClick={handleClick(4)}>4<span>GHI</span></div>
-                <div className="button" id="b5" data-value="5" onClick={handleClick(5)}>5<span>JKL</span></div>
-                <div className="button" id="b6" data-value="6" onClick={handleClick(6)}>6<span>MNO</span></div>
-              </div>
-              <div className="button-row">
-                <div className="button" id="b7" data-value="7" onClick={handleClick(7)}>7<span>PQRS</span></div>
-                <div className="button" id="b8" data-value="8" onClick={handleClick(8)}>8<span>TUV</span></div>
-                <div className="button" id="b9" data-value="9" onClick={handleClick(9)}>9<span>WXYZ</span></div>
-              </div>
-              <div className="button-row">
-                <div className="button" id="bx" data-value="x" onClick={handleClick(-1)}>X<span>CLEAR</span></div>
-                <div className="button" id="b0" data-value="0" onClick={handleClick(0)}>0<span>+</span></div>
-                <div className="button" id="bg" data-value="g" onClick={handleSubmit}>🔑<span>GO!</span></div>
-              </div>
-            </div>
-          </Container>
-        </div>)
-      }
-      {isValid &&
+      {page == 0 &&
         (
-          <Container maxWidth="xs">
-            <Box component="form"
-              sx={{ mx: 'auto', my: '50px' }}>
-              <div>
-                <TextField
-                  label="Adresse email"
-                  value={email}
-                  onChange={handleEmailChange}
-                  inputProps={{ type: 'email' }}
-                  fullWidth
-                />
-              </div>
-              <Box component="div" sx={{ my: '10px' }}>
-                <Button variant="contained" onClick={handleEmailSubmit}>Entrer</Button>
-              </Box>
-            </Box>
+          <Container sx={{ textAlign: 'center', pt: 5 }}>
+            <Typography sx={{ mx: 'auto', mb: 3, width: '400px' }} variant="h4" component="div" gutterBottom>Welcome to Konkrete private access</Typography>
+            <Typography sx={{ mx: 'auto', mb: 5, width: '260px' }} variant="body1" component="div" gutterBottom>This access is reserved to secret code holders to unlock exclusive access to private launch</Typography>
+            <Container maxWidth="xs">
+              <Card sx={{ maxWidth: '350px', mx: 'auto', borderRadius: '40px' }}>
+                <CardContent sx={{ p: 4 }}>
+                  <Typography sx={{ mb: 2 }} gutterBottom>Enter code</Typography>
+                  <Box sx={{ height: '50px', width: '100%', mb: 5 }}>
+                    {
+                      !isValid && (<Typography component="span" variant="h3" sx={{ color: '#4D4F61', fontFamily: 'Major Mono Display' }}>{displayedCode}</Typography>)
+                    }
+                    {
+                      isValid && (
+                        <Typography component="span" variant="h5" sx={{ color: '#74D79A', fontFamily: 'Major Mono Display', fontWeight: '600' }}>code accepted</Typography>
+                      )
+                    }
+                  </Box>
+                  <Grid container spacing={3}>
+                    <Grid container item justifyContent="space-between">
+                      <Grid item onClick={handleClick(1)}><IconButton size="large" sx={{ color: '#4D4F61', bgcolor: '#F7F7FC', width: 70, height: 70 }}>1</IconButton></Grid>
+                      <Grid item onClick={handleClick(2)}><IconButton size="large" sx={{ color: '#4D4F61', bgcolor: '#F7F7FC', width: 70, height: 70 }}>2</IconButton></Grid>
+                      <Grid item onClick={handleClick(3)}><IconButton size="large" sx={{ color: '#4D4F61', bgcolor: '#F7F7FC', width: 70, height: 70 }}>3</IconButton></Grid>
+                    </Grid>
+                    <Grid container item justifyContent="space-between">
+                      <Grid item onClick={handleClick(4)}><IconButton size="large" sx={{ color: '#4D4F61', bgcolor: '#F7F7FC', width: 70, height: 70 }}>4</IconButton></Grid>
+                      <Grid item onClick={handleClick(5)}><IconButton size="large" sx={{ color: '#4D4F61', bgcolor: '#F7F7FC', width: 70, height: 70 }}>5</IconButton></Grid>
+                      <Grid item onClick={handleClick(6)}><IconButton size="large" sx={{ color: '#4D4F61', bgcolor: '#F7F7FC', width: 70, height: 70 }}>6</IconButton></Grid>
+                    </Grid>
+                    <Grid container item justifyContent="space-between">
+                      <Grid item onClick={handleClick(7)}><IconButton size="large" sx={{ color: '#4D4F61', bgcolor: '#F7F7FC', width: 70, height: 70 }}>7</IconButton></Grid>
+                      <Grid item onClick={handleClick(8)}><IconButton size="large" sx={{ color: '#4D4F61', bgcolor: '#F7F7FC', width: 70, height: 70 }}>8</IconButton></Grid>
+                      <Grid item onClick={handleClick(9)}><IconButton size="large" sx={{ color: '#4D4F61', bgcolor: '#F7F7FC', width: 70, height: 70 }}>9</IconButton></Grid>
+                    </Grid>
+                    <Grid container item justifyContent="space-between">
+                      <Grid item onClick={handleClick(-1)}><IconButton size="large" sx={{ bgcolor: '#F7F7FC', width: 70, height: 70 }}><CloseIcon size={22} color='#4D4F61' /></IconButton></Grid>
+                      <Grid item onClick={handleClick(0)}><IconButton size="large" sx={{ color: '#4D4F61', bgcolor: '#F7F7FC', width: 70, height: 70 }}>0</IconButton></Grid>
+                      <Grid item onClick={handleSubmit}><IconButton size="large" sx={{ bgcolor: '#F7F7FC', width: 70, height: 70 }}><CheckIcon size={22} color='#4D4F61' /></IconButton></Grid>
+                    </Grid>
+                  </Grid>
+                </CardContent>
+              </Card>
+            </Container>
+          </Container>
+        )
+      }
+      {
+        page == 1 &&
+        (
+          <Container maxWidth="md" sx={{ mt: 20 }}>
+            <Grid container spacing={1}>
+              <Grid item md={5} xs={12}>
+                <Typography variant="h4" sx={{ mb: 3 }} gutterBottom>Congrats, you’re in !</Typography>
+                <Typography variant="subtitle1" gutterBottom>Almost there</Typography>
+                <Typography variant="body2" sx={{ width: '75%' }} gutterBottom>Fill in the identification fields so that we know it’s you. Your data is protected and will only serve to unlock access to the platform. </Typography>
+              </Grid>
+              <Grid item md={7} xs={12}>
+                <Card sx={{ borderRadius: '30px' }}>
+                  <CardContent sx={{ p: 5 }}>
+                    <Box component="form" onSubmit={handleEmailSubmit}>
+                      <Grid container spacing={1}>
+                        <Grid item xs={6}>
+                          <TextField
+                            label="Name"
+                            value={name}
+                            onChange={handleNameChange}
+                            fullWidth
+                            required
+                            sx={{
+                              '& label': { paddingLeft: (theme) => theme.spacing(2) },
+                              '& input': { paddingLeft: (theme) => theme.spacing(3.5) },
+                              '& fieldset': {
+                                paddingLeft: (theme) => theme.spacing(2.5),
+                                borderRadius: '30px',
+                              },
+                            }}
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <TextField
+                            label="Email address"
+                            placeholder="elon@tesla.com"
+                            variant="outlined"
+                            value={email}
+                            onChange={handleEmailChange}
+                            fullWidth
+                            required
+                            inputProps={{ type: 'email', inputMode: 'email' }}
+                            sx={{
+                              '& label': { paddingLeft: (theme) => theme.spacing(2) },
+                              '& input': { paddingLeft: (theme) => theme.spacing(3.5) },
+                              '& fieldset': {
+                                paddingLeft: (theme) => theme.spacing(2.5),
+                                borderRadius: '30px',
+                              },
+                            }}
+                          />
+                        </Grid>
+                      </Grid>
+                      <Box component="div" sx={{ my: '10px' }}>
+                        <Button variant="contained" size="large" type='submit' sx={{ borderRadius: '30px', mt: 2 }}>Submit</Button>
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
+
           </Container>
         )
       }

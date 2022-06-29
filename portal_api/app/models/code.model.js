@@ -2,6 +2,7 @@ module.exports = mongoose => {
     var schema = mongoose.Schema(
         {
             value: String,
+            name: String,
             email: String,
             usageCount: Number,
         },

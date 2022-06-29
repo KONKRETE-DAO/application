@@ -1,5 +1,37 @@
 html,
 body {
+  background-image: url('../public/background.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 0;
+  margin: 0;
+  /* font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "FontelloRegular";
+  src: url("/fonts/Fontello-Regular.woff2") format("woff2");
+}
+
+#__next {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* 
+html,
+body {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
@@ -39,11 +71,12 @@ a {
   padding: 20px;
   padding-left: 28px;
   border: 2px solid #999;
-  /* background: url(../img/metal.jpg) no-repeat; */
+  background: url(../img/metal.jpg) no-repeat;
   background-size: 100% auto;
   border-radius: 5px;
   box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.3);
-  font-family: "Open Sans", sans-serif;
+  font-family: "Open Sans",
+  sans-serif;
 }
 
 .button {
@@ -51,7 +84,7 @@ a {
   height: 71px;
   padding-top: 14px;
 
-  /* background: url("../img/button.png") no-repeat; */
+  background: url("../img/button.png") no-repeat;
   background-size: 100% 100%;
   text-align: center;
   font-size: 26px;
@@ -66,8 +99,7 @@ a {
 }
 
 .button:hover {
-  /* background: url("../img/button2.png") no-repeat; */
-
+  background: url("../img/button2.png") no-repeat;
   background-size: 100% 100%;
   text-indent: -5px;
   text-shadow: 2px 2px 0px #999;
@@ -200,43 +232,11 @@ a {
   text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
 }
 
-#item1 .itemhead {
-  /* background-image: url("../img/badges/level1.png"); */
-}
-
-#item2 .itemhead {
-  /* background-image: url("../img/badges/level2.png"); */
-}
-
-#item3 .itemhead {
-  /* background-image: url("../img/badges/level3.png"); */
-}
-
-#item4 .itemhead {
-  /* background-image: url("../img/badges/level4.png"); */
-}
-
-#item5 .itemhead {
-  /* background-image: url("../img/badges/level5.png"); */
-}
-
-#item6 .itemhead {
-  /* background-image: url("../img/badges/level6.png"); */
-}
-
-#item7 .itemhead {
-  /* background-image: url("../img/badges/level7.png"); */
-}
-
-#item8 .itemhead {
-  /* background-image: url("../img/badges/level8.png"); */
-}
-
 .lock {
   float: right;
   width: 60px;
   height: 60px;
-  /* background: url("../img/lock.png") no-repeat; */
+  background: url("../img/lock.png") no-repeat;
   background-size: 40px 40px;
   margin-top: -10px;
   margin-right: -10px;
@@ -260,3 +260,5 @@ a {
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   cursor: pointer;
 }
+
+*/

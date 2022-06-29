@@ -11,6 +11,10 @@ class MyDocument extends Document {
                         rel="stylesheet"
                     />
                     <link
+                        href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap"
+                        rel="stylesheet"
+                    />
+                    <link
                         rel="preload"
                         href="/fonts/Fontello-Regular.woff2"
                         as="font"

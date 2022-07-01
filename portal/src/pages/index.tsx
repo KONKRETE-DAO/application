@@ -4,6 +4,7 @@ import Head from 'next/head'
 import { Box, Button, ButtonBase, Card, CardContent, Container, Grid, IconButton, TextField, Typography } from '@mui/material'
 import CloseIcon from '../common/components/icons/CloseIcon'
 import CheckIcon from '../common/components/icons/CheckIcon'
+import Cors from 'cors'
 
 const mapping = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 const url = "https://api.konkretedao.com/api"

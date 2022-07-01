@@ -19,7 +19,7 @@ codesController
         let alreadyRegistered = false;
         while (true) {
             newReferralCode = utils.generateRandomCode(6)
-            const code = new Code({ value: newReferralCode, name: name, email: email, usageCount: 0 });
+            const code = new Code({ value: newReferralCode, referralCode: referralCode, name: name, email: email, usageCount: 0 });
             try {
                 const ret = await code.save()
                 if (ret) {

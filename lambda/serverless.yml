@@ -3,10 +3,10 @@ service: sls-express-mongodb
 custom:
   secrets: ${file(secrets.json)}
   customDomain:
-    domainName: 'api.konkretedao.com'
+    domainName: api.konkretedao.com
     basePath: ''
     stage: ${self:provider.stage}
-    createRoute53Record: true
+    createRoute53Record: false
 provider:
   name: aws
   deploymentMethod: direct

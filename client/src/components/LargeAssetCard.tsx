@@ -99,14 +99,12 @@ const CustomForm = ({ assetId }: any) => {
     )
 }
 
-
-
 const LargeAssetCard = ({ ...props }) => {
     const [cover, updateCover] = useState<string>();
 
     useEffect(() => {
         fetchCover()
-    }, [cover]);
+    }, []);
 
     const fetchCover = async () => {
         const cover = await Storage.get(`${props.slug}/cover.jpg`, {
@@ -116,8 +114,6 @@ const LargeAssetCard = ({ ...props }) => {
     }
 
     const loc = `${props.address.cityName || ''}, ${props.address.state || ''}`
-
-    console.log(props.mailingListUrl)
 
     return <Card sx={{
         marginLeft: 'auto', marginRight: 'auto', marginTop: 10, marginBottom: 5, borderRadius: '20px'

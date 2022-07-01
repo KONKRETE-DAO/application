@@ -17,9 +17,9 @@ const Dashboard: NextPage = () => {
             fetchEstates()
         );
         return () => subscription.unsubscribe();
-    }, [fetchEstates]);
+    }, []);
 
-    async function fetchEstates() {
+    const fetchEstates = async () => {
         const estates = await DataStore.query(EstateModel);
         updateEstates(estates);
     }

@@ -16,26 +16,15 @@ function humanize(str: string) {
     return frags.join(' ');
 }
 
-const AssetCard = ({ ...props }) => {
+const AssetTableRow = ({ ...props }) => {
     const { id } = props
     const [cover, updateCover] = useState<string>();
 
     useEffect(() => {
         fetchCover()
-    }, [cover, fetchCover]);
+    }, []);
 
-    // const CustomLink = useMemo(
-    //     () =>
-    //         forwardRef<HTMLAnchorElement, Omit<LinkProps, 'to'>>(function Link(
-    //             linkProps,
-    //             ref,
-    //         ) {
-    //             return <Link ref={ref} href={`/assets/${id}`} {...linkProps} />;
-    //         }),
-    //     [id],
-    // );
-
-    async function fetchCover() {
+    const fetchCover = async () => {
         const cover = await Storage.get(`${props.slug}/cover.jpg`, {
             level: "public"
         });
@@ -125,4 +114,4 @@ const AssetCard = ({ ...props }) => {
     //     </Card >
 }
 
-export default AssetCard;
+export default AssetTableRow;

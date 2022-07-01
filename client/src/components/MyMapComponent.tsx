@@ -20,7 +20,7 @@ const MyMapComponent = ({
         });
 
         marker.setMap(map)
-    });
+    }, []);
 
     return <div ref={ref} id="map" style={{ width: '100%', height: 250, marginTop: 10, marginBottom: 30 }} ></div>;
 }

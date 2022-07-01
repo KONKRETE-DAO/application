@@ -2,19 +2,15 @@ import { useState, useEffect } from 'react'
 import {
     Card, CardActions,
     CardContent,
-    Container,
     Chip,
     Box,
     Avatar,
     Typography, Stack
 } from '@mui/material';
 import Link from 'next/link'
-import ClockIcon from '../common/components/icons/ClockIcon';
 import GraphAscendIcon from '../common/components/icons/GraphAscendIcon';
 import MarkIcon from '../common/components/icons/MarkIcon';
 import LightningIcon from '../common/components/icons/LightningIcon';
-import HeaderGradient from '../common/components/elements/HeaderGradient';
-import { EstateModel } from '../models';
 import { Storage } from '@aws-amplify/storage';
 
 function humanize(str: string) {
@@ -31,7 +27,7 @@ const AssetCard = ({ ...props }) => {
 
     useEffect(() => {
         fetchCover()
-    }, [cover]);
+    }, []);
 
     const fetchCover = async () => {
         const cover = await Storage.get(`${props.slug}/cover.jpg`, {

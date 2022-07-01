@@ -65,8 +65,7 @@ const AssetDataTabs = ({ ...props }: any) => {
 
     useEffect(() => {
         fetchImages()
-    }, [images]);
-
+    }, []);
 
     const fetchImages = async () => {
         const image1 = await Storage.get(`${props.slug}/gallery/image1.jpg`, {
@@ -85,8 +84,6 @@ const AssetDataTabs = ({ ...props }: any) => {
     const loc = `${props.address.city_name}, ${props.address.state}`
     const handleClick = (index: number) => () => setActive(index);
     const nf = new Intl.NumberFormat('en-US');
-
-    console.log(props.highlights)
 
     return <>
         <Stack direction='row' gap={2} sx={{ mb: '30px' }}>
@@ -189,7 +186,7 @@ const AssetDataTabs = ({ ...props }: any) => {
                     Property location
                 </Typography>
                 <Grid key="0" container spacing={{ xs: 0, sm: 0, md: 5 }}>
-                    <Grid item spacing={0} md={4} sm={12} xs={12}>
+                    <Grid item md={4} sm={12} xs={12}>
                         <Box sx={{ width: '100%', display: 'flex' }}>
                             <Box sx={{ width: 180, height: 180, position: 'relative', display: 'inline-flex', mt: 3, mx: 'auto' }}>
                                 <CircularProgress size='180px' thickness={4.5} variant="determinate" value={props.trustIndice} sx={{ color: '#B3D768' }} />

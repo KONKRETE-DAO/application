@@ -6,7 +6,7 @@ import CloseIcon from '../common/components/icons/CloseIcon'
 import CheckIcon from '../common/components/icons/CheckIcon'
 
 const mapping = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-const url = "https://23tmla18e6.execute-api.eu-west-3.amazonaws.com/production/api"
+const url = "https://api.konkretedao.com/api"
 
 const Home: NextPage = () => {
   const [code, setCode] = useState('')
@@ -33,6 +33,7 @@ const Home: NextPage = () => {
   const handleSubmit = (event: any) => {
     if (code.length == 6) {
       setLoading(true)
+      console.log(`${url}/codes/${code}`)
       fetch(`${url}/codes/${code}`)
         .then((res) => {
           if (res.status == 200)

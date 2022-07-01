@@ -2,6 +2,11 @@
 service: sls-express-mongodb
 custom:
   secrets: ${file(secrets.json)}
+  customDomain:
+    domainName: 'api.konkretedao.com'
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: true
 provider:
   name: aws
   deploymentMethod: direct
@@ -18,10 +23,11 @@ functions:
       - http:
           path: /
           method: ANY
-          cors: false
+          cors: true
       - http:
           path: /{proxy+}
           method: ANY
-          cors: false
+          cors: true
 plugins:
   - serverless-offline
+  - serverless-domain-manager

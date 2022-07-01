@@ -6,6 +6,7 @@ import CloseIcon from '../common/components/icons/CloseIcon'
 import CheckIcon from '../common/components/icons/CheckIcon'
 
 const mapping = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+const url = "https://23tmla18e6.execute-api.eu-west-3.amazonaws.com/production/api"
 
 const Home: NextPage = () => {
   const [code, setCode] = useState('')
@@ -32,7 +33,7 @@ const Home: NextPage = () => {
   const handleSubmit = (event: any) => {
     if (code.length == 6) {
       setLoading(true)
-      fetch(`http://localhost:8080/codes/${code}`)
+      fetch(`${url}/codes/${code}`)
         .then((res) => {
           if (res.status == 200)
             return res.json()
@@ -45,8 +46,9 @@ const Home: NextPage = () => {
             timerRef.current = setTimeout(() => {
               setPage(1)
             }, 1000);
+          } else {
+            setCode('')
           }
-          setCode('')
         })
     }
   }
@@ -69,7 +71,7 @@ const Home: NextPage = () => {
           alert('This email address is not allowed')
           setLoading(false)
         } else {
-          fetch(`http://localhost:8080/codes/`, {
+          fetch(`${url}/codes/`, {
             body: JSON.stringify({
               'code': code,
               'name': name,
@@ -88,27 +90,16 @@ const Home: NextPage = () => {
               setLoading(false)
               if (data) {
                 setRegistered(true)
-                console.log('REGISTERED !!!')
+                setName('')
+                setEmail('')
+                clearTimeout(timerRef.current);
+                timerRef.current = setTimeout(() => {
+                  window.location.replace('https://www.app.konkretedao.com');
+                }, 1000);
               }
             })
         }
       })
-
-    // if (code.length == 6) {
-    //   setLoading(true)
-    //   fetch(`http://localhost:8080/codes/${code}`)
-    //     .then((res) => {
-    //       if (res.status == 200)
-    //         return res.json()
-    //     })
-    //     .then((data) => {
-    //       if (data) {
-    //         console.log(data)
-    //         setValid(true)
-    //         setLoading(false)
-    //       }
-    //     })
-    // }
   }
 
   const displayedCode = code.padEnd(6, '_')
@@ -214,8 +205,21 @@ const Home: NextPage = () => {
                           />
                         </Grid>
                       </Grid>
-                      <Box component="div" sx={{ my: '10px' }}>
-                        <Button variant="contained" size="large" type='submit' sx={{ borderRadius: '30px', mt: 2 }}>Submit</Button>
+
+                      <Box component="div" sx={{ mb: '10px', mt: '16px' }}>
+                        <Grid container alignItems="center" justifyContent="space-between" spacing={1}>
+                          <Grid item>
+                            <Button variant="contained" size="large" type='submit' sx={{ borderRadius: '30px' }}>Submit</Button>
+                          </Grid>
+                          <Grid item>
+                            {isRegistered && (
+                              <Typography component="span" variant="h6" sx={{ color: '#74D79A', fontFamily: 'Major Mono Display', fontWeight: '600' }}>
+                                unlocked
+                              </Typography>
+                            )}
+                          </Grid>
+                        </Grid>
+
                       </Box>
                     </Box>
                   </CardContent>

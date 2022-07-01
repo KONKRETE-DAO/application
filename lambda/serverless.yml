@@ -1,0 +1,27 @@
+# serverless.yml
+service: sls-express-mongodb
+custom:
+  secrets: ${file(secrets.json)}
+provider:
+  name: aws
+  deploymentMethod: direct
+  runtime: nodejs14.x
+  stage: ${self:custom.secrets.NODE_ENV}
+  region: eu-west-3
+  environment: 
+    NODE_ENV: ${self:custom.secrets.NODE_ENV}
+    DB: ${self:custom.secrets.DB}
+functions:
+  app:
+    handler: server.run
+    events:
+      - http:
+          path: /
+          method: ANY
+          cors: false
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: false
+plugins:
+  - serverless-offline

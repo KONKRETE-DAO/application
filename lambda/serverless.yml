@@ -16,6 +16,7 @@ provider:
   environment: 
     NODE_ENV: ${self:custom.secrets.NODE_ENV}
     DB: ${self:custom.secrets.DB}
+    API_KEY: ${self:custom.secrets.API_KEY}
 functions:
   app:
     handler: server.run

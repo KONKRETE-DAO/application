@@ -51,6 +51,10 @@ codesController
 
 codesController
     .get('/', async (req, res, next) => {
+        if (req.headers['x-api-key'] !== process.env.API_KEY) {
+            res.status(403).send({ message: "Forbidden" });
+            return;
+        }
         Code.find({})
             .then(data => {
                 if (!data)
@@ -82,7 +86,12 @@ codesController
 
 codesController
     .post('/:number', async (req, res, next) => {
-        for (let i = 0; i < 200; i++) {
+        if (req.headers['x-api-key'] !== process.env.API_KEY) {
+            res.status(403).send({ message: "Forbidden" });
+            return;
+        }
+        const len = Math.max(0, req.params.number);
+        for (let i = 0; i < len; i++) {
             let codeIsDup = true;
             while (codeIsDup) {
                 const num = utils.generateRandomCode(6)
@@ -96,6 +105,6 @@ codesController
                 })
             }
         }
-        res.send({ message: "Success" });
+        res.send({ message: "Success: generated " + len + " new codes" });
     })
 module.exports = codesController

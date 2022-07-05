@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router'
-import { AppBar, Chip, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem, Paper, Link } from '@mui/material';
+import { AppBar, Chip, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem, Paper } from '@mui/material';
 import { useWeb3React } from '@web3-react/core'
 import { InjectedConnector } from "@web3-react/injected-connector"
 import MenuIcon from '@mui/icons-material/Menu'
+import Link from 'next/link'
+import { Link as MUILink } from '@mui/material';
 
 const pages = [
     {
@@ -117,10 +119,12 @@ const ResponsiveAppBar = () => {
                             }}
                         >
                             {pages.map((page) => (
-                                <Link key={page.label} href={router.asPath != page.url ? page.url : '#'} underline="none">
-                                    <MenuItem onClick={handleCloseNavMenu}>
-                                        <Typography textAlign="center">{page.label}</Typography>
-                                    </MenuItem>
+                                <Link key={page.label} href={router.asPath != page.url ? page.url : '#'} passHref>
+                                    <MUILink underline="none">
+                                        <MenuItem onClick={handleCloseNavMenu}>
+                                            <Typography textAlign="center">{page.label}</Typography>
+                                        </MenuItem>
+                                    </MUILink>
                                 </Link>
                             ))}
                         </Menu>
@@ -144,14 +148,15 @@ const ResponsiveAppBar = () => {
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
-                            <Link key={page.label}
-                                href={router.asPath != page.url ? page.url : '#'} underline="none">
-                                <Button
-                                    onClick={handleCloseNavMenu}
-                                    sx={{ my: 2, display: 'block' }}
-                                >
-                                    {page.label}
-                                </Button>
+                            <Link key={page.label} href={router.asPath != page.url ? page.url : '#'} passHref>
+                                <MUILink underline="none">
+                                    <Button
+                                        onClick={handleCloseNavMenu}
+                                        sx={{ my: 2, display: 'block' }}
+                                    >
+                                        {page.label}
+                                    </Button>
+                                </MUILink>
                             </Link>
                         ))}
                     </Box>

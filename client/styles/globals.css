@@ -1,6 +1,6 @@
 html,
 body {
-  background-image: url('../public/background.png');
+  background-image: url("../public/background.png");
   background-size: cover;
   background-repeat: no-repeat;
   padding: 0;
@@ -13,9 +13,17 @@ a {
   color: inherit;
   text-decoration: none;
 }
-
+.lol {
+  color: blue;
+}
 * {
   box-sizing: border-box;
+}
+.mintButton {
+  background-color: black;
+  color: aliceblue;
+  border-radius: 60px;
+  padding: 5px;
 }
 
 @font-face {

@@ -176,7 +176,7 @@ const BuyButtons = () => {
     <>
       <div>
         <span>
-          {supply}/{MAX_SUPPLY}
+          {supply.slice(0, supply.indexOf(".") + 3)}/{MAX_SUPPLY}
         </span>
       </div>
       {currentStep == "Buy Tokens" ? (
@@ -199,7 +199,13 @@ const BuyButtons = () => {
         <span>{currentStep}</span>
       )}
 
-      {account ? <a>You possess {tokenBalance}</a> : ""}
+      {account ? (
+        <a>
+          You possess {tokenBalance.slice(0, tokenBalance.indexOf(".") + 3)}
+        </a>
+      ) : (
+        ""
+      )}
       {currentStep === "Buy Tokens" ? (
         <button className="mintButton" onClick={getMax}>
           MAX

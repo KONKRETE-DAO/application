@@ -76,7 +76,7 @@ const ResponsiveAppBar = () => {
     activate(Injected, (e) => alert("Please switch to the Polygon Mainnet."));
     // activate(WalletConnect, (e) =>
     //   alert("Please switch to the Polygon Mainnet.")
-    );
+    // );
   };
 
   let shortAccount;

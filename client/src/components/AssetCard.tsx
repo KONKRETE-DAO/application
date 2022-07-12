@@ -1,12 +1,5 @@
 import { useState, useEffect } from 'react'
-import {
-    Card, CardActions,
-    CardContent,
-    Chip,
-    Box,
-    Avatar,
-    Typography, Stack
-} from '@mui/material';
+import { Card, CardActions, CardContent, Chip, Box, Avatar, Typography } from '@mui/material';
 import Link from 'next/link'
 import GraphAscendIcon from '../common/components/icons/GraphAscendIcon';
 import MarkIcon from '../common/components/icons/MarkIcon';
@@ -73,10 +66,9 @@ const AssetCard = ({ ...props }) => {
                     {props.description}
                 </Typography>
             </CardContent>
-            <CardActions
-                sx={{ justifyContent: 'center' }}
-            >
-                <Link href={`/assets/${props.id}`}><Chip label='Learn More' color="primary" variant="outlined" clickable /></Link>
+            <CardActions sx={{ justifyContent: 'center' }}>
+                <Link href={`/assets/${props.id}`}><Chip label='More Info' color="primary" variant="outlined" clickable /></Link>
+                <Link href={`/checkout/${props.id}`}><Chip label='Buy Now' color="primary" clickable /></Link>
             </CardActions>
         </CardContent>
     </Card >

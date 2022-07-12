@@ -7,7 +7,7 @@ import MyMapComponent from "../../components/MyMapComponent";
 import { Container, Box } from "@mui/material";
 import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import _ from "lodash";
-import { EstateModel, GMapsConfigModel } from "../../models";
+import { EstateModel } from "../../models";
 import { DataStore } from "aws-amplify";
 
 const fetcher = (...args: [RequestInfo, RequestInit | undefined]) =>
@@ -45,6 +45,8 @@ const Asset: NextPage = ({}) => {
   return (
     <Container sx={{ mb: 10 }}>
       <LargeAssetCard {...estate}></LargeAssetCard>
+
+      <AssetDataTabs {...estate}></AssetDataTabs>
       <Wrapper
         apiKey={"AIzaSyDlw8AtkvLkV3WNnfB6Rm7qKyII5j56k00"}
         render={render}
@@ -59,8 +61,6 @@ const Asset: NextPage = ({}) => {
           />
         )}
       </Wrapper>
-
-      <AssetDataTabs {...estate}></AssetDataTabs>
     </Container>
   );
 };

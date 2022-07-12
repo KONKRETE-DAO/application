@@ -1,14 +1,7 @@
 import { BigNumber, ethers } from "ethers";
 import { useState, useEffect } from "react";
-import styled from "styled-components";
 
-import {
-  getContract,
-  contractAddress,
-  maxMint,
-  tokenPrice,
-  MAX_SUPPLY,
-} from "../Helpers/contractInfo";
+import { getContract, contractAddress, maxMint, MAX_SUPPLY } from "../Helpers/contractInfo";
 import { getCurrency } from "../Helpers/currency";
 import { getProofs, getRoot } from "../Helpers/merkleTree";
 import { useWeb3React } from "@web3-react/core";
@@ -18,7 +11,7 @@ const BuyButtons = () => {
   //connector, library, chainId, account, activate, deactivate
   const { account, library, chainId } = useWeb3React();
   const [mintNumber, setMintNumber] = useState(0);
-  const [supply, setSupply] = useState("??");
+  const [supply, setSupply] = useState("?");
   const [error, setError] = useState(String);
   const [ratio, setRatio] = useState(Number);
   const [currencyBalance, setCurrencyBalance] = useState(String);
@@ -63,9 +56,11 @@ const BuyButtons = () => {
         );
         setError(goodError);
       }
+      console.log("error", error)
       // We have to push the error message one the screen
     }
   };
+
   const approve = async () => {
     setTxRef("");
     setError("");
@@ -95,14 +90,21 @@ const BuyButtons = () => {
     if (account && contractAddress) {
       try {
         const myContractSigner = getContract(library, account);
+        
         const sup = ethers.utils.formatEther(
           await myContractSigner.totalSupply()
         );
 
         const data = await myContractSigner.variables();
+
         const _currency = getCurrency(library, account);
 
         const _ratio = parseFloat(data.cexRatioX10000) / (10000 * 10);
+
+        // 1EUR = 1.01 | 99.95%
+        // 0.9995
+        // 9995
+
         const _currencyAllowance = ethers.utils.formatEther(
           await _currency.allowance(account, contractAddress)
         );
@@ -123,6 +125,8 @@ const BuyButtons = () => {
         setRatio(_ratio);
 
         const step = parseInt(data.step);
+        console.log("data.step = ", data.step)
+
         switch (step) {
           case 0:
             setCurrentStep("Soon");
@@ -134,7 +138,6 @@ const BuyButtons = () => {
             setCurrentStep("Soldout");
             break;
         }
-
         setSupply(String(sup));
       } catch (err: any) {
         const buff = err.message;
@@ -167,7 +170,7 @@ const BuyButtons = () => {
     }
     const presque = maxMint > theoric ? theoric : maxMint;
     const result = presque - parseFloat(parseFloat(tokenBought).toFixed(2));
-    console.log(result);
+    console.log("result", result);
     setMaxBuy(result);
     setMintNumber(result);
   };

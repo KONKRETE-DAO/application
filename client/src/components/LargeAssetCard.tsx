@@ -17,7 +17,7 @@ import Image from "next/image";
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
 import { InjectedConnector } from "@web3-react/injected-connector";
-import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
+
 import { Storage } from "@aws-amplify/storage";
 import { WaitListItemModel } from "../models";
 import { DataStore } from "aws-amplify";

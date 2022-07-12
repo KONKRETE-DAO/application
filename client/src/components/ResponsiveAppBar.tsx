@@ -42,7 +42,7 @@ const Injected = new InjectedConnector({
 });
 
 const WalletConnect = new WalletConnectConnector({
-  rpc: `https://polygon-mainnet.g.alchemy.com/v2/MVWSoFGkdGTUwq-TBPlaP23HvWYCxps7`,
+  rpc: `https://polygon-rpc.com`,
   bridge: "https://bridge.walletconnect.org",
   qrcode: true,
 });

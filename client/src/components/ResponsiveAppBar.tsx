@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import { useWeb3React } from "@web3-react/core";
 import { InjectedConnector } from "@web3-react/injected-connector";
-import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
+// import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 import MenuIcon from "@mui/icons-material/Menu";
 import Link from "next/link";
 import { Link as MUILink } from "@mui/material";
@@ -41,11 +41,11 @@ const Injected = new InjectedConnector({
   supportedChainIds: [137, 80001], // Ethereum, Polygon (need to remove ethereum)
 });
 
-const WalletConnect = new WalletConnectConnector({
-  rpc: `https://polygon-rpc.com`,
-  bridge: "https://bridge.walletconnect.org",
-  qrcode: true,
-});
+// const WalletConnect = new WalletConnectConnector({
+//   rpc: `https://polygon-rpc.com`,
+//   bridge: "https://bridge.walletconnect.org",
+//   qrcode: true,
+// });
 
 const ResponsiveAppBar = () => {
   const { activate, deactivate } = useWeb3React();
@@ -73,9 +73,9 @@ const ResponsiveAppBar = () => {
   };
 
   const handleActivate = () => {
-    // activate(Injected, (e) => alert("Please switch to the Polygon Mainnet."));
-    activate(WalletConnect, (e) =>
-      alert("Please switch to the Polygon Mainnet.")
+    activate(Injected, (e) => alert("Please switch to the Polygon Mainnet."));
+    // activate(WalletConnect, (e) =>
+    //   alert("Please switch to the Polygon Mainnet.")
     );
   };
 

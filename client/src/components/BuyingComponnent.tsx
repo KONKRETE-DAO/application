@@ -219,7 +219,7 @@ const BuyButtons = () => {
           ""
         ) : (
           <a href={`https://mumbai.polygonscan.com/tx/${txRef}`}>
-            Succeeded !! Here's your tx :<a className="lol">{txRef}</a>
+            Succeeded !! Tx reference :<a className="lol">{txRef}</a>
           </a>
         )}
       </div>

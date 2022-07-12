@@ -17,6 +17,7 @@
     "@types/lodash": "^4.14.182",
     "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
+    "@web3-react/walletconnect-connector": "^6.2.13",
     "aws-amplify": "^4.3.25",
     "ethers": "^5.6.8",
     "i": "^0.3.7",

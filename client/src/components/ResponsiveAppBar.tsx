@@ -20,6 +20,7 @@ import { InjectedConnector } from "@web3-react/injected-connector";
 import MenuIcon from "@mui/icons-material/Menu";
 import Link from "next/link";
 import { Link as MUILink } from "@mui/material";
+import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 
 const pages = [
   {
@@ -38,6 +39,11 @@ const pages = [
 
 const Injected = new InjectedConnector({
   supportedChainIds: [137, 80001], // Ethereum, Polygon (need to remove ethereum)
+});
+const Walletconnect = new WalletConnectConnector({
+  rpc: `https://polygon-mainnet.g.alchemy.com/v2/MVWSoFGkdGTUwq-TBPlaP23HvWYCxps7`,
+  bridge: "https://bridge.walletconnect.org",
+  qrcode: true,
 });
 
 const ResponsiveAppBar = () => {
@@ -66,7 +72,11 @@ const ResponsiveAppBar = () => {
   };
 
   const handleActivate = () => {
+    // if (what === "injected") {
     activate(Injected, (e) => alert("Please switch to the Polygon Mainnet."));
+    // } else {
+    // activate(Walletconnect, (e) => console.log(e));
+    // }
   };
 
   let shortAccount;

@@ -101,8 +101,8 @@ const BuyButtons = () => {
 
         const data = await myContractSigner.variables();
         const _currency = getCurrency(library, account);
-
-        const _ratio = parseFloat(data.cexRatioX10000) / (10000 * 10);
+        //cexRation --> exemple 0.9999 --> 9999
+        const _ratio = parseFloat(data.cexRatioX10000) / (10000 * tokenPrice);
         const _currencyAllowance = ethers.utils.formatEther(
           await _currency.allowance(account, contractAddress)
         );

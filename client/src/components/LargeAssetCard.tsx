@@ -17,6 +17,7 @@ import Image from "next/image";
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
 import { InjectedConnector } from "@web3-react/injected-connector";
+import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 import { Storage } from "@aws-amplify/storage";
 import { WaitListItemModel } from "../models";
 import { DataStore } from "aws-amplify";
@@ -25,6 +26,11 @@ import BuyButtons from "./BuyingComponnent";
 const Injected = new InjectedConnector({
   supportedChainIds: [137, 8001], // Ethereum, Polygon (need to remove ethereum)
 });
+// const Walletconnect = new WalletConnectConnector({
+//   rpc: `https://mainnet.infura.io/v3/yBX3L8xfJTO6WWspTMe0jtRG1tmP30Uu`,
+//   bridge: "https://bridge.walletconnect.org",
+//   qrcode: true,
+// });
 
 const CustomForm = ({ assetId }: any) => {
   const { activate, deactivate } = useWeb3React();

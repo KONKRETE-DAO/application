@@ -1,4 +1,4 @@
-import { ReactElement, useState, useEffect } from "react";
+import { ReactElement, useState, useEffect, React } from "react";
 import { Card, CardContent, Typography, Chip, Box, Button, InputAdornment, TextField, Avatar, Grid, MenuItem } from "@mui/material";
 import type { NextPage } from "next";
 
@@ -126,8 +126,8 @@ const Checkout: NextPage = ({ }) => {
     }
   }
 
-  setUserBuyStableInput(param) {
-    console.log(param);
+  const onStableInputChange = (e: React.ChangeEvent<HTMLInputElement| HTMLTextAreaElement>) =>{
+    setUserBuyStableInput(e.target.value)
   }
 
   const buyToken = () => {
@@ -135,7 +135,7 @@ const Checkout: NextPage = ({ }) => {
   }
   
   return (
-    <Container sx={{ mb: 10, width: `50vw` }}>
+    <Container sx={{ mb: 10, width: `60vw`, minWidth: `550px` }}>
 
       <Card sx={{ borderRadius: "15px", padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
         {/* TITLE */}
@@ -165,7 +165,7 @@ const Checkout: NextPage = ({ }) => {
           <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "flex-start", width: "400px" }}>
             <Typography>I want to buy (€)</Typography>
             <Box sx={{ width: "100%" }}>
-              <TextField style={{ alignSelf: "flex-end", width: "70%" }} value={userBuyStableInput} onChange={() => setUserBuyStableInput(e.target.value)} label="Amount" id="outlined-basic" type="number" variant="outlined"/>
+              <TextField style={{ alignSelf: "flex-end", width: "70%" }} value={userBuyStableInput} onChange={onStableInputChange} label="Amount" id="outlined-basic" type="number" variant="outlined"/>
               <TextField id="outlined-select-currency" select label="Currency" value={saleData.currency} onChange={handleChange} style={{ width: "30%", borderRadius: '30px' }}>
                 {currencies.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -181,11 +181,11 @@ const Checkout: NextPage = ({ }) => {
 
           <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "flex-start", width: "400px" }}>
             <Typography>I want to buy (Real Estate Token) </Typography>
-            <TextField sx={{ width: "100%" }} id="outlined-basic" type="number" label="Amount" variant="outlined" />
+            <TextField sx={{ width: "70%" }} id="outlined-basic" type="number" label="Amount" variant="outlined" />
           </Box>
           <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "flex-start", width: "400px" }}>
             <Typography>Resume</Typography>
-            <Box style={{ backgroundColor: "#F1F1F1", width: "100%" }} sx={{display: "flex", alignItems: "center"}}>
+            <Box style={{ backgroundColor: "#F1F1F1", width: "100%", padding: "15px", borderRadius: "5px"}} sx={{display: "flex", alignItems: "center"}}>
               <Typography>I buy XX RET for YY USDC</Typography>
             </Box>
           </Box>

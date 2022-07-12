@@ -36,7 +36,7 @@ const Checkout: NextPage = ({ }) => {
 
   const [estates, updateEstates] = useState<EstateModel[]>([]);
   const [saleData, setSaleData] = useState<Partial<SaleData>>({ tokenBought: "0", currency: 'EUR' });
-  const [userBuyStableInput, setUserBuyStableInput] = useState("0");
+  const [userBuyStableInput, setUserBuyStableInput] = useState("");
 
   const [error, setError] = useState(String);
 
@@ -137,9 +137,9 @@ const Checkout: NextPage = ({ }) => {
   return (
     <Container sx={{ mb: 10, width: `60vw`, minWidth: `550px` }}>
 
-      <Card sx={{ borderRadius: "15px", padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}} style={{justifyContent: "space-around", alignItems: "space-around"}}>
+      <Card sx={{ borderRadius: "15px", padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }} style={{ justifyContent: "space-around", alignItems: "space-around" }}>
         {/* TITLE */}
-        <Typography variant= "h3" sx={{ fontSize: "30px" }}>Buy tokens for : <br /> {estates[0]?.name}</Typography>
+        <Typography variant="h3" sx={{ fontSize: "30px" }}>Buy tokens for : <br /> {estates[0]?.name}</Typography>
 
         {/* INFO BOX */}
         <Box sx={{ flex: 1, alignSelf: "center", mt: 3 }}>
@@ -163,9 +163,9 @@ const Checkout: NextPage = ({ }) => {
 
         <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
           <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "flex-start", width: "400px" }}>
-            <Typography>I want to buy (€)</Typography>
+            <Typography>I want to buy (USDC)</Typography>
             <Box sx={{ width: "100%" }}>
-              <TextField style={{ alignSelf: "flex-end", width: "70%" }} value={userBuyStableInput} onChange={onStableInputChange} label="Amount" id="outlined-basic" type="number" variant="outlined" />
+              <TextField style={{ alignSelf: "flex-end", width: "70%" }} value={userBuyStableInput} onChange={onStableInputChange} label="Amount" id="outlined-basic" type="number" variant="outlined" InputProps={{ inputProps: { min: 0, max: 1950 } }}/>
               <TextField id="outlined-select-currency" select label="Currency" value={saleData.currency} onChange={handleChange} style={{ width: "30%", borderRadius: '30px' }}>
                 {currencies.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -173,17 +173,17 @@ const Checkout: NextPage = ({ }) => {
                   </MenuItem>
                 ))}
               </TextField>
+              <a href="https://www.moonpay.com/" style={{ color: "#3A71FF", right: "0px"}}>Buy USDC</a>
             </Box>
           </Box>
-          <a href="https://www.moonpay.com/" style={{ color: "#3A71FF" }}>Buy USDC</a>
 
           {/* INPUT BUY RET  */}
 
           <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "flex-start", width: "400px" }}>
             <Typography>I want to buy (Real Estate Token) </Typography>
             <Box sx={{ width: "100%", display: "flex", flexDirection: "row" }}>
-              <TextField sx={{ width: "70%" }} id="outlined-basic" type="number" label="Amount" variant="outlined" />
-              <Box style={{ border:"1px solid #C1C1C1", padding: "15px", borderRadius: "5px", width: `30%`}} sx={{ display: "flex", alignItems: "center" }}>
+              <TextField sx={{ width: "70%" }} id="outlined-basic" type="number" label="Amount" variant="outlined" InputProps={{ inputProps: { min: 0, max: 1950 } }} />
+              <Box style={{ border: "1px solid #C1C1C1", padding: "15px", borderRadius: "5px", width: `30%` }} sx={{ display: "flex", alignItems: "center" }}>
                 <Typography>RET</Typography>
               </Box>
             </Box>

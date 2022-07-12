@@ -126,21 +126,21 @@ const Checkout: NextPage = ({ }) => {
     }
   }
 
-  const onStableInputChange = (e: React.ChangeEvent<HTMLInputElement| HTMLTextAreaElement>) =>{
+  const onStableInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setUserBuyStableInput(e.target.value)
   }
 
   const buyToken = () => {
 
   }
-  
+
   return (
     <Container sx={{ mb: 10, width: `60vw`, minWidth: `550px` }}>
 
-      <Card sx={{ borderRadius: "15px", padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+      <Card sx={{ borderRadius: "15px", padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}} style={{justifyContent: "space-around", alignItems: "space-around"}}>
         {/* TITLE */}
-        <Typography variant="h3" sx={{fontSize: "30px"}}>Buy tokens for : <br /> {estates[0]?.name}</Typography>
-        
+        <Typography variant= "h3" sx={{ fontSize: "30px" }}>Buy tokens for : <br /> {estates[0]?.name}</Typography>
+
         {/* INFO BOX */}
         <Box sx={{ flex: 1, alignSelf: "center", mt: 3 }}>
           <Typography>Price of token: 10€</Typography>
@@ -151,12 +151,12 @@ const Checkout: NextPage = ({ }) => {
         {/* PROGRESSION BAR */}
         <Box sx={{ display: 'flex', flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
           <Typography sx={{ mt: 2 }}>Sale Progression</Typography>
-          <Box sx={{ display: 'flex', flexDirection: "row", width: "300px", height: "20px", borderRadius: "10px", border: "solid 1px black"}}>
+          <Box sx={{ display: 'flex', flexDirection: "row", width: "300px", height: "20px", borderRadius: "10px", border: "solid 1px black" }}>
             <Box sx={{ width: `20%`, background: "linear-gradient(-90deg, rgba(81,213,255,1) 0%, rgba(253,181,42,1) 52%, rgba(255,122,104,1) 100%);", borderRadius: "30px", opacity: "30%" }}></Box>
             <Box sx={{ width: "auto" }}></Box>
           </Box>
         </Box>
-        <Typography sx={{ alignSelf: "center", position: "relative", mb: 2}}>{ saleData.circulatingSupply }/{ MAX_SUPPLY }</Typography>
+        <Typography sx={{ alignSelf: "center", position: "relative", mb: 2 }}>{saleData.circulatingSupply}/{MAX_SUPPLY}</Typography>
         {/* <Typography sx={{ alignSelf: "center", position: "relative", mb: 2}}>{ saleData.circulatingSupply?.substring(saleData.circulatingSupply?.indexOf("."), 0) }/{ MAX_SUPPLY }</Typography> */}
 
         {/* INPUT BUY STABLE */}
@@ -165,7 +165,7 @@ const Checkout: NextPage = ({ }) => {
           <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "flex-start", width: "400px" }}>
             <Typography>I want to buy (€)</Typography>
             <Box sx={{ width: "100%" }}>
-              <TextField style={{ alignSelf: "flex-end", width: "70%" }} value={userBuyStableInput} onChange={onStableInputChange} label="Amount" id="outlined-basic" type="number" variant="outlined"/>
+              <TextField style={{ alignSelf: "flex-end", width: "70%" }} value={userBuyStableInput} onChange={onStableInputChange} label="Amount" id="outlined-basic" type="number" variant="outlined" />
               <TextField id="outlined-select-currency" select label="Currency" value={saleData.currency} onChange={handleChange} style={{ width: "30%", borderRadius: '30px' }}>
                 {currencies.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
@@ -181,16 +181,21 @@ const Checkout: NextPage = ({ }) => {
 
           <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "flex-start", width: "400px" }}>
             <Typography>I want to buy (Real Estate Token) </Typography>
-            <TextField sx={{ width: "70%" }} id="outlined-basic" type="number" label="Amount" variant="outlined" />
+            <Box sx={{ width: "100%", display: "flex", flexDirection: "row" }}>
+              <TextField sx={{ width: "70%" }} id="outlined-basic" type="number" label="Amount" variant="outlined" />
+              <Box style={{ border:"1px solid #C1C1C1", padding: "15px", borderRadius: "5px", width: `30%`}} sx={{ display: "flex", alignItems: "center" }}>
+                <Typography>RET</Typography>
+              </Box>
+            </Box>
           </Box>
           <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "flex-start", width: "400px" }}>
             <Typography>Resume</Typography>
-            <Box style={{ backgroundColor: "#F1F1F1", width: "100%", padding: "15px", borderRadius: "5px"}} sx={{display: "flex", alignItems: "center"}}>
+            <Box style={{ backgroundColor: "#F1F1F1", width: "100%", padding: "15px", borderRadius: "5px" }} sx={{ display: "flex", alignItems: "center" }}>
               <Typography>I buy XX RET for YY USDC</Typography>
             </Box>
           </Box>
 
-          <Chip component="button" label="Buy tokens" color="primary" onClick={buyToken} clickable/>
+          <Chip component="button" label="Buy tokens" color="primary" onClick={buyToken} clickable />
 
         </Box>
         <Typography>*Once the proprety is totally financed and the paperwork completed, you will begin to receive your returns</Typography>

@@ -237,9 +237,9 @@ const LargeAssetCard = ({ ...props }) => {
           </Button>
         </CardContent>
       </CardContent>
-      <CardContent sx={{ pt: 0, display: props.isWaitlist ? "block" : "none" }}>
+      {/* <CardContent sx={{ pt: 0, display: props.isWaitlist ? "block" : "none" }}>
         <CustomForm assetId={props.id} />
-      </CardContent>
+      </CardContent> */}
     </Card>
   );
 };

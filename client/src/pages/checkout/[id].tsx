@@ -1,5 +1,5 @@
-import { ReactElement, useState, useEffect, React } from "react";
-import { Card, CardContent, Typography, Chip, Box, Button, InputAdornment, TextField, Avatar, Grid, MenuItem } from "@mui/material";
+import { React, useState, useEffect } from "react";
+import { Card, Typography, Chip, Box, TextField, MenuItem } from "@mui/material";
 import type { NextPage } from "next";
 
 import { ethers } from "ethers";
@@ -9,40 +9,53 @@ import { getProofs, getRoot } from "../../Helpers/merkleTree";
 import { useWeb3React } from "@web3-react/core";
 
 import { Container } from "@mui/material";
-import { Status } from "@googlemaps/react-wrapper";
-import { DataStore } from "aws-amplify";
+import { DataStore, sectionFooterPrimaryContent } from "aws-amplify";
 import { EstateModel } from "../../models";
 import _ from "lodash";
+import { flexbox } from "@mui/system";
 
-const Checkout: NextPage = ({ }) => {
-
-  interface SaleData {
-    ratio: number,
-    circulatingSupply: string,
-    currencyBalance: string,
-    tokenBalance: string,
-    currencyAllowance: string,
-    tokenBought: string,
-    currentStep: string,
-    currency: string
-  }
+const Checkout: NextPage = () => {
 
   const currencies = [
     { value: 'USD', label: '$' },
     { value: 'EUR', label: '€' }
   ]
 
+  const errorTypes = {
+    RTH    : "Ratio Too High",
+    RTL    : "Ratio Too Low",
+    TLCD   : "Too low , check decimals!",
+    SINA   : "Sale is Not active",
+    SO     : "Sold out",
+    NWL    : "Not Whitelisted",
+    EMS    : "Exceed max supply",
+    TABTMT : "This Address bought too much tokens",
+  }
+
   const { account, library } = useWeb3React();
 
   const [estates, updateEstates] = useState<EstateModel[]>([]);
-  const [saleData, setSaleData] = useState<Partial<SaleData>>({ tokenBought: "0", currency: 'EUR' });
-  const [userBuyStableInput, setUserBuyStableInput] = useState("");
+
+  const [ratio, setRatio] = useState(0);
+  const [circulatingSupply, setCirculatingSupply] = useState(0);
+  const [currencyBalance, setCurrencyBalance] = useState("");
+  const [tokenBalance, setTokenBalance] = useState("");
+  const [currencyAllowance, setCurrencyAllowance] = useState("");
+  const [tokenBought, setTokenBought] = useState("");
+  const [currentStep, setCurrentStep] = useState("");
+
+  const [userBuyStableInput, setUserBuyStableInput] = useState(0);
+
+  const [euroAmount, setEuroAmount] = useState(0);
+  const [usdcAmount, setUsdcAmount] = useState(0);
+  const [retAmount, setRetAmount] = useState(0);
+  const [exchangeRate, setExchangeRate] = useState(0);
+
+  const [maxBuy, setMaxBuy] = useState(0);
+  const [txRef, setTxRef] = useState(String);
+  const [mintNumber, setMintNumber] = useState(0);
 
   const [error, setError] = useState(String);
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSaleData({ ...saleData, currency: event.target.value });
-  };
 
   useEffect(() => {
     fetchData();
@@ -65,19 +78,20 @@ const Checkout: NextPage = ({ }) => {
   async function fetchData() {
     console.log(contractAddress, account)
     if (account && contractAddress) {
-      console.log("fetchData");
+      console.log("in fetchData");
       try {
-        console.log("try");
+        console.log("in fetchData try");
         const myContractSigner = getContract(library, account);
-        const sup = ethers.utils.formatEther(
-          await myContractSigner.totalSupply()
-        );
 
         const data = await myContractSigner.variables();
 
         const _currency = getCurrency(library, account);
 
         const _ratio = parseFloat(data.cexRatioX10000) / (10000 * 10);
+
+        const _circulatingSupply = ethers.utils.formatEther(
+          await myContractSigner.totalSupply()
+        );
 
         const _currencyAllowance = ethers.utils.formatEther(
           await _currency.allowance(account, contractAddress)
@@ -95,29 +109,28 @@ const Checkout: NextPage = ({ }) => {
           await myContractSigner.tokensBought(account)
         );
 
-        setSaleData({
-          ...saleData,
-          tokenBought: _tokenBought,
-          currencyAllowance: _currencyAllowance,
-          currencyBalance: _currencyBalance,
-          tokenBalance: _tokenBalance,
-          ratio: _ratio
-        })
+        setExchangeRate(_ratio * 10);
+        setRatio(_ratio);
+        setCirculatingSupply(parseInt(_circulatingSupply));
+        setCurrencyBalance(_currencyBalance);
+        setTokenBalance(_tokenBalance);
+        setCurrencyAllowance(_currencyAllowance);
+        setTokenBought(_tokenBought);
 
         const step = parseInt(data.step);
+        
         switch (step) {
           case 0:
-            setSaleData({ ...saleData, currentStep: "Soon" });
+            setCurrentStep("Sale Not Started");
             break;
           case 1:
-            setSaleData({ ...saleData, currentStep: "Buy Tokens" });
+            setCurrentStep("Sale Ongoing");
             break;
           case 2:
-            setSaleData({ ...saleData, currentStep: "Soldout" });
+            setCurrentStep("Sale Soldout");
             break;
         }
-        setSaleData({ ...saleData, circulatingSupply: String(sup) });
-        console.log("currentStep = ", saleData.currentStep)
+        setCurrentStep(data.step)
       }
       catch (err: any) {
         const buff = err.message;
@@ -126,79 +139,169 @@ const Checkout: NextPage = ({ }) => {
     }
   }
 
-  const onStableInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setUserBuyStableInput(e.target.value)
+  const euroChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    e.preventDefault();
+    let input = parseInt(e.target.value);
+    input = Math.min(Math.max(input, 0), 19500);
+    let usdc = parseFloat((input / exchangeRate).toFixed(2));
+    setEuroAmount(input);
+    setUsdcAmount(usdc);
+    setRetAmount(input / 10)
   }
-
-  const buyToken = () => {
-
+  
+  const usdcChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    e.preventDefault();
+    let input = parseInt(e.target.value);
+    input = Math.min(Math.max(input, 0), 19500 * exchangeRate);
+    let euro = parseFloat((input * exchangeRate).toFixed(2));
+    setEuroAmount(euro);
+    setUsdcAmount(input);
+    setRetAmount(euro / 10)
   }
+  
+  const retChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    e.preventDefault();
+    let input = parseInt(e.target.value);
+    input = Math.min(Math.max(input, 0), 1950);
+    let usdc = parseFloat((input * 10 / exchangeRate).toFixed(2));
+    setEuroAmount(input * 10);
+    setUsdcAmount(usdc);
+    setRetAmount(input)
+  }
+  
+  const approve = async () => {
+    setTxRef("");
+    setError("");
+    try {
+      console.log("entered in fct");
+      const _currency = getCurrency(library, account!);
+      let tx = await _currency.approve(
+        contractAddress,
+        ethers.utils.parseEther(String(usdcAmount))
+      );
+      setError("Transaction pending ...");
+      const receipt = await tx.wait();
+      console.log(receipt);
+      setTxRef(tx.hash);
+      setError("");
+      fetchData();
+    } catch (err: any) {if (!error.includes("rejected")) {
+      setError("Transaction rejected");
+    }else {
+      let ach = "Tx error : " + String(err);
+      setError(ach);}
+    }
+  };
+  
+  const buy = async () => {
+    setError("");
+    setTxRef("");
+    try {
+      console.log("entered in fct");
+      const myContractSigner = getContract(library, account!);
+      setError("Transaction pending ...");
+      const tx = await myContractSigner.buy(
+        account,
+        ethers.utils.parseEther(String(mintNumber / ratio)),
+        getProofs(account!)
+      );
+
+      const receipt = await tx.wait();
+      console.log(receipt);
+      setTxRef(tx.hash);
+      setError("");
+      fetchData();
+      console.log(account);
+    } catch (err: any) {
+      const error = String(err);
+      if (!error.includes("reason") && error.includes("insufficient")) {
+        setError("Not enough funds for gas and value");
+      } else if (error.includes("rejected")) {
+        setError("Tsransaction rejected");
+
+      }
+       else if (!error.includes("reason")) {
+        setError(error);
+      } else {
+        const goodError = JSON.stringify(err.reason).replace(
+          "execution reverted:",
+          ""
+        ).replaceAll("\"", "").replaceAll('\ ', "");
+
+        setError(errorTypes[goodError]);
+      }
+      console.log("error", error)
+      // We have to push the error message one the screen
+    }
+  };
 
   return (
-    <Container sx={{ mb: 10, width: `60vw`, minWidth: `550px` }}>
-
-      <Card sx={{ borderRadius: "15px", padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }} style={{ justifyContent: "space-around", alignItems: "space-around" }}>
+    <Container sx={{ mb: 10, width: `45vw`, minWidth: `550px` }}>
+      <Card sx={{ borderRadius: "15px", padding: "20px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+       
         {/* TITLE */}
-        <Typography variant="h3" sx={{ fontSize: "30px" }}>Buy tokens for : <br /> {estates[0]?.name}</Typography>
+        <Typography variant="h3" sx={{ fontSize: "30px" }}>{estates[0]?.name}</Typography>
 
         {/* INFO BOX */}
-        <Box sx={{ flex: 1, alignSelf: "center", mt: 3 }}>
-          <Typography>Price of token: 10€</Typography>
-          <Typography>Token supply: 6500</Typography>
-          <Typography>Max buy per address: 1950</Typography>
+        <Box sx={{ flex: 1, alignSelf: "center", mt: 3, fontSize: "10px" }}>
+          <Typography sx={{ fontSize: "15px" }}>Token Price: 10€</Typography>
+          <Typography sx={{ fontSize: "15px" }}>Token supply: 6500</Typography>
+          <Typography sx={{ fontSize: "15px" }}>Max buy per address: 1950</Typography>
         </Box>
 
         {/* PROGRESSION BAR */}
         <Box sx={{ display: 'flex', flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-          <Typography sx={{ mt: 2 }}>Sale Progression</Typography>
+          <Typography sx={{ mt: 2 }}>Sale Progression: {circulatingSupply ? circulatingSupply * 100 / (MAX_SUPPLY) : 0} % </Typography>
           <Box sx={{ display: 'flex', flexDirection: "row", width: "300px", height: "20px", borderRadius: "10px", border: "solid 1px black" }}>
-            <Box sx={{ width: `20%`, background: "linear-gradient(-90deg, rgba(81,213,255,1) 0%, rgba(253,181,42,1) 52%, rgba(255,122,104,1) 100%);", borderRadius: "30px", opacity: "30%" }}></Box>
+            <Box sx={{ width: `${circulatingSupply ? circulatingSupply * 100 / (MAX_SUPPLY) : 0  }%`, background: "linear-gradient(-90deg, rgba(81,213,255,1) 0%, rgba(253,181,42,1) 52%, rgba(255,122,104,1) 100%);", borderRadius: "30px", opacity: "30%" }}></Box>
             <Box sx={{ width: "auto" }}></Box>
           </Box>
         </Box>
-        <Typography sx={{ alignSelf: "center", position: "relative", mb: 2 }}>{saleData.circulatingSupply}/{MAX_SUPPLY}</Typography>
+        <Typography sx={{ alignSelf: "center", position: "relative", mb: 2 }}>{circulatingSupply}/{MAX_SUPPLY}</Typography>
         {/* <Typography sx={{ alignSelf: "center", position: "relative", mb: 2}}>{ saleData.circulatingSupply?.substring(saleData.circulatingSupply?.indexOf("."), 0) }/{ MAX_SUPPLY }</Typography> */}
 
         {/* INPUT BUY STABLE */}
 
-        <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+        <Box sx={{ mb: "20px", display: 'flex', flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
           <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "flex-start", width: "400px" }}>
-            <Typography>I want to buy (USDC)</Typography>
-            <Box sx={{ width: "100%" }}>
-              <TextField style={{ alignSelf: "flex-end", width: "70%" }} value={userBuyStableInput} onChange={onStableInputChange} label="Amount" id="outlined-basic" type="number" variant="outlined" InputProps={{ inputProps: { min: 0, max: 1950 } }}/>
-              <TextField id="outlined-select-currency" select label="Currency" value={saleData.currency} onChange={handleChange} style={{ width: "30%", borderRadius: '30px' }}>
-                {currencies.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <a href="https://www.moonpay.com/" style={{ color: "#3A71FF", right: "0px"}}>Buy USDC</a>
+            <Typography sx={{ mb: 1 }}>I want to buy for</Typography>
+            <Box sx={{ width: "100%", display: "flex", flexDirection: "row" }}>
+
+
+
+              <TextField style={{ alignSelf: "flex-end", width: "70%" }} sx={{ mr: 2}} value={euroAmount} onChange={euroChange} label="euro (€)" id="outlined-basic" type="number" variant="outlined" />
+              <TextField style={{ alignSelf: "flex-end", width: "70%" }} value={usdcAmount} onChange={usdcChange} label="usdc ($)" id="outlined-basic" type="number" variant="outlined"/>
+              
+              
             </Box>
+            <a href="https://www.moonpay.com/" style={{ color: "#3A71FF", marginLeft: '320px'}}>Buy USDC</a>
           </Box>
 
           {/* INPUT BUY RET  */}
 
-          <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "flex-start", width: "400px" }}>
-            <Typography>I want to buy (Real Estate Token) </Typography>
+          <Box sx={{ mb: "20px", display: 'flex', flexDirection: "column", alignItems: "flex-start", width: "400px" }}>
+            <Typography sx={{ mb: 1 }}>I want to buy (Real Estate Token) </Typography>
             <Box sx={{ width: "100%", display: "flex", flexDirection: "row" }}>
-              <TextField sx={{ width: "70%" }} id="outlined-basic" type="number" label="Amount" variant="outlined" InputProps={{ inputProps: { min: 0, max: 1950 } }} />
-              <Box style={{ border: "1px solid #C1C1C1", padding: "15px", borderRadius: "5px", width: `30%` }} sx={{ display: "flex", alignItems: "center" }}>
-                <Typography>RET</Typography>
-              </Box>
+              <TextField sx={{ width: "100%" }} value={ retAmount } onChange={retChange} label="Amount" variant="outlined" id="outlined-basic" type="number" />
             </Box>
           </Box>
           <Box sx={{ display: 'flex', flexDirection: "column", alignItems: "flex-start", width: "400px" }}>
-            <Typography>Resume</Typography>
-            <Box style={{ backgroundColor: "#F1F1F1", width: "100%", padding: "15px", borderRadius: "5px" }} sx={{ display: "flex", alignItems: "center" }}>
-              <Typography>I buy XX RET for YY USDC</Typography>
+            <Typography sx={{ mb: 1 }}>Resume</Typography>
+            <Box style={{ backgroundColor: "#F1F1F1", width: "100%", padding: "15px", borderRadius: "5px" }} sx={{ display: "flex", alignItems: "center", mb: 3 }}>
+              <Typography>I buy { retAmount } RET for { usdcAmount } USDC</Typography>
             </Box>
           </Box>
 
-          <Chip component="button" label="Buy tokens" color="primary" onClick={buyToken} clickable />
+          <Typography sx={{ mb: 2 }}>I've read and accepted the general sale aggrement</Typography>
+
+          <span>{error}</span>
+          {
+            usdcAmount >= parseInt(currencyAllowance)
+            ? <Chip component="button" label="Approve" color="primary" onClick={approve} clickable />
+            : <Chip component="button" label="Buy tokens" color="primary" onClick={buy} clickable />
+          }
 
         </Box>
-        <Typography>*Once the proprety is totally financed and the paperwork completed, you will begin to receive your returns</Typography>
       </Card>
     </Container>
   )

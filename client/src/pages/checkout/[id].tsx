@@ -196,6 +196,8 @@ const Checkout: NextPage = () => {
   };
 
   const buy = async () => {
+    if (cgvCheckbox === false)
+      return;
     setError("");
     setTxRef("");
     try {

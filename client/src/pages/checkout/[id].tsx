@@ -6,6 +6,7 @@ import {
   Box,
   TextField,
   MenuItem,
+  Checkbox,
 } from "@mui/material";
 import type { NextPage } from "next";
 

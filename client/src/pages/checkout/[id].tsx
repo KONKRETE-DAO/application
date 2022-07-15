@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import { Card, Typography, Chip, Box, TextField, MenuItem } from "@mui/material";
+import { Card, Typography, Chip, Box, TextField, MenuItem, Checkbox } from "@mui/material";
 import type { NextPage } from "next";
 
 import { ethers } from "ethers";
@@ -55,6 +55,8 @@ const Checkout: NextPage = () => {
   const [mintNumber, setMintNumber] = useState(0);
 
   const [error, setError] = useState(String);
+
+  const [cgvCheckbox, setCgvCheckbox] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -227,7 +229,13 @@ const Checkout: NextPage = () => {
       console.log("error", error);
       // We have to push the error message one the screen
     }
+    console.log("cgvCheckbox", cgvCheckbox);
   };
+
+  const changeCheckbox = () => {
+    setCgvCheckbox(!cgvCheckbox);
+    console.log("cgvCheckbox", cgvCheckbox);
+  }
 
   return (
     <Container sx={{ mb: 10, width: `45vw`, minWidth: `550px` }}>
@@ -286,7 +294,10 @@ const Checkout: NextPage = () => {
             </Box>
           </Box>
 
-          <Typography sx={{ mb: 2 }}>I've read and accepted the general sale aggrement</Typography>
+          <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", mb: 2}}>
+            <Checkbox checked={cgvCheckbox} onChange={changeCheckbox} />
+            <Typography>I've read and accepted the general sale aggrement</Typography>
+          </Box>
 
           <span>{error}</span>
           {

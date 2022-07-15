@@ -202,7 +202,7 @@ const Checkout: NextPage = () => {
       setError("Transaction pending ...");
       const tx = await myContractSigner.buy(
         account,
-        ethers.utils.parseEther(String(mintNumber / ratio)),
+        ethers.utils.parseEther(Math.ceil(usdcAmount + 1).toString()),
         getProofs(account!)
       );
 
@@ -217,7 +217,7 @@ const Checkout: NextPage = () => {
       if (!error.includes("reason") && error.includes("insufficient")) {
         setError("Not enough funds for gas and value");
       } else if (error.includes("rejected")) {
-        setError("Tsransaction rejected");
+        setError("Transaction rejected");
       } else if (!error.includes("reason")) {
         setError(error);
       } else {

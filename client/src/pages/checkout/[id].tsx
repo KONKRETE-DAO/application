@@ -418,9 +418,20 @@ const Checkout: NextPage = () => {
             </Box>
           </Box>
 
-          <Typography sx={{ mb: 2 }}>
-            I've read and accepted the general sale aggrement
-          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              mb: 2,
+            }}
+          >
+            <Checkbox checked={cgvCheckbox} onChange={changeCheckbox} />
+            <Typography>
+              I've read and accepted the general sale aggrement
+            </Typography>
+          </Box>
 
           <span>{error}</span>
           {parseFloat(currencyAllowance) < parseFloat(usdcAmount) ? (

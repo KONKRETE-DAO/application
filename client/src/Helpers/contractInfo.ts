@@ -12,6 +12,11 @@ export const tokenPrice = 10; //
 export const contractChainId = 5;
 export const maxMint = 1830;
 export const MAX_SUPPLY = 6100;
+<<<<<<< HEAD
+>>>>>>> origin/web3-marico
+=======
+export const symbol = "203rdSM-R";
+export const scan = "https://goerli.etherscan.io/address/";
 >>>>>>> origin/web3-marico
 export const getContract = (library: any, account: string) => {
   // console.log(library);

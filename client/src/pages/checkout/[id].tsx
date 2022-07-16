@@ -23,7 +23,7 @@ import { getProofs, getRoot } from "../../Helpers/merkleTree";
 import { useWeb3React } from "@web3-react/core";
 
 import { Container } from "@mui/material";
-import { DataStore, sectionFooterPrimaryContent } from "aws-amplify";
+import { DataStore } from "aws-amplify";
 import { EstateModel } from "../../models";
 import _, { max } from "lodash";
 import { bignumber } from "mathjs";
@@ -182,6 +182,7 @@ const Checkout: NextPage = () => {
     const lastBuy = bestBuy.gt(maxBeforeSoldout) ? maxBeforeSoldout : bestBuy;
     return lastBuy;
   };
+
   const euroChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -207,19 +208,22 @@ const Checkout: NextPage = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     e.preventDefault();
+  console.log(e.target.value);
+
     let input = parseFloat(e.target.value > "0" ? e.target.value : "0");
     let max = getMax();
 
-    input = Math.min(
-      Math.max(input, 0),
-      parseInt(String(max)) < 10
+    // input = Math.min(
+    //   Math.max(input, 0),
+    //   parseInt(ethers.utils.formatEther(max.mul(10)))
+    // );
+    // je pense vaut mieux ça
+
+    input = Math.min(Math.max(input, 0),parseInt(String(max)) < 10
         ? 0
-        : parseFloat(
-            ethers.utils.formatEther(
-              toDoll(String(max.mul(10000).div(exchangeRate)))
-            )
-          )
+        : parseFloat(ethers.utils.formatEther(toDoll(String(max.mul(10000).div(exchangeRate)))))
     );
+    
     const usdc = String(ethers.utils.parseEther(String(input)));
     const euro = toEur(usdc);
     const Ret = euro.div(10);
@@ -237,6 +241,7 @@ const Checkout: NextPage = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     e.preventDefault();
+    console.log(e.target.value);
     let input = parseFloat(e.target.value > "0" ? e.target.value : "0");
     let max = getMax();
     input = Math.min(
@@ -256,6 +261,8 @@ const Checkout: NextPage = () => {
   };
 
   const approve = async () => {
+    if (cgvCheckbox === false)
+      return;
     setTxRef("");
     setError("");
     try {
@@ -333,11 +340,14 @@ const Checkout: NextPage = () => {
 
   const changeCheckbox = () => {
     setCgvCheckbox(!cgvCheckbox);
-    console.log("cgvCheckbox", cgvCheckbox);
   };
+
+    console.log("parseSupply", parseSupply);
+
   // if (!account) {
-  //   alert("oplease Reconnect your wallet");
+  //   alert("please Reconnect your wallet");
   // }
+
   return (
     <Container sx={{ mb: 10, width: `45vw`, minWidth: `550px` }}>
       {account && whitelist.includes(account) ? (
@@ -420,7 +430,7 @@ const Checkout: NextPage = () => {
             </Box>
           </Box>
           <Typography sx={{ alignSelf: "center", position: "relative", mb: 2 }}>
-            {parsedSupply}/{MAX_SUPPLY}
+            {parseFloat(parsedSupply) > 0 ? parsedSupply : 0 }/{MAX_SUPPLY}
           </Typography>
           <Typography sx={{ alignSelf: "center", position: "relative", mb: 2 }}>
             Tokens You own {tokenBalance}
@@ -545,22 +555,23 @@ const Checkout: NextPage = () => {
               </Typography>
             </Box>
 
+            {!cgvCheckbox ? (<Typography sx={{mb: 2}} >please accept sale agreement first</Typography>) : <Typography></Typography>}
             <span>{error}</span>
             {usdcAmount > currencyAllowance ? (
               <Chip
                 component="button"
                 label="Approve"
-                color="primary"
+                color={cgvCheckbox === true ? "primary" : "default"}
                 onClick={approve}
-                clickable
+                clickable={cgvCheckbox === true ? true : false}
               />
             ) : (
               <Chip
                 component="button"
                 label="Buy tokens"
-                color="primary"
+                color={cgvCheckbox === true ? "primary" : "default"}
                 onClick={buy}
-                clickable
+                clickable={cgvCheckbox === true ? true : false}
               />
             )}
           </Box>
@@ -579,7 +590,7 @@ const Checkout: NextPage = () => {
           {account ? (
             <span> Not Whitelisted</span>
           ) : (
-            <span>Please Cnnect your wallet</span>
+            <span>Please Connect your wallet</span>
           )}
         </Card>
       )}

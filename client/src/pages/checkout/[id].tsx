@@ -17,6 +17,7 @@ import {
   maxMint,
   MAX_SUPPLY,
   symbol,
+  scan,
 } from "../../Helpers/contractInfo";
 import { getCurrency } from "../../Helpers/currency";
 import { getProofs, getRoot } from "../../Helpers/merkleTree";
@@ -74,6 +75,7 @@ const Checkout: NextPage = () => {
 
   const [maxBuy, setMaxBuy] = useState(0);
   const [txRef, setTxRef] = useState(String);
+  const [totalTxRef, setTotalTxRef] = useState(String);
   const [mintNumber, setMintNumber] = useState(0);
 
   const [error, setError] = useState(String);
@@ -270,6 +272,7 @@ const Checkout: NextPage = () => {
       const receipt = await tx.wait();
       console.log(receipt);
       setTxRef(tx.hash);
+      setTotalTxRef(scan + txRef);
       setError("");
       setCurrencyAllowance(usdcAmount);
     } catch (err: any) {
@@ -299,6 +302,7 @@ const Checkout: NextPage = () => {
       const receipt = await tx.wait();
       console.log(receipt);
       setTxRef(tx.hash);
+      setTotalTxRef(scan + txRef);
       setError("");
       const newBalance = BigNumber.from(currencyBalance).sub(usdcAmount);
       const newTokenBalance = BigNumber.from(tokenBalance).add(retAmount);
@@ -562,7 +566,14 @@ const Checkout: NextPage = () => {
             ) : (
               <Typography></Typography>
             )}
-            <span>{error}</span>
+            {error ? (
+              <span> {error}</span>
+            ) : (
+              <>
+                <span>Succcess, here is yout tx:</span>
+                <span v-bind:href={totalTxRef}>{txRef}</span>
+              </>
+            )}
             {usdcAmount > currencyAllowance ? (
               <Chip
                 component="button"

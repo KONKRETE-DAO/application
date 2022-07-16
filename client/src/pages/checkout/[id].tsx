@@ -16,6 +16,7 @@ import {
   contractAddress,
   maxMint,
   MAX_SUPPLY,
+  symbol,
 } from "../../Helpers/contractInfo";
 import { getCurrency } from "../../Helpers/currency";
 import { getProofs, getRoot } from "../../Helpers/merkleTree";
@@ -56,6 +57,7 @@ const Checkout: NextPage = () => {
   const [parsedSupply, setParsedSupply] = useState("");
   const [currencyBalance, setCurrencyBalance] = useState("");
   const [tokenBalance, setTokenBalance] = useState("");
+  const [parsedTokenBalance, setParsedTokenBalance] = useState("");
   const [currencyAllowance, setCurrencyAllowance] = useState("");
   const [tokenBought, setTokenBought] = useState("");
   const [currentStep, setCurrentStep] = useState("");
@@ -68,7 +70,6 @@ const Checkout: NextPage = () => {
   const [parsedEuroAmount, setParsedEuroAmount] = useState("");
   const [parsedUsdcAmount, setParsedUsdcAmount] = useState("");
   const [parsedRetAmount, setParsedRetAmount] = useState("");
-  const [maxDoll, setMaxDoll] = useState("");
   const [exchangeRate, setExchangeRate] = useState(0);
 
   const [maxBuy, setMaxBuy] = useState(0);
@@ -137,14 +138,12 @@ const Checkout: NextPage = () => {
 
         setExchangeRate(data.cexRatioX10000);
         setCirculatingSupply(_circulatingSupply);
+        setParsedSupply(ethers.utils.formatEther(_circulatingSupply));
         setCurrencyBalance(_currencyBalance);
         setTokenBalance(_tokenBalance);
+        setParsedTokenBalance(ethers.utils.formatEther(_tokenBalance));
         setCurrencyAllowance(_currencyAllowance);
         setTokenBought(_tokenBought);
-        const _maxDoll = toDoll(
-          String(ethers.utils.parseEther(String(maxMint * 10)))
-        );
-        setMaxDoll(String(_maxDoll));
 
         const step = parseInt(data.step);
 
@@ -212,13 +211,6 @@ const Checkout: NextPage = () => {
 
     let input = parseFloat(e.target.value > "0" ? e.target.value : "0");
     let max = getMax();
-
-    // input = Math.min(
-    //   Math.max(input, 0),
-    //   parseInt(ethers.utils.formatEther(max.mul(10)))
-    // );
-    // je pense vaut mieux ça
-
     input = Math.min(
       Math.max(input, 0),
       parseInt(String(max)) < 10
@@ -312,8 +304,13 @@ const Checkout: NextPage = () => {
       const newTokenBalance = BigNumber.from(tokenBalance).add(retAmount);
       const newSupply = BigNumber.from(circulatingSupply).add(retAmount);
       setTokenBalance(String(newTokenBalance));
+      setTokenBalance(ethers.utils.formatEther(newTokenBalance));
       setCirculatingSupply(String(newSupply));
+      setParsedSupply(ethers.utils.formatEther(newSupply));
       setCurrencyBalance(String(newBalance));
+      setCurrencyAllowance(
+        String(BigNumber.from(currencyAllowance).sub(usdcAmount))
+      );
       setParsedSupply(ethers.utils.formatEther(newSupply));
     } catch (err: any) {
       const error = String(await err);
@@ -331,7 +328,7 @@ const Checkout: NextPage = () => {
         const buffObj = errorTypes.filter(function (errorType) {
           return errorType.key === goodError;
         });
-        if (buffObj[0].value) {
+        if (buffObj && buffObj[0].value) {
           setError(buffObj[0].value);
         } else {
           setError(goodError);
@@ -436,7 +433,7 @@ const Checkout: NextPage = () => {
             {parseFloat(parsedSupply) > 0 ? parsedSupply : 0}/{MAX_SUPPLY}
           </Typography>
           <Typography sx={{ alignSelf: "center", position: "relative", mb: 2 }}>
-            Tokens You own {tokenBalance}
+            Your {symbol} balance {parsedTokenBalance}
           </Typography>
           {/* <Typography sx={{ alignSelf: "center", position: "relative", mb: 2}}>{ saleData.circulatingSupply?.substring(saleData.circulatingSupply?.indexOf("."), 0) }/{ MAX_SUPPLY }</Typography> */}
 

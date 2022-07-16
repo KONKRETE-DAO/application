@@ -5,6 +5,7 @@ export const tokenPrice = 10; //
 export const contractChainId = 5;
 export const maxMint = 1830;
 export const MAX_SUPPLY = 6100;
+export const symbol = "203rdSM-R";
 export const getContract = (library: any, account: string) => {
   // console.log(library);
   const signer = library.getSigner(account).connectUnchecked();

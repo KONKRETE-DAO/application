@@ -3471,7 +3471,7 @@
     "@ethersproject/properties" "^5.6.0"
     "@ethersproject/strings" "^5.6.1"
 
-"@gar/promisify@^1.1.3":
+"@gar/promisify@^1.0.1", "@gar/promisify@^1.1.3":
   "version" "1.1.3"
 
 "@googlemaps/js-api-loader@^1.13.2":
@@ -3769,6 +3769,12 @@
   dependencies:
     "ansi-styles" "^4.3.0"
 
+"@npmcli/fs@^1.0.0":
+  "version" "1.1.1"
+  dependencies:
+    "@gar/promisify" "^1.0.1"
+    "semver" "^7.3.5"
+
 "@npmcli/fs@^2.1.0":
   "version" "2.1.0"
   dependencies:
@@ -3810,7 +3816,7 @@
     "pacote" "^13.0.3"
     "semver" "^7.3.5"
 
-"@npmcli/move-file@^2.0.0":
+"@npmcli/move-file@^1.0.1", "@npmcli/move-file@^2.0.0":
   "version" "2.0.0"
   dependencies:
     "mkdirp" "^1.0.4"
@@ -4375,7 +4381,7 @@
   dependencies:
     "debug" "4"
 
-"agentkeepalive@^4.2.1":
+"agentkeepalive@^4.1.3", "agentkeepalive@^4.2.1":
   "version" "4.2.1"
   dependencies:
     "debug" "^4.1.0"
@@ -5145,6 +5151,28 @@
   "integrity" "sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg=="
   "resolved" "https://registry.npmjs.org/bytes/-/bytes-3.1.2.tgz"
   "version" "3.1.2"
+
+"cacache@^15.2.0":
+  "version" "15.3.0"
+  dependencies:
+    "@npmcli/fs" "^1.0.0"
+    "@npmcli/move-file" "^1.0.1"
+    "chownr" "^2.0.0"
+    "fs-minipass" "^2.0.0"
+    "glob" "^7.1.4"
+    "infer-owner" "^1.0.4"
+    "lru-cache" "^6.0.0"
+    "minipass" "^3.1.1"
+    "minipass-collect" "^1.0.2"
+    "minipass-flush" "^1.0.5"
+    "minipass-pipeline" "^1.2.2"
+    "mkdirp" "^1.0.3"
+    "p-map" "^4.0.0"
+    "promise-inflight" "^1.0.1"
+    "rimraf" "^3.0.2"
+    "ssri" "^8.0.1"
+    "tar" "^6.0.2"
+    "unique-filename" "^1.1.1"
 
 "cacache@^16.0.0", "cacache@^16.0.6", "cacache@^16.1.0":
   "version" "16.1.0"
@@ -7339,7 +7367,7 @@
   "resolved" "https://registry.npmjs.org/http-https/-/http-https-1.0.0.tgz"
   "version" "1.0.0"
 
-"http-proxy-agent@^5.0.0":
+"http-proxy-agent@^4.0.1", "http-proxy-agent@^5.0.0":
   "version" "5.0.0"
   dependencies:
     "@tootallnate/once" "2"
@@ -8429,6 +8457,26 @@
     "socks-proxy-agent" "^6.1.1"
     "ssri" "^9.0.0"
 
+"make-fetch-happen@^9.1.0":
+  "version" "9.1.0"
+  dependencies:
+    "agentkeepalive" "^4.1.3"
+    "cacache" "^15.2.0"
+    "http-cache-semantics" "^4.1.0"
+    "http-proxy-agent" "^4.0.1"
+    "https-proxy-agent" "^5.0.0"
+    "is-lambda" "^1.0.1"
+    "lru-cache" "^6.0.0"
+    "minipass" "^3.1.3"
+    "minipass-collect" "^1.0.2"
+    "minipass-fetch" "^1.3.2"
+    "minipass-flush" "^1.0.5"
+    "minipass-pipeline" "^1.2.4"
+    "negotiator" "^0.6.2"
+    "promise-retry" "^2.0.1"
+    "socks-proxy-agent" "^6.0.0"
+    "ssri" "^8.0.0"
+
 "makeerror@1.0.12":
   "integrity" "sha512-JmqCvUhmt43madlpFzG4BQzG2Z3m6tvQDNKdClZnO3VbIudJYmxsT0FNJMeiB2+JTSlTQTSbU8QdesVmwJcmLg=="
   "resolved" "https://registry.npmjs.org/makeerror/-/makeerror-1.0.12.tgz"
@@ -8875,7 +8923,7 @@
   dependencies:
     "minipass" "^3.0.0"
 
-"minipass-fetch@^2.0.3":
+"minipass-fetch@^1.3.2", "minipass-fetch@^2.0.3":
   "version" "2.1.0"
   dependencies:
     "minipass" "^3.1.6"
@@ -8895,7 +8943,7 @@
     "jsonparse" "^1.3.1"
     "minipass" "^3.0.0"
 
-"minipass-pipeline@^1.2.4":
+"minipass-pipeline@^1.2.2", "minipass-pipeline@^1.2.4":
   "version" "1.2.4"
   dependencies:
     "minipass" "^3.0.0"
@@ -8913,7 +8961,7 @@
     "safe-buffer" "^5.1.2"
     "yallist" "^3.0.0"
 
-"minipass@^3.0.0", "minipass@^3.1.1", "minipass@^3.1.6":
+"minipass@^3.0.0", "minipass@^3.1.1", "minipass@^3.1.3", "minipass@^3.1.6":
   "version" "3.1.6"
   dependencies:
     "yallist" "^4.0.0"
@@ -9078,7 +9126,7 @@
   "resolved" "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
   "version" "1.4.0"
 
-"negotiator@^0.6.3":
+"negotiator@^0.6.2", "negotiator@^0.6.3":
   "version" "0.6.3"
 
 "negotiator@0.6.3":
@@ -10519,6 +10567,11 @@
   dependencies:
     "ret" "~0.1.10"
 
+"safemath@^1.0.6":
+  "integrity" "sha512-5FxS6jvR0MIqNcts1JuqJO1A/GiqtTyka2pezPS50xw0BNrTp5qw13uv97OF4PGsOHXuau5Xzv1sTMX8N5dJNQ=="
+  "resolved" "https://registry.npmjs.org/safemath/-/safemath-1.0.6.tgz"
+  "version" "1.0.6"
+
 "safer-buffer@^2.0.2", "safer-buffer@^2.1.0", "safer-buffer@>= 2.1.2 < 3", "safer-buffer@~2.1.0":
   "integrity" "sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg=="
   "resolved" "https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz"
@@ -10814,7 +10867,7 @@
     "source-map-resolve" "^0.5.0"
     "use" "^3.1.0"
 
-"socks-proxy-agent@^6.1.1":
+"socks-proxy-agent@^6.0.0", "socks-proxy-agent@^6.1.1":
   "version" "6.2.0"
   dependencies:
     "agent-base" "^6.0.2"
@@ -10920,6 +10973,11 @@
     "jsbn" "~0.1.0"
     "safer-buffer" "^2.0.2"
     "tweetnacl" "~0.14.0"
+
+"ssri@^8.0.0", "ssri@^8.0.1":
+  "version" "8.0.1"
+  dependencies:
+    "minipass" "^3.1.1"
 
 "ssri@^9.0.0", "ssri@^9.0.1":
   "version" "9.0.1"
@@ -11168,7 +11226,7 @@
     "safe-buffer" "^5.2.1"
     "yallist" "^3.1.1"
 
-"tar@^6.1.0", "tar@^6.1.11", "tar@^6.1.2":
+"tar@^6.0.2", "tar@^6.1.0", "tar@^6.1.11", "tar@^6.1.2":
   "version" "6.1.11"
   dependencies:
     "chownr" "^2.0.0"

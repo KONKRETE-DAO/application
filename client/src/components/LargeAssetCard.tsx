@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardContent, Typography, Chip, Box, Button, InputAdornment, TextField, Avatar, Grid } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Chip,
+  Box,
+  Button,
+  InputAdornment,
+  TextField,
+  Avatar,
+  Grid,
+} from "@mui/material";
 import GraphAscendIcon from "../common/components/icons/GraphAscendIcon";
 import LightningIcon from "../common/components/icons/LightningIcon";
 import Image from "next/image";
@@ -10,9 +21,10 @@ import { Storage } from "@aws-amplify/storage";
 import { WaitListItemModel } from "../models";
 import { DataStore } from "aws-amplify";
 import BuyButtons from "./BuyingComponent";
+import { contractChainId } from "../Helpers/contractInfo";
 
 const Injected = new InjectedConnector({
-  supportedChainIds: [137, 8001], // Ethereum, Polygon (need to remove ethereum)
+  supportedChainIds: [contractChainId], // Ethereum, Polygon (need to remove ethereum)
 });
 
 const CustomForm = ({ assetId }: any) => {
@@ -143,7 +155,8 @@ const LargeAssetCard = ({ ...props }) => {
       <CardContent sx={{ display: "flex", pb: 0 }}>
         <CardContent>
           <Avatar sx={{ width: 100, height: 100 }} src={cover} />
-        </CardContent>ƒ
+        </CardContent>
+        ƒ
         <CardContent sx={{ display: "flex", flexDirection: "column" }}>
           <Typography gutterBottom variant="h6" component="div">
             {props.name} ({loc})

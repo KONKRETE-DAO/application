@@ -1,7 +1,12 @@
 import { BigNumber, ethers } from "ethers";
 import { useState, useEffect } from "react";
 
-import { getContract, contractAddress, maxMint, MAX_SUPPLY } from "../Helpers/contractInfo";
+import {
+  getContract,
+  contractAddress,
+  maxMint,
+  MAX_SUPPLY,
+} from "../Helpers/contractInfo";
 import { getCurrency } from "../Helpers/currency";
 import { getProofs, getRoot } from "../Helpers/merkleTree";
 import { useWeb3React } from "@web3-react/core";
@@ -212,7 +217,7 @@ const BuyButtons = () => {
           ""
         ) : (
           <a href={`https://mumbai.polygonscan.com/tx/${txRef}`}>
-            Succeeded !! Here's your tx :<a className="lol">{txRef}</a>
+            Succeeded !! Here{"'"}s your tx :<a className="lol">{txRef}</a>
           </a>
         )}
       </div>

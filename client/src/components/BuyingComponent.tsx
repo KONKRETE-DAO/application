@@ -1,7 +1,12 @@
 import { BigNumber, ethers } from "ethers";
 import { useState, useEffect } from "react";
 
-import { getContract, contractAddress, maxMint, MAX_SUPPLY } from "../Helpers/contractInfo";
+import {
+  getContract,
+  contractAddress,
+  maxMint,
+  MAX_SUPPLY,
+} from "../Helpers/contractInfo";
 import { getCurrency } from "../Helpers/currency";
 import { getProofs, getRoot } from "../Helpers/merkleTree";
 import { useWeb3React } from "@web3-react/core";
@@ -56,7 +61,7 @@ const BuyButtons = () => {
         );
         setError(goodError);
       }
-      console.log("error", error)
+      console.log("error", error);
       // We have to push the error message one the screen
     }
   };
@@ -90,7 +95,7 @@ const BuyButtons = () => {
     if (account && contractAddress) {
       try {
         const myContractSigner = getContract(library, account);
-        
+
         const sup = ethers.utils.formatEther(
           await myContractSigner.totalSupply()
         );
@@ -125,7 +130,7 @@ const BuyButtons = () => {
         setRatio(_ratio);
 
         const step = parseInt(data.step);
-        console.log("data.step = ", data.step)
+        console.log("data.step = ", data.step);
 
         switch (step) {
           case 0:
@@ -222,7 +227,7 @@ const BuyButtons = () => {
           ""
         ) : (
           <a href={`https://mumbai.polygonscan.com/tx/${txRef}`}>
-            Succeeded !! Here's your tx :<a className="lol">{txRef}</a>
+            Succeeded !! Here{"'"}s your tx :<a className="lol">{txRef}</a>
           </a>
         )}
       </div>

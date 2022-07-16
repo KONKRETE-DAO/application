@@ -20,6 +20,7 @@ import { InjectedConnector } from "@web3-react/injected-connector";
 import MenuIcon from "@mui/icons-material/Menu";
 import Link from "next/link";
 import { Link as MUILink } from "@mui/material";
+import { contractChainId } from "../Helpers/contractInfo";
 
 const pages = [
   {
@@ -37,7 +38,7 @@ const pages = [
 ];
 
 const Injected = new InjectedConnector({
-  supportedChainIds: [137, 80001], // Ethereum, Polygon (need to remove ethereum)
+  supportedChainIds: [contractChainId], // Ethereum, Polygon (need to remove ethereum)
 });
 
 const ResponsiveAppBar = () => {

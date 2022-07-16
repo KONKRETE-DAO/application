@@ -1,6 +1,10 @@
 import { Contract } from "@ethersproject/contracts";
 
+<<<<<<< HEAD
 export const contractAddress = "0x4cD2a9b9edC6A6F523a33aEF4a72f7340E656eEE"; // on changera
+=======
+export const contractAddress = "0x4f05a4f7050B6F53664637733789909ba69b15bc"; // on changera
+>>>>>>> origin/web3-marico
 export const getCurrency = (library: any, account: string) => {
   // console.log(library);
   const signer = library.getSigner(account).connectUnchecked();

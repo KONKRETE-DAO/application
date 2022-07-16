@@ -17,10 +17,17 @@ import {
 } from "@mui/material";
 import { useWeb3React } from "@web3-react/core";
 import { InjectedConnector } from "@web3-react/injected-connector";
+<<<<<<< HEAD
 // import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 import MenuIcon from "@mui/icons-material/Menu";
 import Link from "next/link";
 import { Link as MUILink } from "@mui/material";
+=======
+import MenuIcon from "@mui/icons-material/Menu";
+import Link from "next/link";
+import { Link as MUILink } from "@mui/material";
+import { contractChainId } from "../Helpers/contractInfo";
+>>>>>>> origin/web3-marico
 
 const pages = [
   {
@@ -38,7 +45,11 @@ const pages = [
 ];
 
 const Injected = new InjectedConnector({
+<<<<<<< HEAD
   supportedChainIds: [137, 80001], // Ethereum, Polygon (need to remove ethereum)
+=======
+  supportedChainIds: [contractChainId], // Ethereum, Polygon (need to remove ethereum)
+>>>>>>> origin/web3-marico
 });
 
 // const WalletConnect = new WalletConnectConnector({
@@ -74,9 +85,12 @@ const ResponsiveAppBar = () => {
 
   const handleActivate = () => {
     activate(Injected, (e) => alert("Please switch to the Polygon Mainnet."));
+<<<<<<< HEAD
     // activate(WalletConnect, (e) =>
     //   alert("Please switch to the Polygon Mainnet.")
     // );
+=======
+>>>>>>> origin/web3-marico
   };
 
   let shortAccount;

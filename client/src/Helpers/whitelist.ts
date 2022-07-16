@@ -1,4 +1,9 @@
 export const whitelist = [
+<<<<<<< HEAD
+=======
+  "0xeD119E4B9a3f4Ab8AAe2DC2D2FdF9515d4c09325",
+  "0xd3f1Fe751a69340A4d957Df22eeCFd79b72ad3c1",
+>>>>>>> origin/web3-marico
   "0x1e0C4f4b8679C35a7c12B859C852F89E298396bd",
   "0x579De8E7dA10b45b43a24aC21dA8b1a3a9452D64",
   "0x4a53a272ec2693557Cc810D71915a03fe257DA4c",

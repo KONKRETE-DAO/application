@@ -114,3 +114,8 @@
     flex-direction: column;
   }
 }
+
+#CheckoutcardContainer > * {
+  margin: 50px;
+
+}

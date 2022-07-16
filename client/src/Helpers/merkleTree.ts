@@ -1,7 +1,16 @@
+<<<<<<< HEAD
 import { ethers } from "ethers";
 import { whitelist } from "./whitelist";
 import keccak256 from "keccak256";
 import { MerkleTree } from "merkletreejs";
+=======
+import { ethers } from 'ethers';
+
+import { MerkleTree } from 'merkletreejs';
+
+import { whitelist } from './whitelist';
+import keccak256 from 'keccak256';
+>>>>>>> origin/web3-marico
 
 export function getProofs(address: string) {
   const leaves = whitelist.map(keccak256);

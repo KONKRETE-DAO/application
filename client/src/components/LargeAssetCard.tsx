@@ -17,6 +17,7 @@ import Image from "next/image";
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
 import { InjectedConnector } from "@web3-react/injected-connector";
+<<<<<<< HEAD
 
 import { Storage } from "@aws-amplify/storage";
 import { WaitListItemModel } from "../models";
@@ -25,6 +26,16 @@ import BuyButtons from "./BuyingComponnent";
 
 const Injected = new InjectedConnector({
   supportedChainIds: [137, 80001], // Ethereum, Polygon (need to remove ethereum)
+=======
+import { Storage } from "@aws-amplify/storage";
+import { WaitListItemModel } from "../models";
+import { DataStore } from "aws-amplify";
+import BuyButtons from "./BuyingComponent";
+import { contractChainId } from "../Helpers/contractInfo";
+
+const Injected = new InjectedConnector({
+  supportedChainIds: [contractChainId], // Ethereum, Polygon (need to remove ethereum)
+>>>>>>> origin/web3-marico
 });
 // const Walletconnect = new WalletConnectConnector({
 //   rpc: `https://mainnet.infura.io/v3/yBX3L8xfJTO6WWspTMe0jtRG1tmP30Uu`,
@@ -53,6 +64,7 @@ const CustomForm = ({ assetId }: any) => {
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.currentTarget.value);
   };
+<<<<<<< HEAD
 
   const handleActivate = async () => {
     await activate(Injected, (e) =>
@@ -60,6 +72,15 @@ const CustomForm = ({ assetId }: any) => {
     );
   };
 
+=======
+
+  const handleActivate = async () => {
+    await activate(Injected, (e) =>
+      alert("Please switch to the Polygon Mainnet.")
+    );
+  };
+
+>>>>>>> origin/web3-marico
   const signAndVerifyMessage = async (message: string) => {
     try {
       const signer = library.getSigner(account);
@@ -161,6 +182,10 @@ const LargeAssetCard = ({ ...props }) => {
         <CardContent>
           <Avatar sx={{ width: 100, height: 100 }} src={cover} />
         </CardContent>
+<<<<<<< HEAD
+=======
+        ƒ
+>>>>>>> origin/web3-marico
         <CardContent sx={{ display: "flex", flexDirection: "column" }}>
           <Typography gutterBottom variant="h6" component="div">
             {props.name} ({loc})
@@ -248,7 +273,10 @@ const LargeAssetCard = ({ ...props }) => {
       {/* <CardContent sx={{ pt: 0, display: props.isWaitlist ? "block" : "none" }}>
         <CustomForm assetId={props.id} /> */}
       {/* </CardContent> */}
+<<<<<<< HEAD
       <BuyButtons />
+=======
+>>>>>>> origin/web3-marico
     </Card>
   );
 };

@@ -571,7 +571,7 @@ const Checkout: NextPage = () => {
             ) : (
               <>
                 <span>Succcess, here is yout tx:</span>
-                <span v-bind:href={totalTxRef}>{txRef}</span>
+                <span v-bindHref={totalTxRef}>{txRef}</span>
               </>
             )}
             {usdcAmount > currencyAllowance ? (

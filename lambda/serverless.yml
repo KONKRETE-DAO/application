@@ -1,0 +1,34 @@
+# serverless.yml
+service: sls-express-mongodb
+custom:
+  secrets: ${file(secrets.json)}
+  customDomain:
+    domainName: api.konkretedao.com
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: false
+provider:
+  name: aws
+  deploymentMethod: direct
+  runtime: nodejs14.x
+  stage: ${self:custom.secrets.NODE_ENV}
+  region: eu-west-3
+  environment: 
+    NODE_ENV: ${self:custom.secrets.NODE_ENV}
+    DB: ${self:custom.secrets.DB}
+    API_KEY: ${self:custom.secrets.API_KEY}
+functions:
+  app:
+    handler: server.run
+    events:
+      - http:
+          path: /
+          method: ANY
+          cors: true
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
+plugins:
+  - serverless-offline
+  - serverless-domain-manager

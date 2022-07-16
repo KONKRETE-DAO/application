@@ -1,0 +1,28 @@
+{
+  "name": "sls-express-mongodb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "offline": "sls offline start --allowCache"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "helmet": "^5.1.0",
+    "minimist": ">=1.2.6",
+    "mongoose": "^6.4.1",
+    "serverless-http": "^2.3.0"
+  },
+  "devDependencies": {
+    "serverless-domain-manager": "^6.0.3",
+    "serverless-offline": "^8.8.0"
+  }
+}

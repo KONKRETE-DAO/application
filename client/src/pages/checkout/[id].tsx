@@ -86,6 +86,9 @@ const Checkout: NextPage = () => {
     fetchData();
   }, []);
 
+  const openRef = async () => {
+    window.open(totalTxRef, "_self");
+  };
   useEffect(() => {
     fetchData();
     fetchEstates();
@@ -272,7 +275,7 @@ const Checkout: NextPage = () => {
       const receipt = await tx.wait();
       console.log(receipt);
       setTxRef(tx.hash);
-      setTotalTxRef(scan + txRef);
+      setTotalTxRef(String(scan + String(tx.hash)));
       setError("");
       setCurrencyAllowance(usdcAmount);
     } catch (err: any) {
@@ -302,7 +305,7 @@ const Checkout: NextPage = () => {
       const receipt = await tx.wait();
       console.log(receipt);
       setTxRef(tx.hash);
-      setTotalTxRef(scan + txRef);
+      setTotalTxRef(String(scan + String(tx.hash)));
       setError("");
       const newBalance = BigNumber.from(currencyBalance).sub(usdcAmount);
       const newTokenBalance = BigNumber.from(tokenBalance).add(retAmount);
@@ -571,7 +574,9 @@ const Checkout: NextPage = () => {
             ) : (
               <>
                 <span>Succcess, here is yout tx:</span>
-                <a href={totalTxRef}>{txRef}</a>
+                <a className="hyper" onClick={openRef}>
+                  {txRef}
+                </a>
               </>
             )}
             {usdcAmount > currencyAllowance ? (

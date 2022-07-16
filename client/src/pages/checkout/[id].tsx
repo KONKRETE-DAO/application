@@ -208,7 +208,7 @@ const Checkout: NextPage = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     e.preventDefault();
-  console.log(e.target.value);
+    console.log(e.target.value);
 
     let input = parseFloat(e.target.value > "0" ? e.target.value : "0");
     let max = getMax();
@@ -219,11 +219,17 @@ const Checkout: NextPage = () => {
     // );
     // je pense vaut mieux ça
 
-    input = Math.min(Math.max(input, 0),parseInt(String(max)) < 10
+    input = Math.min(
+      Math.max(input, 0),
+      parseInt(String(max)) < 10
         ? 0
-        : parseFloat(ethers.utils.formatEther(toDoll(String(max.mul(10000).div(exchangeRate)))))
+        : parseFloat(
+            ethers.utils.formatEther(
+              toDoll(String(max.mul(10000).div(exchangeRate)))
+            )
+          )
     );
-    
+
     const usdc = String(ethers.utils.parseEther(String(input)));
     const euro = toEur(usdc);
     const Ret = euro.div(10);
@@ -261,8 +267,7 @@ const Checkout: NextPage = () => {
   };
 
   const approve = async () => {
-    if (cgvCheckbox === false)
-      return;
+    if (cgvCheckbox === false) return;
     setTxRef("");
     setError("");
     try {
@@ -341,8 +346,6 @@ const Checkout: NextPage = () => {
   const changeCheckbox = () => {
     setCgvCheckbox(!cgvCheckbox);
   };
-
-    console.log("parseSupply", parseSupply);
 
   // if (!account) {
   //   alert("please Reconnect your wallet");
@@ -430,7 +433,7 @@ const Checkout: NextPage = () => {
             </Box>
           </Box>
           <Typography sx={{ alignSelf: "center", position: "relative", mb: 2 }}>
-            {parseFloat(parsedSupply) > 0 ? parsedSupply : 0 }/{MAX_SUPPLY}
+            {parseFloat(parsedSupply) > 0 ? parsedSupply : 0}/{MAX_SUPPLY}
           </Typography>
           <Typography sx={{ alignSelf: "center", position: "relative", mb: 2 }}>
             Tokens You own {tokenBalance}
@@ -555,7 +558,13 @@ const Checkout: NextPage = () => {
               </Typography>
             </Box>
 
-            {!cgvCheckbox ? (<Typography sx={{mb: 2}} >please accept sale agreement first</Typography>) : <Typography></Typography>}
+            {!cgvCheckbox ? (
+              <Typography sx={{ mb: 2 }}>
+                please accept sale agreement first
+              </Typography>
+            ) : (
+              <Typography></Typography>
+            )}
             <span>{error}</span>
             {usdcAmount > currencyAllowance ? (
               <Chip

@@ -28,7 +28,7 @@ import { Container } from "@mui/material";
 import { DataStore } from "aws-amplify";
 import { EstateModel } from "../../models";
 import _, { max } from "lodash";
-import { bignumber } from "mathjs";
+import { bignumber, string } from "mathjs";
 import { json } from "stream/consumers";
 import { whitelist } from "../../Helpers/whitelist";
 import { setDefaultResultOrder } from "dns";
@@ -63,20 +63,16 @@ const Checkout: NextPage = () => {
   const [tokenBought, setTokenBought] = useState("");
   const [currentStep, setCurrentStep] = useState("");
 
-  const [userBuyStableInput, setUserBuyStableInput] = useState(0);
-
-  const [euroAmount, setEuroAmount] = useState("");
-  const [usdcAmount, setUsdcAmount] = useState("");
-  const [retAmount, setRetAmount] = useState("");
-  const [parsedEuroAmount, setParsedEuroAmount] = useState("");
-  const [parsedUsdcAmount, setParsedUsdcAmount] = useState("");
-  const [parsedRetAmount, setParsedRetAmount] = useState("");
+  const [euroAmount, setEuroAmount] = useState("0");
+  const [usdcAmount, setUsdcAmount] = useState("0");
+  const [retAmount, setRetAmount] = useState("0");
+  const [parsedEuroAmount, setParsedEuroAmount] = useState("0");
+  const [parsedUsdcAmount, setParsedUsdcAmount] = useState("0");
+  const [parsedRetAmount, setParsedRetAmount] = useState("0");
   const [exchangeRate, setExchangeRate] = useState(0);
-
-  const [maxBuy, setMaxBuy] = useState(0);
   const [txRef, setTxRef] = useState(String);
   const [totalTxRef, setTotalTxRef] = useState(String);
-  const [mintNumber, setMintNumber] = useState(0);
+  const MAX_ERROR = "You're above the max you can Buy";
 
   const [error, setError] = useState(String);
 
@@ -87,7 +83,7 @@ const Checkout: NextPage = () => {
   }, []);
 
   const openRef = async () => {
-    window.open(totalTxRef, "_self");
+    window.open(totalTxRef, "_blank");
   };
   useEffect(() => {
     fetchData();
@@ -116,10 +112,23 @@ const Checkout: NextPage = () => {
     const ret = BigNumber.from(euro).mul(10000).div(exchangeRate);
     return ret.lt(10) ? BigNumber.from(0) : ret;
   };
+  const setMax = () => {
+    const max = getMax();
+
+    setRetAmount(String(max));
+    setParsedRetAmount(ethers.utils.formatEther(max));
+    const euro = max.mul(10);
+    setEuroAmount(String(euro));
+    setParsedEuroAmount(ethers.utils.formatEther(euro));
+    const usdc = toDoll(String(euro));
+    setUsdcAmount(String(usdc));
+    setParsedUsdcAmount(ethers.utils.formatEther(usdc));
+  };
   async function fetchData() {
-    console.log("account: ", account);
-    console.log("contractAddress: ", contractAddress);
     if (account && contractAddress) {
+      setError("");
+      setTxRef("");
+      setTotalTxRef("");
       try {
         const myContractSigner = getContract(library, account);
 
@@ -190,13 +199,15 @@ const Checkout: NextPage = () => {
   const euroChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    setError("");
+
     e.preventDefault();
     let input = parseFloat(e.target.value > "0" ? e.target.value : "0");
     let max = getMax();
-    input = Math.min(
-      Math.max(input, 0),
-      parseInt(ethers.utils.formatEther(max.mul(10)))
-    );
+    input = Math.min(Math.max(input, 0));
+    if (input > parseFloat(ethers.utils.formatEther(max.mul(10)))) {
+      setError(MAX_ERROR);
+    }
     const goodInput = ethers.utils.parseEther(String(input));
     const usdc = toDoll(String(goodInput));
     const pUsdc = ethers.utils.formatEther(usdc);
@@ -215,17 +226,19 @@ const Checkout: NextPage = () => {
     console.log(e.target.value);
 
     let input = parseFloat(e.target.value > "0" ? e.target.value : "0");
+    setError("");
     let max = getMax();
-    input = Math.min(
-      Math.max(input, 0),
-      parseInt(String(max)) < 10
-        ? 0
-        : parseFloat(
-            ethers.utils.formatEther(
-              toDoll(String(max.mul(10000).div(exchangeRate)))
-            )
-          )
-    );
+    input = Math.min(Math.max(input, 0));
+    if (
+      input >
+      parseFloat(
+        ethers.utils.formatEther(
+          toDoll(String(max.mul(10000).div(exchangeRate)))
+        )
+      )
+    ) {
+      setError(MAX_ERROR);
+    }
 
     const usdc = String(ethers.utils.parseEther(String(input)));
     const euro = toEur(usdc);
@@ -244,6 +257,7 @@ const Checkout: NextPage = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     e.preventDefault();
+    setError("");
     console.log(e.target.value);
     let input = parseFloat(e.target.value > "0" ? e.target.value : "0");
     let max = getMax();
@@ -251,6 +265,9 @@ const Checkout: NextPage = () => {
       Math.max(input, 0),
       parseInt(ethers.utils.formatEther(max))
     );
+    if (input > parseFloat(ethers.utils.formatEther(max))) {
+      setError(MAX_ERROR);
+    }
     const token = ethers.utils.parseEther(String(input));
     const euro = String(token.mul(10));
     let usdc = toDoll(euro);
@@ -267,10 +284,15 @@ const Checkout: NextPage = () => {
     if (cgvCheckbox === false) return;
     setTxRef("");
     setError("");
+    setTotalTxRef("");
     try {
       console.log("entered in fct");
       const _currency = getCurrency(library, account!);
-      let tx = await _currency.approve(contractAddress, usdcAmount);
+      const securityAllowance = parseInt(parsedUsdcAmount) * 1.01;
+      let tx = await _currency.approve(
+        contractAddress,
+        ethers.utils.parseEther(String(securityAllowance))
+      );
       setError("Transaction pending ...");
       const receipt = await tx.wait();
       console.log(receipt);
@@ -293,6 +315,7 @@ const Checkout: NextPage = () => {
     if (cgvCheckbox === false) return;
     setError("");
     setTxRef("");
+    setTotalTxRef("");
     try {
       console.log("entered in fct");
       const myContractSigner = getContract(library, account!);
@@ -327,6 +350,8 @@ const Checkout: NextPage = () => {
         setError("Transaction rejected");
       } else if (!error.includes("reason")) {
         setError(error);
+      } else if (error.includes("-32603")) {
+        setError("Insufficient allowance , please refresh and reconnect");
       } else {
         const goodError = JSON.stringify(err.reason)
           .replace("execution reverted:", "")
@@ -509,9 +534,7 @@ const Checkout: NextPage = () => {
               <Typography sx={{ mb: 1 }}>
                 I want to buy (Real Estate Token){" "}
               </Typography>
-              <Box
-                sx={{ width: "100%", display: "flex", flexDirection: "row" }}
-              >
+              <Box sx={{ width: "70%", display: "flex", flexDirection: "row" }}>
                 <TextField
                   sx={{ width: "100%" }}
                   value={parsedRetAmount}
@@ -520,6 +543,12 @@ const Checkout: NextPage = () => {
                   variant="outlined"
                   id="outlined-basic"
                   type="number"
+                />
+                <Chip
+                  component="button"
+                  label="MAX"
+                  color="primary"
+                  onClick={setMax}
                 />
               </Box>
             </Box>
@@ -542,7 +571,8 @@ const Checkout: NextPage = () => {
                 sx={{ display: "flex", alignItems: "center", mb: 3 }}
               >
                 <Typography>
-                  I buy {parsedRetAmount} RET for {parsedUsdcAmount} USDC
+                  I buy {parseFloat(parsedRetAmount).toFixed(2)} RET for{" "}
+                  {parseFloat(parsedUsdcAmount).toFixed(2)} USDC
                 </Typography>
               </Box>
             </Box>
@@ -563,22 +593,25 @@ const Checkout: NextPage = () => {
             </Box>
 
             {!cgvCheckbox ? (
-              <Typography sx={{ mb: 2 }}>
-                please accept sale agreement first
+              <Typography sx={{ mb: 2 }} className="error">
+                Please accept sale agreement first
               </Typography>
             ) : (
               <Typography></Typography>
             )}
             {error ? (
-              <span> {error}</span>
-            ) : (
+              <span className="error"> {error}</span>
+            ) : txRef ? (
               <>
                 <span>Succcess, here is yout tx:</span>
                 <a className="hyper" onClick={openRef}>
                   {txRef}
                 </a>
               </>
+            ) : (
+              ""
             )}
+
             {usdcAmount > currencyAllowance ? (
               <Chip
                 component="button"

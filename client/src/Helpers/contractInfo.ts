@@ -6,7 +6,7 @@ export const contractChainId = 5;
 export const maxMint = 1830;
 export const MAX_SUPPLY = 6100;
 export const symbol = "203rdSM-R";
-export const scan = "https://goerli.etherscan.io/address/";
+export const scan = "https://goerli.etherscan.io/tx/";
 export const getContract = (library: any, account: string) => {
   // console.log(library);
   const signer = library.getSigner(account).connectUnchecked();

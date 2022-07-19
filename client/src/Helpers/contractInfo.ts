@@ -1,12 +1,12 @@
 import { Contract } from "@ethersproject/contracts";
 
-export const contractAddress = "0x215de2b3B83f12D71C61861E318AcEC94b47e52D"; // on changera
+export const contractAddress = "0xF4853ea41fee0Eb265c07Fb40829718bA46b9887"; // on changera
 export const tokenPrice = 10; //
-export const contractChainId = 5;
-export const maxMint = 1830;
-export const MAX_SUPPLY = 6100;
+export const contractChainId = 137;
+export const maxMint = 1950;
+export const MAX_SUPPLY = 6500;
 export const symbol = "203rdSM-R";
-export const scan = "https://goerli.etherscan.io/tx/";
+export const scan = "https://polygonscan.com/tx/";
 export const getContract = (library: any, account: string) => {
   // console.log(library);
   const signer = library.getSigner(account).connectUnchecked();

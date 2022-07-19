@@ -1,0 +1,546 @@
+
+type WaitListItemModel @aws_iam @aws_api_key {
+  id: ID!
+  emailAddress: AWSEmail!
+  publicKey: String!
+  estatemodelID: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+}
+
+type GalleryImageModel @aws_iam @aws_api_key {
+  id: ID!
+  url: AWSURL
+  estatemodelID: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+}
+
+type GMapsConfigModel @aws_iam @aws_api_key {
+  id: ID!
+  center: CoordinateJSON
+  marker: CoordinateJSON
+  zoom: Int
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+}
+
+type CoordinateJSON @aws_iam @aws_api_key {
+  latitude: Float
+  longitude: Float
+}
+
+enum RentalTypeEnum {
+  LONG_TERM
+  STUDENTS_FLATSHARE
+}
+
+enum PropertyTypeEnum {
+  BUILDING
+  APARTMENT
+  RETAIL
+}
+
+type AddressJSON @aws_iam @aws_api_key {
+  streetNumber: String
+  streetName: String
+  neighborhoodName: String
+  cityName: String
+  state: String
+  zip: String
+  countyName: String
+}
+
+enum AssetTypeEnum {
+  RESIDENTIAL
+}
+
+type EstateModel @aws_iam @aws_api_key {
+  id: ID!
+  slug: String
+  name: String
+  isWaitlist: Boolean
+  address: AddressJSON
+  description: String
+  surface: Float
+  map: GMapsConfigModel
+  coverImageUrl: AWSURL
+  debt: Float
+  gallery(filter: ModelWaitListItemModelFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelWaitListItemModelConnection
+  grossYield: Float
+  propertyType: PropertyTypeEnum
+  returnOnCapitalEmployed: Float
+  neighborhood: String
+  revenuePerToken: Float
+  bedrooms: Int
+  tokenPrice: Float
+  rentalType: RentalTypeEnum
+  totalTokens: Int
+  acquisitionStrategy: String
+  trustIndice: Float
+  acquisitionPrice: Float
+  rentalIncome: Float
+  refurbishment: Float
+  propertyManagement: Float
+  fee: Float
+  governmentTaxes: Float
+  mortgage: Float
+  capitalCall: Float
+  waitListItems(filter: ModelWaitListItemModelFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelWaitListItemModelConnection
+  highlights: [String]
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  estateModelMapId: ID
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelWaitListItemModelConnection @aws_api_key @aws_iam {
+  items: [WaitListItemModel]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelWaitListItemModelFilterInput {
+  id: ModelIDInput
+  emailAddress: ModelStringInput
+  publicKey: ModelStringInput
+  estatemodelID: ModelIDInput
+  and: [ModelWaitListItemModelFilterInput]
+  or: [ModelWaitListItemModelFilterInput]
+  not: ModelWaitListItemModelFilterInput
+}
+
+type Query {
+  getWaitListItemModel(id: ID!): WaitListItemModel @aws_api_key @aws_iam
+  listWaitListItemModels(filter: ModelWaitListItemModelFilterInput, limit: Int, nextToken: String): ModelWaitListItemModelConnection @aws_api_key @aws_iam
+  syncWaitListItemModels(filter: ModelWaitListItemModelFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelWaitListItemModelConnection @aws_api_key @aws_iam
+  getGalleryImageModel(id: ID!): GalleryImageModel @aws_api_key @aws_iam
+  listGalleryImageModels(filter: ModelGalleryImageModelFilterInput, limit: Int, nextToken: String): ModelGalleryImageModelConnection @aws_api_key @aws_iam
+  syncGalleryImageModels(filter: ModelGalleryImageModelFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelGalleryImageModelConnection @aws_api_key @aws_iam
+  getGMapsConfigModel(id: ID!): GMapsConfigModel @aws_api_key @aws_iam
+  listGMapsConfigModels(filter: ModelGMapsConfigModelFilterInput, limit: Int, nextToken: String): ModelGMapsConfigModelConnection @aws_api_key @aws_iam
+  syncGMapsConfigModels(filter: ModelGMapsConfigModelFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelGMapsConfigModelConnection @aws_api_key @aws_iam
+  getEstateModel(id: ID!): EstateModel @aws_api_key @aws_iam
+  listEstateModels(filter: ModelEstateModelFilterInput, limit: Int, nextToken: String): ModelEstateModelConnection @aws_api_key @aws_iam
+  syncEstateModels(filter: ModelEstateModelFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelEstateModelConnection @aws_api_key @aws_iam
+}
+
+input ModelWaitListItemModelConditionInput {
+  emailAddress: ModelStringInput
+  publicKey: ModelStringInput
+  estatemodelID: ModelIDInput
+  and: [ModelWaitListItemModelConditionInput]
+  or: [ModelWaitListItemModelConditionInput]
+  not: ModelWaitListItemModelConditionInput
+}
+
+input CreateWaitListItemModelInput {
+  id: ID
+  emailAddress: AWSEmail!
+  publicKey: String!
+  estatemodelID: ID!
+  _version: Int
+}
+
+input UpdateWaitListItemModelInput {
+  id: ID!
+  emailAddress: AWSEmail
+  publicKey: String
+  estatemodelID: ID
+  _version: Int
+}
+
+input DeleteWaitListItemModelInput {
+  id: ID!
+  _version: Int
+}
+
+type Mutation {
+  createWaitListItemModel(input: CreateWaitListItemModelInput!, condition: ModelWaitListItemModelConditionInput): WaitListItemModel @aws_api_key @aws_iam
+  updateWaitListItemModel(input: UpdateWaitListItemModelInput!, condition: ModelWaitListItemModelConditionInput): WaitListItemModel @aws_api_key @aws_iam
+  deleteWaitListItemModel(input: DeleteWaitListItemModelInput!, condition: ModelWaitListItemModelConditionInput): WaitListItemModel @aws_api_key @aws_iam
+  createGalleryImageModel(input: CreateGalleryImageModelInput!, condition: ModelGalleryImageModelConditionInput): GalleryImageModel @aws_api_key @aws_iam
+  updateGalleryImageModel(input: UpdateGalleryImageModelInput!, condition: ModelGalleryImageModelConditionInput): GalleryImageModel @aws_api_key @aws_iam
+  deleteGalleryImageModel(input: DeleteGalleryImageModelInput!, condition: ModelGalleryImageModelConditionInput): GalleryImageModel @aws_api_key @aws_iam
+  createGMapsConfigModel(input: CreateGMapsConfigModelInput!, condition: ModelGMapsConfigModelConditionInput): GMapsConfigModel @aws_api_key @aws_iam
+  updateGMapsConfigModel(input: UpdateGMapsConfigModelInput!, condition: ModelGMapsConfigModelConditionInput): GMapsConfigModel @aws_api_key @aws_iam
+  deleteGMapsConfigModel(input: DeleteGMapsConfigModelInput!, condition: ModelGMapsConfigModelConditionInput): GMapsConfigModel @aws_api_key @aws_iam
+  createEstateModel(input: CreateEstateModelInput!, condition: ModelEstateModelConditionInput): EstateModel @aws_api_key @aws_iam
+  updateEstateModel(input: UpdateEstateModelInput!, condition: ModelEstateModelConditionInput): EstateModel @aws_api_key @aws_iam
+  deleteEstateModel(input: DeleteEstateModelInput!, condition: ModelEstateModelConditionInput): EstateModel @aws_api_key @aws_iam
+}
+
+type Subscription {
+  onCreateWaitListItemModel: WaitListItemModel @aws_subscribe(mutations: ["createWaitListItemModel"]) @aws_api_key @aws_iam
+  onUpdateWaitListItemModel: WaitListItemModel @aws_subscribe(mutations: ["updateWaitListItemModel"]) @aws_api_key @aws_iam
+  onDeleteWaitListItemModel: WaitListItemModel @aws_subscribe(mutations: ["deleteWaitListItemModel"]) @aws_api_key @aws_iam
+  onCreateGalleryImageModel: GalleryImageModel @aws_subscribe(mutations: ["createGalleryImageModel"]) @aws_api_key @aws_iam
+  onUpdateGalleryImageModel: GalleryImageModel @aws_subscribe(mutations: ["updateGalleryImageModel"]) @aws_api_key @aws_iam
+  onDeleteGalleryImageModel: GalleryImageModel @aws_subscribe(mutations: ["deleteGalleryImageModel"]) @aws_api_key @aws_iam
+  onCreateGMapsConfigModel: GMapsConfigModel @aws_subscribe(mutations: ["createGMapsConfigModel"]) @aws_api_key @aws_iam
+  onUpdateGMapsConfigModel: GMapsConfigModel @aws_subscribe(mutations: ["updateGMapsConfigModel"]) @aws_api_key @aws_iam
+  onDeleteGMapsConfigModel: GMapsConfigModel @aws_subscribe(mutations: ["deleteGMapsConfigModel"]) @aws_api_key @aws_iam
+  onCreateEstateModel: EstateModel @aws_subscribe(mutations: ["createEstateModel"]) @aws_api_key @aws_iam
+  onUpdateEstateModel: EstateModel @aws_subscribe(mutations: ["updateEstateModel"]) @aws_api_key @aws_iam
+  onDeleteEstateModel: EstateModel @aws_subscribe(mutations: ["deleteEstateModel"]) @aws_api_key @aws_iam
+}
+
+type ModelGalleryImageModelConnection @aws_api_key @aws_iam {
+  items: [GalleryImageModel]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelGalleryImageModelFilterInput {
+  id: ModelIDInput
+  url: ModelStringInput
+  estatemodelID: ModelIDInput
+  and: [ModelGalleryImageModelFilterInput]
+  or: [ModelGalleryImageModelFilterInput]
+  not: ModelGalleryImageModelFilterInput
+}
+
+input ModelGalleryImageModelConditionInput {
+  url: ModelStringInput
+  estatemodelID: ModelIDInput
+  and: [ModelGalleryImageModelConditionInput]
+  or: [ModelGalleryImageModelConditionInput]
+  not: ModelGalleryImageModelConditionInput
+}
+
+input CreateGalleryImageModelInput {
+  id: ID
+  url: AWSURL
+  estatemodelID: ID!
+  _version: Int
+}
+
+input UpdateGalleryImageModelInput {
+  id: ID!
+  url: AWSURL
+  estatemodelID: ID
+  _version: Int
+}
+
+input DeleteGalleryImageModelInput {
+  id: ID!
+  _version: Int
+}
+
+input CoordinateJSONInput {
+  latitude: Float
+  longitude: Float
+}
+
+type ModelGMapsConfigModelConnection @aws_api_key @aws_iam {
+  items: [GMapsConfigModel]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelGMapsConfigModelFilterInput {
+  id: ModelIDInput
+  zoom: ModelIntInput
+  and: [ModelGMapsConfigModelFilterInput]
+  or: [ModelGMapsConfigModelFilterInput]
+  not: ModelGMapsConfigModelFilterInput
+}
+
+input ModelGMapsConfigModelConditionInput {
+  zoom: ModelIntInput
+  and: [ModelGMapsConfigModelConditionInput]
+  or: [ModelGMapsConfigModelConditionInput]
+  not: ModelGMapsConfigModelConditionInput
+}
+
+input CreateGMapsConfigModelInput {
+  id: ID
+  center: CoordinateJSONInput
+  marker: CoordinateJSONInput
+  zoom: Int
+  _version: Int
+}
+
+input UpdateGMapsConfigModelInput {
+  id: ID!
+  center: CoordinateJSONInput
+  marker: CoordinateJSONInput
+  zoom: Int
+  _version: Int
+}
+
+input DeleteGMapsConfigModelInput {
+  id: ID!
+  _version: Int
+}
+
+input AddressJSONInput {
+  streetNumber: String
+  streetName: String
+  neighborhoodName: String
+  cityName: String
+  state: String
+  zip: String
+  countyName: String
+}
+
+type ModelEstateModelConnection @aws_api_key @aws_iam {
+  items: [EstateModel]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelPropertyTypeEnumInput {
+  eq: PropertyTypeEnum
+  ne: PropertyTypeEnum
+}
+
+input ModelRentalTypeEnumInput {
+  eq: RentalTypeEnum
+  ne: RentalTypeEnum
+}
+
+input ModelEstateModelFilterInput {
+  id: ModelIDInput
+  slug: ModelStringInput
+  name: ModelStringInput
+  isWaitlist: ModelBooleanInput
+  description: ModelStringInput
+  surface: ModelFloatInput
+  coverImageUrl: ModelStringInput
+  debt: ModelFloatInput
+  grossYield: ModelFloatInput
+  propertyType: ModelPropertyTypeEnumInput
+  returnOnCapitalEmployed: ModelFloatInput
+  neighborhood: ModelStringInput
+  revenuePerToken: ModelFloatInput
+  bedrooms: ModelIntInput
+  tokenPrice: ModelFloatInput
+  rentalType: ModelRentalTypeEnumInput
+  totalTokens: ModelIntInput
+  acquisitionStrategy: ModelStringInput
+  trustIndice: ModelFloatInput
+  acquisitionPrice: ModelFloatInput
+  rentalIncome: ModelFloatInput
+  refurbishment: ModelFloatInput
+  propertyManagement: ModelFloatInput
+  fee: ModelFloatInput
+  governmentTaxes: ModelFloatInput
+  mortgage: ModelFloatInput
+  capitalCall: ModelFloatInput
+  highlights: ModelStringInput
+  and: [ModelEstateModelFilterInput]
+  or: [ModelEstateModelFilterInput]
+  not: ModelEstateModelFilterInput
+  estateModelMapId: ModelIDInput
+}
+
+input ModelEstateModelConditionInput {
+  slug: ModelStringInput
+  name: ModelStringInput
+  isWaitlist: ModelBooleanInput
+  description: ModelStringInput
+  surface: ModelFloatInput
+  coverImageUrl: ModelStringInput
+  debt: ModelFloatInput
+  grossYield: ModelFloatInput
+  propertyType: ModelPropertyTypeEnumInput
+  returnOnCapitalEmployed: ModelFloatInput
+  neighborhood: ModelStringInput
+  revenuePerToken: ModelFloatInput
+  bedrooms: ModelIntInput
+  tokenPrice: ModelFloatInput
+  rentalType: ModelRentalTypeEnumInput
+  totalTokens: ModelIntInput
+  acquisitionStrategy: ModelStringInput
+  trustIndice: ModelFloatInput
+  acquisitionPrice: ModelFloatInput
+  rentalIncome: ModelFloatInput
+  refurbishment: ModelFloatInput
+  propertyManagement: ModelFloatInput
+  fee: ModelFloatInput
+  governmentTaxes: ModelFloatInput
+  mortgage: ModelFloatInput
+  capitalCall: ModelFloatInput
+  highlights: ModelStringInput
+  and: [ModelEstateModelConditionInput]
+  or: [ModelEstateModelConditionInput]
+  not: ModelEstateModelConditionInput
+  estateModelMapId: ModelIDInput
+}
+
+input CreateEstateModelInput {
+  id: ID
+  slug: String
+  name: String
+  isWaitlist: Boolean
+  address: AddressJSONInput
+  description: String
+  surface: Float
+  coverImageUrl: AWSURL
+  debt: Float
+  grossYield: Float
+  propertyType: PropertyTypeEnum
+  returnOnCapitalEmployed: Float
+  neighborhood: String
+  revenuePerToken: Float
+  bedrooms: Int
+  tokenPrice: Float
+  rentalType: RentalTypeEnum
+  totalTokens: Int
+  acquisitionStrategy: String
+  trustIndice: Float
+  acquisitionPrice: Float
+  rentalIncome: Float
+  refurbishment: Float
+  propertyManagement: Float
+  fee: Float
+  governmentTaxes: Float
+  mortgage: Float
+  capitalCall: Float
+  highlights: [String]
+  _version: Int
+  estateModelMapId: ID
+}
+
+input UpdateEstateModelInput {
+  id: ID!
+  slug: String
+  name: String
+  isWaitlist: Boolean
+  address: AddressJSONInput
+  description: String
+  surface: Float
+  coverImageUrl: AWSURL
+  debt: Float
+  grossYield: Float
+  propertyType: PropertyTypeEnum
+  returnOnCapitalEmployed: Float
+  neighborhood: String
+  revenuePerToken: Float
+  bedrooms: Int
+  tokenPrice: Float
+  rentalType: RentalTypeEnum
+  totalTokens: Int
+  acquisitionStrategy: String
+  trustIndice: Float
+  acquisitionPrice: Float
+  rentalIncome: Float
+  refurbishment: Float
+  propertyManagement: Float
+  fee: Float
+  governmentTaxes: Float
+  mortgage: Float
+  capitalCall: Float
+  highlights: [String]
+  _version: Int
+  estateModelMapId: ID
+}
+
+input DeleteEstateModelInput {
+  id: ID!
+  _version: Int
+}
+

@@ -1,0 +1,85 @@
+type WaitListItemModel @model @auth(rules: [{allow: public, operations: [create, update]}]) {
+  id: ID!
+  emailAddress: AWSEmail!
+  publicKey: String!
+  estatemodelID: ID! @index(name: "byEstateModel")
+}
+
+type GalleryImageModel @model @auth(rules: [{allow: public, operations: [read]}]) {
+  id: ID!
+  url: AWSURL
+  estatemodelID: ID! @index(name: "byEstateModel")
+}
+
+type GMapsConfigModel @model @auth(rules: [{allow: public, operations: [read]}]) {
+  id: ID!
+  center: CoordinateJSON
+  marker: CoordinateJSON
+  zoom: Int
+}
+
+type CoordinateJSON {
+  latitude: Float
+  longitude: Float
+}
+
+enum RentalTypeEnum {
+  LONG_TERM
+  STUDENTS_FLATSHARE
+}
+
+enum PropertyTypeEnum {
+  BUILDING
+  APARTMENT
+  RETAIL
+}
+
+type AddressJSON {
+  streetNumber: String
+  streetName: String
+  neighborhoodName: String
+  cityName: String
+  state: String
+  zip: String
+  countyName: String
+}
+
+enum AssetTypeEnum {
+  RESIDENTIAL
+}
+
+type EstateModel @model @auth(rules: [{allow: public, operations: [read]}]) {
+  id: ID!
+  slug: String
+  name: String
+  isWaitlist: Boolean
+  address: AddressJSON
+  description: String
+  surface: Float
+  map: GMapsConfigModel @hasOne
+  coverImageUrl: AWSURL
+  debt: Float
+  gallery: [WaitListItemModel] @hasMany(indexName: "byEstateModel", fields: ["id"])
+  grossYield: Float
+  propertyType: PropertyTypeEnum
+  returnOnCapitalEmployed: Float
+  neighborhood: String
+  revenuePerToken: Float
+  bedrooms: Int
+  tokenPrice: Float
+  rentalType: RentalTypeEnum
+  totalTokens: Int
+  acquisitionStrategy: String
+  trustIndice: Float
+  acquisitionPrice: Float
+  rentalIncome: Float
+  refurbishment: Float
+  propertyManagement: Float
+  fee: Float
+  governmentTaxes: Float
+  mortgage: Float
+  capitalCall: Float
+  waitListItems: [WaitListItemModel] @hasMany(indexName: "byEstateModel", fields: ["id"])
+  highlights: [String]
+}
+ 

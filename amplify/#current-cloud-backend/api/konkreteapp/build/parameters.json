@@ -1,0 +1,13 @@
+{
+    "AppSyncApiName": "konkreteapp",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "S3DeploymentBucket": "amplify-amplify9f64764effcf4-staging-172356-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/a9091f3c4815d427e679a0450542650c785284bb"
+}

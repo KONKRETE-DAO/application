@@ -20,8 +20,7 @@ import { InjectedConnector } from "@web3-react/injected-connector";
 import { Storage } from "@aws-amplify/storage";
 import { WaitListItemModel } from "../models";
 import { DataStore } from "aws-amplify";
-import BuyButtons from "./BuyingComponent";
-import { contractChainId } from "../Helpers/contractInfo";
+import { contractChainId } from "../Helpers/erc20";
 
 const Injected = new InjectedConnector({
   supportedChainIds: [contractChainId], // Ethereum, Polygon (need to remove ethereum)

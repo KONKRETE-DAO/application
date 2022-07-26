@@ -11,14 +11,14 @@ import {
 import type { NextPage } from "next";
 
 import { BigNumber, ethers } from "ethers";
+import { getERC20Contract, symbol, scan } from "../../Helpers/erc20";
 import {
-  getContract,
-  contractAddress,
-  maxMint,
+  getBuyerContract,
+  tokenPrice,
+  buyerAddress,
   MAX_SUPPLY,
-  symbol,
-  scan,
-} from "../../Helpers/contractInfo";
+  maxMint,
+} from "../../Helpers/buyer";
 import { getCurrency } from "../../Helpers/currency";
 import { getProofs, getRoot } from "../../Helpers/merkleTree";
 
@@ -28,10 +28,8 @@ import { Container } from "@mui/material";
 import { DataStore } from "aws-amplify";
 import { EstateModel } from "../../models";
 import _, { max } from "lodash";
-import { bignumber, string } from "mathjs";
-import { json } from "stream/consumers";
 import { whitelist } from "../../Helpers/whitelist";
-import { setDefaultResultOrder } from "dns";
+import { bignumber } from "mathjs";
 
 const Checkout: NextPage = () => {
   const currencies = [
@@ -102,7 +100,10 @@ const Checkout: NextPage = () => {
     if (BigNumber.from(dollar).lt(10)) {
       return BigNumber.from(0);
     }
-    const ret = BigNumber.from(dollar).mul(exchangeRate).div(10000);
+    const ret =
+      !dollar || dollar == "0"
+        ? BigNumber.from(dollar).mul(10000).div(exchangeRate)
+        : BigNumber.from(0);
     return ret.lt(10) ? BigNumber.from(0) : ret;
   };
   const toDoll = (euro: string) => {
@@ -125,30 +126,30 @@ const Checkout: NextPage = () => {
     setParsedUsdcAmount(ethers.utils.formatEther(usdc));
   };
   async function fetchData() {
-    if (account && contractAddress) {
+    if (account) {
       setError("");
       setTxRef("");
       setTotalTxRef("");
       try {
-        const myContractSigner = getContract(library, account);
+        const myBuyerSigner = getBuyerContract(library, account);
+        const myERC20Signer = getERC20Contract(library, account);
+        const myCurrencySigner = getCurrency(library, account);
 
-        const data = await myContractSigner.variables();
+        const data = await myBuyerSigner.variables();
 
-        const _currency = getCurrency(library, account);
-
-        const _circulatingSupply = String(await myContractSigner.totalSupply());
+        const _circulatingSupply = String(await myERC20Signer.totalSupply());
 
         const _currencyAllowance = String(
-          await _currency.allowance(account, contractAddress)
+          await myCurrencySigner.allowance(account, buyerAddress)
         );
 
-        const _currencyBalance = String(await _currency.balanceOf(account));
-
-        const _tokenBalance = String(await myContractSigner.balanceOf(account));
-
-        const _tokenBought = String(
-          await myContractSigner.tokensBought(account)
+        const _currencyBalance = String(
+          await myCurrencySigner.balanceOf(account)
         );
+
+        const _tokenBalance = String(await myERC20Signer.balanceOf(account));
+
+        const _tokenBought = String(await myBuyerSigner.tokensBought(account));
 
         setExchangeRate(data.cexRatioX10000);
         setCirculatingSupply(_circulatingSupply);
@@ -158,6 +159,7 @@ const Checkout: NextPage = () => {
         setParsedTokenBalance(ethers.utils.formatEther(_tokenBalance));
         setCurrencyAllowance(_currencyAllowance);
         setTokenBought(_tokenBought);
+        console.log("Currency Balance" + currencyBalance);
 
         const step = parseInt(data.step);
 
@@ -181,6 +183,10 @@ const Checkout: NextPage = () => {
     }
   }
   const getMax = () => {
+    console.log("Currency Balance" + currencyBalance);
+    if (!currencyBalance || currencyBalance === "0") {
+      return BigNumber.from(0);
+    }
     const canBuy = BigNumber.from(currencyBalance)
       .mul(exchangeRate)
       .div(10000 * 10);
@@ -216,7 +222,7 @@ const Checkout: NextPage = () => {
     setUsdcAmount(String(usdc));
     setParsedUsdcAmount(pUsdc);
     setRetAmount(String(goodInput.div(10)));
-    setParsedRetAmount(String(input / 10));
+    setParsedRetAmount(String(input / tokenPrice));
   };
 
   const usdcChange = (
@@ -233,7 +239,7 @@ const Checkout: NextPage = () => {
       input >
       parseFloat(
         ethers.utils.formatEther(
-          toDoll(String(max.mul(10000).div(exchangeRate)))
+          max.gt(0) ? toDoll(String(max.mul(10000).div(exchangeRate))) : "0"
         )
       )
     ) {
@@ -269,13 +275,13 @@ const Checkout: NextPage = () => {
       setError(MAX_ERROR);
     }
     const token = ethers.utils.parseEther(String(input));
-    const euro = String(token.mul(10));
+    const euro = String(token.mul(tokenPrice));
     let usdc = toDoll(euro);
     let pUsdc = ethers.utils.formatEther(usdc);
     setEuroAmount(euro);
     setUsdcAmount(String(usdc));
     setRetAmount(String(token));
-    setParsedEuroAmount(String(input * 10));
+    setParsedEuroAmount(String(input * tokenPrice));
     setParsedUsdcAmount(pUsdc);
     setParsedRetAmount(String(input));
   };
@@ -290,7 +296,7 @@ const Checkout: NextPage = () => {
       const _currency = getCurrency(library, account!);
       const securityAllowance = parseInt(parsedUsdcAmount) * 1.01;
       let tx = await _currency.approve(
-        contractAddress,
+        buyerAddress,
         ethers.utils.parseEther(String(securityAllowance))
       );
       setError("Transaction pending ...");
@@ -318,9 +324,9 @@ const Checkout: NextPage = () => {
     setTotalTxRef("");
     try {
       console.log("entered in fct");
-      const myContractSigner = getContract(library, account!);
+      const myBuyerSigner = getBuyerContract(library, account!);
       setError("Transaction pending ...");
-      const tx = await myContractSigner.buy(
+      const tx = await myBuyerSigner.buy(
         account,
         retAmount,
         getProofs(account!)
@@ -350,8 +356,6 @@ const Checkout: NextPage = () => {
         setError("Transaction rejected");
       } else if (!error.includes("reason")) {
         setError(error);
-      } else if (error.includes("-32603")) {
-        setError("Insufficient allowance , please refresh and reconnect");
       } else {
         const goodError = JSON.stringify(err.reason)
           .replace("execution reverted:", "")

@@ -1,6 +1,6 @@
 import { Contract } from "@ethersproject/contracts";
 
-export const buyerAddress = "0xD09ED8Ce155c2F91086f40DbB31B27089C288a5C"; // on changera
+export const buyerAddress = "0xAa524e86086d06bD951D4985ceEb0f91513Eded9"; // on changera
 export const maxMint = 1950;
 export const tokenPrice = 10;
 export const MAX_SUPPLY = 6500;
@@ -81,6 +81,45 @@ export const buyerAbi = [
     anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: "address",
+        name: "currency",
+        type: "address",
+      },
+    ],
+    name: "CurrencyUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint128",
+        name: "maxSupply",
+        type: "uint128",
+      },
+    ],
+    name: "MaxSupplyUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint32",
+        name: "priceX10000",
+        type: "uint32",
+      },
+    ],
+    name: "PriceUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: true,
         internalType: "bytes32",
         name: "role",
@@ -150,6 +189,32 @@ export const buyerAbi = [
       },
     ],
     name: "RoleRevoked",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint128",
+        name: "userMaxToBuy",
+        type: "uint128",
+      },
+    ],
+    name: "UserMaxToBuyUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "bytes32",
+        name: "root",
+        type: "bytes32",
+      },
+    ],
+    name: "WhitelistUpdated",
     type: "event",
   },
   {
@@ -295,6 +360,19 @@ export const buyerAbi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "pToken",
+    outputs: [
+      {
+        internalType: "contract IPToken",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "bytes32",
@@ -333,19 +411,6 @@ export const buyerAbi = [
   {
     inputs: [
       {
-        internalType: "bytes32",
-        name: "merkleRoot",
-        type: "bytes32",
-      },
-    ],
-    name: "setAllowListMerkleRoot",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "uint32",
         name: "_cexRatioX10000",
         type: "uint32",
@@ -372,12 +437,12 @@ export const buyerAbi = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "_pToken",
-        type: "address",
+        internalType: "uint128",
+        name: "_max",
+        type: "uint128",
       },
     ],
-    name: "setPToken",
+    name: "setMaxSupply",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -386,7 +451,7 @@ export const buyerAbi = [
     inputs: [
       {
         internalType: "uint32",
-        name: "_tokenPrice",
+        name: "_tokenPricex10000",
         type: "uint32",
       },
     ],
@@ -416,7 +481,20 @@ export const buyerAbi = [
         type: "uint128",
       },
     ],
-    name: "setmMaxToBuy",
+    name: "setUserMaxToBuy",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "merkleRoot",
+        type: "bytes32",
+      },
+    ],
+    name: "setWhiteListMerkleRoot",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -475,7 +553,7 @@ export const buyerAbi = [
       },
       {
         internalType: "uint32",
-        name: "tokenPrice",
+        name: "tokenPricex10000",
         type: "uint32",
       },
       {
@@ -485,7 +563,7 @@ export const buyerAbi = [
       },
       {
         internalType: "uint128",
-        name: "maxToBuy",
+        name: "userMaxToBuy",
         type: "uint128",
       },
       {
@@ -501,11 +579,6 @@ export const buyerAbi = [
       {
         internalType: "contract IERC20",
         name: "currencyUsed",
-        type: "address",
-      },
-      {
-        internalType: "contract IPToken",
-        name: "pToken",
         type: "address",
       },
     ],

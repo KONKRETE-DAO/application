@@ -344,6 +344,7 @@ const Checkout: NextPage = () => {
       setCirculatingSupply(String(newSupply));
       setParsedSupply(ethers.utils.formatEther(newSupply));
       setCurrencyBalance(String(newBalance));
+      setCurrencyBalance(ethers.utils.formatEther(newBalance));
       setCurrencyAllowance(
         String(BigNumber.from(currencyAllowance).sub(usdcAmount))
       );

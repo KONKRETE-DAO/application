@@ -1,6 +1,6 @@
 import { Contract } from "@ethersproject/contracts";
 
-export const buyerAddress = "0xAa524e86086d06bD951D4985ceEb0f91513Eded9"; // on changera
+export const buyerAddress = "0x9ecf60799B516876031178ab0e586c69e4AE4cFE"; // on changera
 export const maxMint = 1950;
 export const tokenPrice = 10;
 export const MAX_SUPPLY = 6500;

@@ -30,7 +30,7 @@ export const buyerAbi = [
       },
       {
         internalType: "address",
-        name: "_pToken",
+        name: "_retToken",
         type: "address",
       },
       {
@@ -360,19 +360,6 @@ export const buyerAbi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "pToken",
-    outputs: [
-      {
-        internalType: "contract IPToken",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
       {
         internalType: "bytes32",
@@ -388,6 +375,19 @@ export const buyerAbi = [
     name: "renounceRole",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "retToken",
+    outputs: [
+      {
+        internalType: "contract IRetToken",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {

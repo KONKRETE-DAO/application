@@ -340,7 +340,7 @@ const Checkout: NextPage = () => {
       const newTokenBalance = BigNumber.from(tokenBalance).add(retAmount);
       const newSupply = BigNumber.from(circulatingSupply).add(retAmount);
       setTokenBalance(String(newTokenBalance));
-      setTokenBalance(ethers.utils.formatEther(newTokenBalance));
+      setParsedTokenBalance(ethers.utils.formatEther(newTokenBalance));
       setCirculatingSupply(String(newSupply));
       setParsedSupply(ethers.utils.formatEther(newSupply));
       setCurrencyBalance(String(newBalance));

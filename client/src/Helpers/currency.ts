@@ -1,6 +1,6 @@
 import { Contract } from "@ethersproject/contracts";
 
-export const contractAddress = "0x4f05a4f7050B6F53664637733789909ba69b15bc"; // on changera
+export const contractAddress = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"; // on changera
 export const getCurrency = (library: any, account: string) => {
   const signer = library.getSigner(account).connectUnchecked();
   const contract = new Contract(contractAddress, contractAbi, signer);

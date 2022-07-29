@@ -308,7 +308,6 @@ const Checkout: NextPage = () => {
       );
       setError("Transaction pending ...");
       const receipt = await tx.wait();
-      console.log(receipt);
       setTxRef(tx.hash);
       setTotalTxRef(String(scan + String(tx.hash)));
       setError("");

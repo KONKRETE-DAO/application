@@ -105,6 +105,7 @@ const Checkout: NextPage = () => {
       !dollar || dollar == "0"
         ? BigNumber.from(dollar).mul(10000).div(exchangeRate)
         : BigNumber.from(0);
+    console.log(ret);
     return ret.lt(10) ? BigNumber.from(0) : ret;
   };
   const toDoll = (euro: string) => {
@@ -148,13 +149,16 @@ const Checkout: NextPage = () => {
         const preCurrencyBalance = BigNumber.from(
           await myCurrencySigner.balanceOf(account)
         );
-        const _currencyBalance = String(preCurrencyBalance.mul(12));
+        const _currencyBalance = String(
+          preCurrencyBalance.mul(normalizeDecimals)
+        );
 
         const _tokenBalance = String(await myERC20Signer.balanceOf(account));
 
         const _tokenBought = String(await myBuyerSigner.tokensBought(account));
 
         setExchangeRate(data.cexRatioX10000);
+        console.log("Exchange reate   " + data.cexRatioX10000);
         setCirculatingSupply(_circulatingSupply);
         setParsedSupply(ethers.utils.formatEther(_circulatingSupply));
         setCurrencyBalance(_currencyBalance);
@@ -237,6 +241,7 @@ const Checkout: NextPage = () => {
     let input = parseFloat(e.target.value > "0" ? e.target.value : "0");
     setError("");
     let max = getMax();
+    console.log("Max = : " + max);
     input = Math.min(Math.max(input, 0));
     if (
       input >

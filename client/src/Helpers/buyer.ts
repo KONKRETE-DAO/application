@@ -1,6 +1,6 @@
 import { Contract } from "@ethersproject/contracts";
 
-export const buyerAddress = "0x9ecf60799B516876031178ab0e586c69e4AE4cFE"; // on changera
+export const buyerAddress = "0x2CD699Fa02612BE5bB52F2F51D23F9A0793fe3CA"; // on changera
 export const maxMint = 1950;
 export const tokenPrice = 10;
 export const MAX_SUPPLY = 6500;
@@ -428,6 +428,11 @@ export const buyerAbi = [
         name: "currencyToUse",
         type: "address",
       },
+      {
+        internalType: "uint256",
+        name: "decimals_",
+        type: "uint256",
+      },
     ],
     name: "setCurrency",
     outputs: [],
@@ -544,6 +549,11 @@ export const buyerAbi = [
       {
         internalType: "enum Step",
         name: "step",
+        type: "uint8",
+      },
+      {
+        internalType: "uint8",
+        name: "decimalsGap",
         type: "uint8",
       },
       {

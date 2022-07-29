@@ -300,7 +300,6 @@ const Checkout: NextPage = () => {
     setError("");
     setTotalTxRef("");
     try {
-      console.log("entered in fct");
       const _currency = getCurrency(library, account!);
       const securityAllowance = parseInt(parsedUsdcAmount) * 1.01;
       let tx = await _currency.approve(

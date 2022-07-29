@@ -305,7 +305,7 @@ const Checkout: NextPage = () => {
       const securityAllowance = parseInt(parsedUsdcAmount) * 1.01;
       let tx = await _currency.approve(
         buyerAddress,
-        BigNumber.from(securityAllowance).mul(usdcDecimals)
+        String(BigNumber.from(securityAllowance).mul(usdcDecimals))
       );
       setError("Transaction pending ...");
       const receipt = await tx.wait();

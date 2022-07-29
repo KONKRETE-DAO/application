@@ -301,11 +301,11 @@ const Checkout: NextPage = () => {
     setTotalTxRef("");
     try {
       const _currency = getCurrency(library, account!);
-      const securityAllowance = parseInt(parsedUsdcAmount) * 1.01;
-      let tx = await _currency.approve(
-        buyerAddress,
-        String(BigNumber.from(securityAllowance).mul(usdcDecimals))
-      );
+      const securityAllowance = BigNumber.from(parsedUsdcAmount)
+        .mul(usdcDecimals)
+        .mul(100)
+        .div(100);
+      let tx = await _currency.approve(buyerAddress, String(securityAllowance));
       setError("Transaction pending ...");
       const receipt = await tx.wait();
       setTxRef(tx.hash);

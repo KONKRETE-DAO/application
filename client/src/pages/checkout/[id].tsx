@@ -36,7 +36,8 @@ const Checkout: NextPage = () => {
     { value: "USD", label: "$" },
     { value: "EUR", label: "€" },
   ];
-
+  const normalizeDecimals = BigNumber.from(10).pow(12);
+  const usdcDecimals = BigNumber.from(10).pow(6);
   const errorTypes = [
     { key: "SO", value: "Sold out" },
     { key: "RTH", value: "Ratio Too High" },
@@ -138,14 +139,16 @@ const Checkout: NextPage = () => {
         const data = await myBuyerSigner.variables();
 
         const _circulatingSupply = String(await myERC20Signer.totalSupply());
-
-        const _currencyAllowance = String(
+        const preCurrencyAllowance = BigNumber.from(
           await myCurrencySigner.allowance(account, buyerAddress)
         );
-
-        const _currencyBalance = String(
+        const _currencyAllowance = String(
+          preCurrencyAllowance.mul(normalizeDecimals)
+        );
+        const preCurrencyBalance = BigNumber.from(
           await myCurrencySigner.balanceOf(account)
         );
+        const _currencyBalance = String(preCurrencyBalance.mul(12));
 
         const _tokenBalance = String(await myERC20Signer.balanceOf(account));
 
@@ -297,7 +300,7 @@ const Checkout: NextPage = () => {
       const securityAllowance = parseInt(parsedUsdcAmount) * 1.01;
       let tx = await _currency.approve(
         buyerAddress,
-        ethers.utils.parseEther(String(securityAllowance))
+        BigNumber.from(parsedUsdcAmount).mul(usdcDecimals)
       );
       setError("Transaction pending ...");
       const receipt = await tx.wait();

@@ -301,11 +301,10 @@ const Checkout: NextPage = () => {
     setTotalTxRef("");
     try {
       const _currency = getCurrency(library, account!);
-      const securityAllowance = BigNumber.from(parsedUsdcAmount)
-        .mul(usdcDecimals)
-        .mul(100)
-        .div(100);
-      let tx = await _currency.approve(buyerAddress, String(securityAllowance));
+      const securityAllowance = String(
+        BigNumber.from(usdcAmount).mul(101).div(normalizeDecimals).div(100)
+      );
+      let tx = await _currency.approve(buyerAddress, securityAllowance!);
       setError("Transaction pending ...");
       const receipt = await tx.wait();
       setTxRef(tx.hash);
@@ -368,6 +367,7 @@ const Checkout: NextPage = () => {
           .replace("execution reverted:", "")
           .replaceAll('"', "")
           .replaceAll(" ", "");
+        console.log("error", goodError);
         const buffObj = errorTypes.filter(function (errorType) {
           return errorType.key === goodError;
         });
@@ -377,7 +377,6 @@ const Checkout: NextPage = () => {
           setError(goodError);
         }
       }
-      console.log("error", error);
       // We have to push the error message one the screen
     }
     console.log("cgvCheckbox", cgvCheckbox);

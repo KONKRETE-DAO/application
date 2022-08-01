@@ -626,17 +626,29 @@ const Checkout: NextPage = () => {
               <Chip
                 component="button"
                 label="Approve"
-                color={cgvCheckbox === true ? "primary" : "default"}
+                color={
+                  cgvCheckbox === true && retAmount != "0"
+                    ? "primary"
+                    : "default"
+                }
                 onClick={approve}
-                clickable={cgvCheckbox === true ? true : false}
+                clickable={
+                  cgvCheckbox === true && retAmount != "0" ? true : false
+                }
               />
             ) : (
               <Chip
                 component="button"
                 label="Buy tokens"
-                color={cgvCheckbox === true ? "primary" : "default"}
+                color={
+                  cgvCheckbox === true && retAmount != "0"
+                    ? "primary"
+                    : "default"
+                }
                 onClick={buy}
-                clickable={cgvCheckbox === true ? true : false}
+                clickable={
+                  cgvCheckbox === true && retAmount != "0" ? true : false
+                }
               />
             )}
           </Box>

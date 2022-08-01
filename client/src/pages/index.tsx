@@ -25,7 +25,7 @@ const Home: NextPage = () => {
     updateEstates(estates);
   };
 
-  // if (estates.length == 0) return <></>
+  if (estates.length == 0) return <></>;
 
   return (
     <>

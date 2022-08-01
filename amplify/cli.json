@@ -10,11 +10,7 @@
       "skipoverridemutationinputtypes": true,
       "transformerversion": 2,
       "suppressschemamigrationprompt": true,
-      "securityenhancementnotification": false,
-      "showfieldauthnotification": false,
-      "usesubusernamefordefaultidentityclaim": true,
-      "usefieldnameforprimarykeyconnectionfield": false,
-      "enableautoindexquerynames": false
+      "securityenhancementnotification": false
     },
     "frontend-ios": {
       "enablexcodeintegration": true
@@ -53,7 +49,5 @@
       "overrides": true
     }
   },
-  "debug": {
-    "shareProjectConfig": true
-  }
+  "debug": {}
 }

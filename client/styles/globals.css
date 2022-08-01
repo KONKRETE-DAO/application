@@ -13,12 +13,18 @@ a {
   color: inherit;
   text-decoration: none;
 }
-.lol {
+.hyper {
   color: blue;
+  text-decoration: underline;
 }
 
 * {
   box-sizing: border-box;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
 }
 .mintButton {
   background-color: black;

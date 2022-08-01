@@ -1,0 +1,108 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-amplify9f64764effcf4-staging-172356-authRole",
+      "UnauthRoleArn": "arn:aws:iam::783878033178:role/amplify-amplify9f64764effcf4-staging-172356-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::783878033178:role/amplify-amplify9f64764effcf4-staging-172356-authRole",
+      "Region": "eu-west-3",
+      "DeploymentBucketName": "amplify-amplify9f64764effcf4-staging-172356-deployment",
+      "UnauthRoleName": "amplify-amplify9f64764effcf4-staging-172356-unauthRole",
+      "StackName": "amplify-amplify9f64764effcf4-staging-172356",
+      "StackId": "arn:aws:cloudformation:eu-west-3:783878033178:stack/amplify-amplify9f64764effcf4-staging-172356/f02143a0-eccf-11ec-8e76-0e3d503fc1da",
+      "AmplifyAppId": "d232flqv9gwmlh"
+    }
+  },
+  "api": {
+    "konkreteapp": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 30,
+              "description": "api key description"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
+        },
+        "GraphQLAPIIdOutput": "xfnh7s4ihnhnnhl2on6y3krkoy",
+        "GraphQLAPIEndpointOutput": "https://2lwaolv6azgdhkfb4fzbbxzgfm.appsync-api.eu-west-3.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-7l6xq3ahibh7nbgz3kk22p27p4"
+      },
+      "lastPushTimeStamp": "2022-06-24T10:09:19.506Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplify9f64764effcf4-staging-172356-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apikonkreteapp"
+      },
+      "lastPushDirHash": "lTuBB4pLBQsWL0CBfMLPm4onO4Q="
+    }
+  },
+  "auth": {
+    "konkreteapp": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "signupAttributes": [],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_NUMBERS",
+            "REQUIRES_SYMBOLS",
+            "REQUIRES_UPPERCASE"
+          ]
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "output": {
+        "UserPoolId": "eu-west-3_gmD2gZiOo",
+        "AppClientIDWeb": "5s290lr75g7qhr1akpqlm5gtf4",
+        "AppClientID": "1ktutpa5mp6mbnb71div92p9kp",
+        "IdentityPoolId": "eu-west-3:27b5b1ba-79d4-4326-91a2-e100900b977e",
+        "UserPoolArn": "arn:aws:cognito-idp:eu-west-3:783878033178:userpool/eu-west-3_gmD2gZiOo",
+        "IdentityPoolName": "testAuthIdentityPool__staging",
+        "UserPoolName": "konkreteapp"
+      },
+      "lastPushTimeStamp": "2022-06-24T10:09:19.461Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplify9f64764effcf4-staging-172356-deployment/amplify-cfn-templates/auth/konkreteapp-cloudformation-template.json",
+        "logicalId": "authkonkreteapp"
+      }
+    }
+  },
+  "storage": {
+    "s3konkreteappstorage5d35380c": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "output": {
+        "BucketName": "konkrete-app-storage-5d35380c172356-staging",
+        "Region": "eu-west-3"
+      },
+      "lastPushTimeStamp": "2022-06-24T10:09:19.463Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplify9f64764effcf4-staging-172356-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "logicalId": "storages3konkreteappstorage5d35380c"
+      }
+    }
+  }
+}

@@ -20,7 +20,7 @@ import { InjectedConnector } from "@web3-react/injected-connector";
 import MenuIcon from "@mui/icons-material/Menu";
 import Link from "next/link";
 import { Link as MUILink } from "@mui/material";
-import { contractChainId } from "../Helpers/contractInfo";
+import { contractChainId } from "../Helpers/erc20";
 
 const pages = [
   {

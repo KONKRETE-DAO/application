@@ -1,8 +1,7 @@
 import { Contract } from "@ethersproject/contracts";
 
-export const contractAddress = "0x4f05a4f7050B6F53664637733789909ba69b15bc"; // on changera
+export const contractAddress = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"; // on changera
 export const getCurrency = (library: any, account: string) => {
-  // console.log(library);
   const signer = library.getSigner(account).connectUnchecked();
   const contract = new Contract(contractAddress, contractAbi, signer);
   return contract;
@@ -10,9 +9,9 @@ export const getCurrency = (library: any, account: string) => {
 export const contractAbi = [
   {
     inputs: [
-      { internalType: "string", name: "name", type: "string" },
-      { internalType: "string", name: "symbol", type: "string" },
-      { internalType: "uint8", name: "decimal", type: "uint8" },
+      { internalType: "string", name: "name_", type: "string" },
+      { internalType: "string", name: "symbol_", type: "string" },
+      { internalType: "uint8", name: "decimals_", type: "uint8" },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
@@ -82,16 +81,6 @@ export const contractAbi = [
     name: "balanceOf",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "address", name: "account", type: "address" },
-      { internalType: "uint256", name: "amount", type: "uint256" },
-    ],
-    name: "burn",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {

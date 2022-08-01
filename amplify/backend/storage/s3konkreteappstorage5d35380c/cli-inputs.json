@@ -1,0 +1,14 @@
+{
+  "resourceName": "s3konkreteappstorage5d35380c",
+  "bucketName": "konkrete-app-storage-5d35380c",
+  "policyUUID": "0f70ef84",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "READ",
+    "CREATE_AND_UPDATE",
+    "DELETE"
+  ]
+}

@@ -625,7 +625,7 @@ const Checkout: NextPage = () => {
             {usdcAmount > currencyAllowance ? (
               <Chip
                 component="button"
-                label="Approve"
+                label="Approve (just need it 1 time before buy)"
                 color={
                   cgvCheckbox === true && parseFloat(retAmount) > 0
                     ? "primary"

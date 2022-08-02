@@ -627,13 +627,15 @@ const Checkout: NextPage = () => {
                 component="button"
                 label="Approve"
                 color={
-                  cgvCheckbox === true && retAmount != "0"
+                  cgvCheckbox === true && parseFloat(retAmount) > 0
                     ? "primary"
                     : "default"
                 }
                 onClick={approve}
                 clickable={
-                  cgvCheckbox === true && retAmount != "0" ? true : false
+                  cgvCheckbox === true && parseFloat(retAmount) > 0
+                    ? true
+                    : false
                 }
               />
             ) : (
@@ -641,13 +643,15 @@ const Checkout: NextPage = () => {
                 component="button"
                 label="Buy tokens"
                 color={
-                  cgvCheckbox === true && retAmount != "0"
+                  cgvCheckbox === true && parseFloat(retAmount) > 0
                     ? "primary"
                     : "default"
                 }
                 onClick={buy}
                 clickable={
-                  cgvCheckbox === true && retAmount != "0" ? true : false
+                  cgvCheckbox === true && parseFloat(retAmount) > 0
+                    ? true
+                    : false
                 }
               />
             )}

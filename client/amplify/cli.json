@@ -1,5 +1,6 @@
 {
   "features": {
+<<<<<<< HEAD
     "graphqltransformer": {
       "addmissingownerfields": true,
       "improvepluralization": false,
@@ -19,6 +20,12 @@
     "frontend-ios": {
       "enablexcodeintegration": true
     },
+=======
+    "graphqltransformer": {},
+    "frontend-ios": {
+      "enablexcodeintegration": true
+    },
+>>>>>>> origin/main
     "auth": {
       "enablecaseinsensitivity": true,
       "useinclusiveterminology": true,

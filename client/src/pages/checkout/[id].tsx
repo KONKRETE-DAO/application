@@ -78,14 +78,14 @@ const Checkout: NextPage = () => {
   const [cgvCheckbox, setCgvCheckbox] = useState(false);
 
   useEffect(() => {
-    fetchData();
+    fetchData(false);
   }, []);
 
   const openRef = async () => {
     window.open(totalTxRef, "_blank");
   };
   useEffect(() => {
-    fetchData();
+    fetchData(false);
     fetchEstates();
     const subscription = DataStore.observe(EstateModel).subscribe(() =>
       fetchEstates()
@@ -127,11 +127,13 @@ const Checkout: NextPage = () => {
     setUsdcAmount(String(usdc));
     setParsedUsdcAmount(ethers.utils.formatEther(usdc));
   };
-  async function fetchData() {
+  async function fetchData(keepTxInfos: boolean) {
     if (account) {
-      setError("");
-      setTxRef("");
-      setTotalTxRef("");
+      if (!keepTxInfos) {
+        setError("");
+        setTxRef("");
+        setTotalTxRef("");
+      }
       try {
         const myBuyerSigner = getBuyerContract(library, account);
         const myERC20Signer = getERC20Contract(library, account);
@@ -302,7 +304,7 @@ const Checkout: NextPage = () => {
     try {
       const _currency = getCurrency(library, account!);
       const securityAllowance = String(
-        BigNumber.from(usdcAmount).mul(101).div(normalizeDecimals).div(100)
+        BigNumber.from(usdcAmount).mul(110).div(normalizeDecimals).div(100)
       );
       let tx = await _currency.approve(buyerAddress, securityAllowance!);
       setError("Transaction pending ...");
@@ -310,7 +312,8 @@ const Checkout: NextPage = () => {
       setTxRef(tx.hash);
       setTotalTxRef(String(scan + String(tx.hash)));
       setError("");
-      setCurrencyAllowance(usdcAmount);
+      // setCurrencyAllowance(usdcAmount);
+      fetchData(true);
     } catch (err: any) {
       console.log(JSON.stringify(err));
       if (!error.includes("rejected")) {
@@ -341,19 +344,20 @@ const Checkout: NextPage = () => {
       setTxRef(tx.hash);
       setTotalTxRef(String(scan + String(tx.hash)));
       setError("");
-      const newBalance = BigNumber.from(currencyBalance).sub(usdcAmount);
-      const newTokenBalance = BigNumber.from(tokenBalance).add(retAmount);
-      const newSupply = BigNumber.from(circulatingSupply).add(retAmount);
-      setTokenBalance(String(newTokenBalance));
-      setParsedTokenBalance(ethers.utils.formatEther(newTokenBalance));
-      setCirculatingSupply(String(newSupply));
-      setParsedSupply(ethers.utils.formatEther(newSupply));
-      setCurrencyBalance(String(newBalance));
-      setCurrencyBalance(ethers.utils.formatEther(newBalance));
-      setCurrencyAllowance(
-        String(BigNumber.from(currencyAllowance).sub(usdcAmount))
-      );
-      setParsedSupply(ethers.utils.formatEther(newSupply));
+      fetchData(true);
+      // const newBalance = BigNumber.from(currencyBalance).sub(usdcAmount);
+      // const newTokenBalance = BigNumber.from(tokenBalance).add(retAmount);
+      // const newSupply = BigNumber.from(circulatingSupply).add(retAmount);
+      // setTokenBalance(String(newTokenBalance));
+      // setParsedTokenBalance(ethers.utils.formatEther(newTokenBalance));
+      // setCirculatingSupply(String(newSupply));
+      // setParsedSupply(ethers.utils.formatEther(newSupply));
+      // setCurrencyBalance(String(newBalance));
+      // setCurrencyBalance(ethers.utils.formatEther(newBalance));
+      // setCurrencyAllowance(
+      //   String(BigNumber.from(currencyAllowance).sub(usdcAmount))
+      // );
+      // setParsedSupply(ethers.utils.formatEther(newSupply));
     } catch (err: any) {
       const error = String(await err);
       if (!error.includes("reason") && error.includes("insufficient")) {
@@ -625,15 +629,17 @@ const Checkout: NextPage = () => {
             {usdcAmount > currencyAllowance ? (
               <Chip
                 component="button"
-                label="Approve"
+                label="Approve (just need it 1 time before buy)"
                 color={
-                  cgvCheckbox === true && retAmount != "0"
+                  cgvCheckbox === true && parseFloat(retAmount) > 0
                     ? "primary"
                     : "default"
                 }
                 onClick={approve}
                 clickable={
-                  cgvCheckbox === true && retAmount != "0" ? true : false
+                  cgvCheckbox === true && parseFloat(retAmount) > 0
+                    ? true
+                    : false
                 }
               />
             ) : (
@@ -641,13 +647,15 @@ const Checkout: NextPage = () => {
                 component="button"
                 label="Buy tokens"
                 color={
-                  cgvCheckbox === true && retAmount != "0"
+                  cgvCheckbox === true && parseFloat(retAmount) > 0
                     ? "primary"
                     : "default"
                 }
                 onClick={buy}
                 clickable={
-                  cgvCheckbox === true && retAmount != "0" ? true : false
+                  cgvCheckbox === true && parseFloat(retAmount) > 0
+                    ? true
+                    : false
                 }
               />
             )}

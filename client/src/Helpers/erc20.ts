@@ -1,7 +1,7 @@
 import { Contract } from "@ethersproject/contracts";
 
-export const erc20Address = "0xF1d2BD0F8C059bC84E509d4162D3855a21435bB8"; // on changera
-export const contractChainId = 137;
+export const erc20Address = "0x9ecf60799B516876031178ab0e586c69e4AE4cFE"; // on changera
+export const contractChainId = 5;
 export const symbol = "203rdSM-R";
 export const scan = "https://polygonscan.com/tx/";
 export const getERC20Contract = (library: any, account: string) => {

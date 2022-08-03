@@ -155,7 +155,6 @@ const LargeAssetCard = ({ ...props }) => {
         <CardContent>
           <Avatar sx={{ width: 100, height: 100 }} src={cover} />
         </CardContent>
-        ƒ
         <CardContent sx={{ display: "flex", flexDirection: "column" }}>
           <Typography gutterBottom variant="h6" component="div">
             {props.name} ({loc})

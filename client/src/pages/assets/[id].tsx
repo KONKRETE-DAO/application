@@ -17,7 +17,6 @@ const render = (status: Status): ReactElement => {
   if (status === Status.LOADING) return <h3>{status} ..</h3>;
   return <h3>{status} ...</h3>;
 };
-
 const Asset: NextPage = ({}) => {
   const router = useRouter();
   const { id } = router.query;

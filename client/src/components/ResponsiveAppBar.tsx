@@ -23,18 +23,18 @@ import { Link as MUILink } from "@mui/material";
 import { contractChainId } from "../Helpers/erc20";
 
 const pages = [
-  {
-    label: "Property list",
-    url: "/",
-  },
-  {
-    label: "Dashboard",
-    url: "/dashboard",
-  },
-  {
-    label: "Resources",
-    url: "#",
-  },
+  // {
+  //   label: "Property list",
+  //   url: "/",
+  // },
+  // {
+  //   label: "Dashboard",
+  //   url: "/dashboard",
+  // },
+  // {
+  //   label: "Resources",
+  //   url: "#",
+  // },
 ];
 
 const Injected = new InjectedConnector({
@@ -164,7 +164,7 @@ const ResponsiveAppBar = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
+              {/* {pages.map((page) => (
                 <Link
                   key={page.label}
                   href={router.asPath != page.url ? page.url : "#"}
@@ -176,7 +176,7 @@ const ResponsiveAppBar = () => {
                     </MenuItem>
                   </MUILink>
                 </Link>
-              ))}
+              ))} */}
             </Menu>
           </Box>
           <Typography
@@ -197,7 +197,7 @@ const ResponsiveAppBar = () => {
             Konkrete
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            {/* {pages.map((page) => (
               <Link
                 key={page.label}
                 href={router.asPath != page.url ? page.url : "#"}
@@ -212,7 +212,7 @@ const ResponsiveAppBar = () => {
                   </Button>
                 </MUILink>
               </Link>
-            ))}
+            ))} */}
           </Box>
           <Box sx={{ flexGrow: 0 }}>{button}</Box>
         </Toolbar>

@@ -170,11 +170,12 @@ const LargeAssetCard = ({ ...props }) => {
             <Chip
               icon={
                 <span style={{ margin: "7px 0px 0px 7px" }}>
-                  <GraphAscendIcon size={20} color="white" />
+                  <GraphAscendIcon size={20} color="black" />
                 </span>
               }
               label={`${props.grossYield}% Yield`}
-              color="primary"
+              // color="primary"
+              variant="outlined"
             />
             <Chip
               icon={

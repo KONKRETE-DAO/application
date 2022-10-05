@@ -127,6 +127,10 @@ const Checkout: NextPage = () => {
     setUsdcAmount(String(usdc));
     setParsedUsdcAmount(ethers.utils.formatEther(usdc));
   };
+  function getStringFormated(str: string) {
+    const formatted = str.slice(0, 5) + "..." + str.slice(-4);
+    return formatted;
+  }
   async function fetchData(keepTxInfos: boolean) {
     if (account) {
       if (!keepTxInfos) {
@@ -312,7 +316,6 @@ const Checkout: NextPage = () => {
       setTxRef(tx.hash);
       setTotalTxRef(String(scan + String(tx.hash)));
       setError("");
-      // setCurrencyAllowance(usdcAmount);
       fetchData(true);
     } catch (err: any) {
       console.log(JSON.stringify(err));
@@ -345,19 +348,6 @@ const Checkout: NextPage = () => {
       setTotalTxRef(String(scan + String(tx.hash)));
       setError("");
       fetchData(true);
-      // const newBalance = BigNumber.from(currencyBalance).sub(usdcAmount);
-      // const newTokenBalance = BigNumber.from(tokenBalance).add(retAmount);
-      // const newSupply = BigNumber.from(circulatingSupply).add(retAmount);
-      // setTokenBalance(String(newTokenBalance));
-      // setParsedTokenBalance(ethers.utils.formatEther(newTokenBalance));
-      // setCirculatingSupply(String(newSupply));
-      // setParsedSupply(ethers.utils.formatEther(newSupply));
-      // setCurrencyBalance(String(newBalance));
-      // setCurrencyBalance(ethers.utils.formatEther(newBalance));
-      // setCurrencyAllowance(
-      //   String(BigNumber.from(currencyAllowance).sub(usdcAmount))
-      // );
-      // setParsedSupply(ethers.utils.formatEther(newSupply));
     } catch (err: any) {
       const error = String(await err);
       if (!error.includes("reason") && error.includes("insufficient")) {
@@ -619,7 +609,7 @@ const Checkout: NextPage = () => {
               <>
                 <span>Succcess, here is yout tx:</span>
                 <a className="hyper" onClick={openRef}>
-                  {txRef}
+                  {getStringFormated(txRef)}
                 </a>
               </>
             ) : (
